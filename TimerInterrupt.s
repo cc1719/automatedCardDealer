@@ -14,8 +14,16 @@ Timer1:
     retfie	f		; if not then return
     movlw	0xff
     movwf	PORTD
+    movlw	0x0f
+    movwf	timeH
+    movlw	0x7D
+    movwf	timeL
     call	bigdelay
     bcf		TMR0IF	
+    movlw	0xff
+    movwf	TMR0L
+    movlw	0x6A
+    movwf	TMR0H
     retfie	f
 
 bigdelay:
