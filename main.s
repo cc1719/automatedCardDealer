@@ -12,14 +12,10 @@ int_hi:
 	goto	Timer1
 	
 setup:	clrf	TRISD
-	movlw	10000000B
-	movwf	T0CON, A	
+	movlw	10000010B
+	movwf	T0CON, A
 	bsf	TMR0IE		; Enable timer0 interrupt
 	bsf	GIE
-	movlw	0x0
-	movwf	timeH
-	movlw	0x50
-	movwf	timeL
     
 main:
 	clrf	PORTD
