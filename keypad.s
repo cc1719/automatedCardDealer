@@ -7,16 +7,19 @@ KeyPad_counter: ds  1
 KeyPad_Value:   ds  1
 value:		ds  1  
 
-Table_Set_Up:	movlw    00000001B
-		movwf	 value, A
-		FSR	 EQU 04
+Table_Set_Up:	FSR	 EQU 04
 		INDF	 EQU 00
+		movlw    00000001B
+		movwf	 value, A
 		movlw	 0x20
 		movwf    FSR
-		movf     value
-loop:           movwf    INDF
+loop:		movf     value
+	        movwf    INDF
 		incf     FSR
-		
+		incf     value
+		movlw    00001010B
+		CPFSLT   value
+		return
 		goto     loop
 
 
