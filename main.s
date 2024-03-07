@@ -13,8 +13,8 @@ psect	data
 
 psect	code, abs
 	
-rst:	org	0x0
-	goto	setup
+;rst:	org	0x0
+;	goto	setup
 
 int_hi:	
 	org	0x0008	; high vector, no low vector
