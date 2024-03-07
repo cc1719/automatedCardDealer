@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	PWM_Setup, Timer0
+extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read    
 
 global	dutytimeL, dutytimeH
     
@@ -21,11 +21,12 @@ int_hi:
 	goto	Timer0
 	
 setup:	
-	movlw	HIGH(dutycycle)
-	movwf	dutytimeH, A
-	movlw	LOW(dutycycle)
-	movwf	dutytimeL, A
+;	movlw	HIGH(dutycycle)
+;	movwf	dutytimeH, A
+;	movlw	LOW(dutycycle)
+;	movwf	dutytimeL, A	
 	call	PWM_Setup
+	call	ADC_Setup
     
 main:
 	goto	$

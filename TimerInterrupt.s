@@ -2,7 +2,7 @@
 	
 global	PWM_Setup, Timer0, dutybyteL, dutybyteH, maxtimeL, maxtimeH
     
-extrn	dutytimeL, dutytimeH
+extrn	dutytimeL, dutytimeH, ADC_Setup, ADC_Read    
 
 psect	udata_acs   ; reserve data space in access ram
 dutybyteL: ds  1	  
@@ -48,6 +48,7 @@ Timer0:
 
 Timer3:
     clrf	PORTD
+    call	multiplier
     bcf		TMR3ON
     bcf		TMR3IF
     movff	maxtimeL, TMR3L, A
@@ -55,6 +56,9 @@ Timer3:
     retfie	f
 
 multiplier:
+    call	ADC_Read
+    movff	ADRESL, dutytimeL, A
+    movff	ADRESH, dutytimeH, A
     movlw	0x04
     mulwf	dutytimeL, A
     movff	PRODL, dutybyteL
