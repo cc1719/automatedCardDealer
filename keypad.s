@@ -1,11 +1,13 @@
 #include <xc.inc>
     
-global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, row, column
+global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, row, column, value, counter
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
+value:		ds  1
 row:		ds  1
 column:		ds  1
+counter:	ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -24,7 +26,6 @@ Table_Set_Up:   bcf     CFGS
 		db	0x14, 0x24, 0x44, 0x84
 		db      0x18, 0x28, 0x48, 0x88
 		Lookup_Table  EQU 0x300
-		counter	      EQU 0x10
 		align	      2
 goto test  
 KeyPad_Rows:	movlw   0x0f
@@ -49,48 +50,59 @@ Check_KeyPress:
                 movwf   KeyPad_Value, A
                 return
 test:
-movlw   00001000B
+movlw   10000010B
 movwf   KeyPad_Value
 KeyPad_Output:
 		movlw   00001111B
 		andwf   KeyPad_Value, 0
-		CPFSEQ  00000001B
+		movwf   value
+		movlw   00000001B
+		CPFSEQ  value
 		bra     next1
 		movlw   1
 		movwf   row
-next1:          CPFSEQ  00000010B
+next1:          movlw   00000010B
+		CPFSEQ  value
 		bra     next2
 		movlw   2
 		movwf   row
-next2:          CPFSEQ  00000100B
+next2:          movlw   00000100B
+		CPFSEQ  value
 		bra     next3
 		movlw   3
 		movwf   row
-next3:          CPFSEQ  00001000B
+next3:          movlw   00001000B
+		CPFSEQ  value
 		bra     next4
 		movlw   4
-		movwf   row   
+		movwf   row 
 		
 next4:		movlw   11110000B
 		andwf   KeyPad_Value, 0
-		CPFSEQ  00010000B
+		movwf   value
+		
+		movlw   00010000B
+		CPFSEQ  value
 		bra     next5
 		movlw   1
 		movwf   column
-next5:          CPFSEQ  00100000B
+next5:          movlw   00100000B
+		CPFSEQ  value
 		bra     next6
 		movlw   2
 		movwf   column
-next6:          CPFSEQ  01000000B
+next6:          movlw   01000000B
+		CPFSEQ  value
 		bra     next7
 		movlw   3
 		movwf   column
-next7:          CPFSEQ  10000000B
+next7:          movlw   10000000B
+		CPFSEQ  value
 		bra     next8
 		movlw   4
-		movwf   column	
+		movwf   column
 next8:
-		
+
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
 		movlw   low highword(Table_Set_Up)
@@ -99,12 +111,14 @@ Read_Lookup_Table:
 		movwf   TBLPTRH, A
 		movlw   low(Table_Set_Up)
 		movwf   TBLPTRL, A
-  ; currently writes random values at start of table, don't know why, so added offset to account for this.
-		movf    row
-		addwf   column
-		movwf   counter
-		movlw   3
-		addwf   counter
+		movlw   1
+		subwf   row, 1
+		movlw   4
+		mulwf   row
+		movf    PRODL, 0
+		addwf   column, 1
+		movlw   4 ; currently writes random values at start of table, don't know why, so added offset to account for this.
+		addwf   column, 0
 		movwf   counter
 loop:		tblrd*+
 		movff   TABLAT, KeyPad_Value
