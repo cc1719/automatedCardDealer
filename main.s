@@ -16,7 +16,7 @@ setup:	clrf	TRISD
 	clrf	TMR0H
 	clrf	TMR1L
 	clrf	TMR1H
-	movlw	10000010B
+	movlw	10000001B
 	movwf	T0CON, A	; TMR0 is 20ms, time LOW
 	bsf	TMR0IE		; Enable timer0 interrupt
 	movlw	00100100B
@@ -25,4 +25,7 @@ setup:	clrf	TRISD
 	bsf	GIE
     
 main:
-	goto	$
+	movf	TMR0L
+	goto	main
+
+	end	rst
