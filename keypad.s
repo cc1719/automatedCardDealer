@@ -16,8 +16,6 @@ KeyPad_Setup:	clrf	LATE, A
                 bsf     REPU
                 clrf    TRISD, A
                 return
-psect	code, abs
-rst:	org	0x0
 
 Table_Set_Up:   bcf     CFGS
 		bsf	EEPGD
@@ -27,7 +25,7 @@ Table_Set_Up:   bcf     CFGS
 		db      0x18, 0x28, 0x48, 0x88
 		Lookup_Table  EQU 0x300
 		align	      2
-goto test  
+
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISE, A
                 return
@@ -49,9 +47,7 @@ Check_KeyPress:
                 xorlw   0xff
                 movwf   KeyPad_Value, A
                 return
-test:
-movlw   10000010B
-movwf   KeyPad_Value
+
 KeyPad_Output:
 		movlw   00001111B
 		andwf   KeyPad_Value, 0
