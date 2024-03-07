@@ -1,6 +1,6 @@
 #include <xc.inc>
     
-global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, row, column, value, counter
+global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -120,7 +120,7 @@ loop:		tblrd*+
 		movff   TABLAT, KeyPad_Value
 		decfsz  counter, A
 		bra     loop
-		goto    0
+		return
                 
 delay:		movlw   0x40
                 movwf   KeyPad_counter, A
