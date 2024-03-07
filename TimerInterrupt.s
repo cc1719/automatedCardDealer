@@ -1,6 +1,6 @@
 #include <xc.inc>
 	
-global	PWM_Setup, Timer0  
+global	PWM_Setup, Timer0, dutybyteL, dutybyteH, maxtimeL, maxtimeH
     
 extrn	dutytimeL, dutytimeH
 
@@ -22,10 +22,8 @@ PWM_Setup:
     movlw	10000010B
     movwf	T0CON, A	; TMR0 is 20ms, time LOW
     bsf		TMR0IE		; Enable timer0 interrupt
-    movlw	maxtimeL
-    movwf	TMR3L
-    movlw	maxtimeH
-    movwf	TMR3H
+    movff	maxtimeL, TMR3L, A
+    movff	maxtimeH, TMR3H, A
     movlw	00100000B
     movwf	T3CON, A	; TMR3 is <Duty Cycle>, time HIGH
     bsf		TMR3IP
@@ -52,10 +50,8 @@ Timer3:
     clrf	PORTD
     bcf		TMR3ON
     bcf		TMR3IF
-    movlw	maxtimeL
-    movwf	TMR3L
-    movlw	maxtimeH
-    movwf	TMR3H
+    movff	maxtimeL, TMR3L, A
+    movff	maxtimeH, TMR3H, A
     retfie	f
 
 multiplier:
@@ -64,14 +60,14 @@ multiplier:
     movff	PRODL, dutybyteL
     movff	PRODH, dutybyteH
     mulwf	dutytimeH, A
-    movf	PRODH
+    movf	PRODL, W, A
     addwf	dutybyteH, F, A
     movlw	0xff
     movwf	maxtimeH, A
     movwf	maxtimeL, A
-    movf	dutybyteL, A
+    movf	dutybyteL, W, A
     subwf	maxtimeL, F, A
-    movf	dutybyteH, A
+    movf	dutybyteH, W, A
     subwfb	maxtimeH, F, A
     return
     

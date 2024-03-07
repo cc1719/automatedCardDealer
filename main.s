@@ -9,7 +9,7 @@ psect	udata_acs   ; reserve data space in access ram
     dutytimeH: ds  1
 
 psect	data
-	dutycycle EQU 2000
+	dutycycle EQU 3784
 
 psect	code, abs
 	
