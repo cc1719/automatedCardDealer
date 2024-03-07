@@ -1,6 +1,6 @@
 #include <xc.inc>
 	
-global	PWM_Setup, Timer0, dutybyteL, dutybyteH, maxtimeL, maxtimeH
+global	PWM_Setup, Timer0, dutybyteL, dutybyteH, maxtimeL, maxtimeH, RES1
     
 extrn	dutytimeL, dutytimeH, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1    
 
@@ -102,7 +102,7 @@ display:
 	movf	RES2, W, A
 	call	LCD_Write_Dec
 	movf	RES1, W, A
-	call	LCD_Send_Byte_D
+	call	LCD_Write_Dec
 	return
     
 multiply_16x16_bit:
