@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn	Timer0
-    
+
 psect	code, abs
 	
 rst:	org	0x0
@@ -14,18 +14,18 @@ int_hi:
 setup:	clrf	TRISD
 	clrf	TMR0L
 	clrf	TMR0H
-	clrf	TMR1L
-	clrf	TMR1H
-	movlw	10000001B
+	clrf	TMR3L
+	clrf	TMR3H
+	movlw	10000010B
 	movwf	T0CON, A	; TMR0 is 20ms, time LOW
 	bsf	TMR0IE		; Enable timer0 interrupt
-	movlw	00100100B
-	movwf	T1CON, A	; TMR1 is <Duty Cycle>, time HIGH
-	bsf	TMR1IE
+;	movlw	00000101B
+;	movwf	T3CON, A	; TMR3 is <Duty Cycle>, time HIGH
+;	bsf	TMR3IE
 	bsf	GIE
     
 main:
-	movf	TMR0L
+	clrf	PORTD
 	goto	main
 
 	end	rst
