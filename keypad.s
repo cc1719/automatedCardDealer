@@ -48,27 +48,29 @@ Check_KeyPress:
                 movwf   KeyPad_Value, A
                 return
 
-KeyPad_Output:
+KeyPad_Output:	movlw   1
+		movwf   row
+		movwf   column  ; If an invalid input is entered, row and column remain their initialised values so the output of the keypad is just whatever this maps to.
 		movlw   00001111B
 		andwf   KeyPad_Value, 0
 		movwf   value
 		movlw   00000001B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next1
 		movlw   1
 		movwf   row
 next1:          movlw   00000010B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next2
 		movlw   2
 		movwf   row
 next2:          movlw   00000100B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next3
 		movlw   3
 		movwf   row
 next3:          movlw   00001000B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next4
 		movlw   4
 		movwf   row 
@@ -78,26 +80,26 @@ next4:		movlw   11110000B
 		movwf   value
 		
 		movlw   00010000B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next5
 		movlw   1
 		movwf   column
 next5:          movlw   00100000B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next6
 		movlw   2
 		movwf   column
 next6:          movlw   01000000B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next7
 		movlw   3
 		movwf   column
 next7:          movlw   10000000B
-		CPFSEQ  value
+		cpfseq  value
 		bra     next8
 		movlw   4
 		movwf   column
-next8:
+next8:		
 
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
