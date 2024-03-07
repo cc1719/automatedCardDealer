@@ -94,6 +94,7 @@ multiplier:
     return
 
 display:
+	call	LCD_line1
 	movf	RES3, W, A
 	call	LCD_Write_Dec
 	movlw	0x2E
@@ -101,8 +102,6 @@ display:
 	movf	RES2, W, A
 	call	LCD_Write_Dec
 	movf	RES1, W, A
-	call	LCD_Write_Dec
-	movlw	0x56
 	call	LCD_Send_Byte_D
 	return
     
