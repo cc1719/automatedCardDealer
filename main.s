@@ -1,22 +1,20 @@
 #include <xc.inc>
 
-extrn	Timer1, timeH, timeL
-    
-;psect	code, abs
+extrn	PWM_Setup, Timer0
+
+psect	code, abs
 	
 ;rst:	org	0x0
 ;	goto	setup
 
 int_hi:	
 	org	0x0008	; high vector, no low vector
-	goto	Timer1
+	goto	Timer0
 	
-setup:	clrf	TRISD
-	movlw	10000010B
-	movwf	T0CON, A
-	bsf	TMR0IE		; Enable timer0 interrupt
-	bsf	GIE
+setup:	
+	call	PWM_Setup
     
 main:
-	clrf	PORTD
-	goto	main
+	goto	$
+
+	end	rst

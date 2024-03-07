@@ -20,6 +20,7 @@
       <itemPath>main.s</itemPath>
       <itemPath>config.s</itemPath>
       <itemPath>TimerInterrupt.s</itemPath>
+      <itemPath>keypad.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
