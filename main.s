@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read    
+extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1
 
 global	dutytimeL, dutytimeH
     
@@ -24,7 +24,10 @@ setup:
 ;	movlw	HIGH(dutycycle)
 ;	movwf	dutytimeH, A
 ;	movlw	LOW(dutycycle)
-;	movwf	dutytimeL, A	
+;	movwf	dutytimeL, A
+	bcf	CFGS	; point to Flash program memory  
+	bsf	EEPGD 	; access Flash program memory
+	call	LCD_Setup	; setup UART
 	call	PWM_Setup
 	call	ADC_Setup
     
