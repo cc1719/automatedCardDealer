@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	Timer0
+extrn	PWM_Setup, Timer0
 
 psect	code, abs
 	
@@ -11,21 +11,10 @@ int_hi:
 	org	0x0008	; high vector, no low vector
 	goto	Timer0
 	
-setup:	clrf	TRISD
-	clrf	TMR0L
-	clrf	TMR0H
-	clrf	TMR3L
-	clrf	TMR3H
-	movlw	10000010B
-	movwf	T0CON, A	; TMR0 is 20ms, time LOW
-	bsf	TMR0IE		; Enable timer0 interrupt
-;	movlw	00000101B
-;	movwf	T3CON, A	; TMR3 is <Duty Cycle>, time HIGH
-;	bsf	TMR3IE
-	bsf	GIE
+setup:	
+	call	PWM_Setup
     
 main:
-	clrf	PORTD
-	goto	main
+	goto	$
 
 	end	rst

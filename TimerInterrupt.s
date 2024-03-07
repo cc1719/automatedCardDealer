@@ -1,6 +1,6 @@
 #include <xc.inc>
 	
-global	Timer0  
+global	PWM_Setup, Timer0  
 
 psect	udata_acs   ; reserve data space in access ram
 counterH: ds  1	  
@@ -8,38 +8,48 @@ counterL: ds  1
     
 psect	dac_code, class=CODE
 
+PWM_Setup:
+	clrf	TRISD
+	movlw	0xc0		; 0xc0 for 20ms TMR0
+	movwf	TMR0L		; CHANGE BACK TO TMR0L
+	movlw	0x63		; 0x63 for 20ms TMR0
+	movwf	TMR0H		; CHANGE BACK TO TMR0H
+	movlw	10000010B
+	movwf	T0CON, A	; TMR0 is 20ms, time LOW
+	bsf	TMR0IE		; Enable timer0 interrupt
+	movlw	0x30
+	movwf	TMR3L
+	movlw	0xf8
+	movwf	TMR3H
+	movlw	00110000B
+	movwf	T3CON, A	; TMR3 is <Duty Cycle>, time HIGH
+	bsf	TMR3IP
+	bsf	TMR3IE
+	bsf	PEIE
+	bsf	GIE
+	return
+    
 Timer0:
-;    btfsc	TMR1IF
-;    goto	Timer1
+    btfsc	TMR3IF
+    goto	Timer3
     btfss	TMR0IF		; CHANGE BACK TO TMR0IF
     retfie	f		; if not then return
     setf	PORTD
-;    bsf		TMR1ON
+    bsf		TMR3ON
     bcf		TMR0IF		; CHANGE BACK TO TMR0IF
     movlw	0xc0		; 0xc0 for 20ms TMR0
     movwf	TMR0L		; CHANGE BACK TO TMR0L
     movlw	0x63		; 0x63 for 20ms TMR0
     movwf	TMR0H		; CHANGE BACK TO TMR0H
-    movlw	0xff
-    movwf	counterL, A
-    movlw	0x05
-    movwf	counterH, A
-    call	delay
     retfie	f
 
-Timer1:
+Timer3:
     clrf    PORTD
-    bcf	    TMR1ON
-    bcf	    TMR1IF
-    clrf    TMR1L
-    clrf    TMR1H
+    bcf	    TMR3ON
+    bcf	    TMR3IF
+    movlw   0xd0
+    movwf   TMR3L
+    movlw   0x8a
+    movwf   TMR3H
     retfie  f
-    
-delay:
-	movlw	0x0
-dloop:
-	decf	counterL, F, A
-	subwfb	counterH, F, A
-	bc	dloop
-	return
 	
