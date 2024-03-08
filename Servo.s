@@ -25,9 +25,9 @@ Servo_Setup:
 Servo_Start:
     btfsc	TMR2IF
     goto	Duty_cycle
-    btfsc	TMR5IF
+    btfsc	TMR0IF
     goto	DCM_Reverse
-    btfsc	TMR7IF
+    btfsc	TMR1IF
     goto	DCM_Stop
     setf	PORTD
     bsf		TMR2ON

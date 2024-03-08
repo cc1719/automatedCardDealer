@@ -2,6 +2,10 @@
 
 extrn	Servo_Setup, Servo_Start, DCM_Setup, DCM_Start, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1
 
+psect	udata_acs   ; named variables in access ram
+    delL:	ds 1	
+    delH:	ds 1	
+    
 psect	code, abs
 	
 rst:	org	0x0
@@ -28,6 +32,19 @@ main:
 	bcf	TMR3ON
 	btfsc	PORTE, 2, A
 	call	DCM_Start
+	movlw	0xff
+	movwf	delL, A
+	movlw	0xff
+	movwf	delH, A
+	call	bigdelay
 	goto	main  
 
+bigdelay:
+    movlw   0x0
+dloop:    
+    decf    delL, F, A
+    subwfb  delH, F, A
+    bc	    dloop
+    return
+    
 	end	rst
