@@ -19,10 +19,10 @@ KeyPad_Setup:	clrf	LATE, A
 
 Table_Set_Up:   bcf     CFGS
 		bsf	EEPGD
-		db      0x11, 0x21, 0x41, 0x81
-		db      0x12, 0x22, 0x42, 0x82
-		db	0x14, 0x24, 0x44, 0x84
-		db      0x18, 0x28, 0x48, 0x88
+		db      00110001B, 00110010B, 00110011B, 01000110B
+		db      00110100B, 00110101B, 00110110B, 01000101B
+		db	00110111B, 00111000B, 00111001B, 01000100B
+		db      01000001B, 00110000B, 01000010B, 01000011B
 		Lookup_Table  EQU 0x300
 		align	      2
 
@@ -50,53 +50,53 @@ Check_KeyPress:
 
 KeyPad_Output:
 		movlw   00001111B
-		andwf   KeyPad_Value, 0
-		movwf   value
+		andwf   KeyPad_Value, 0, 0
+		movwf   value, 0
 		movlw   00000001B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next1
 		movlw   1
-		movwf   row
+		movwf   column, 0
 next1:          movlw   00000010B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next2
 		movlw   2
-		movwf   row
+		movwf   column, 0
 next2:          movlw   00000100B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next3
 		movlw   3
-		movwf   row
+		movwf   column, 0
 next3:          movlw   00001000B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next4
 		movlw   4
-		movwf   row 
+		movwf   column, 0
 		
 next4:		movlw   11110000B
-		andwf   KeyPad_Value, 0
-		movwf   value
+		andwf   KeyPad_Value, 0, 0
+		movwf   value, 0
 		
 		movlw   00010000B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next5
 		movlw   1
-		movwf   column
+		movwf   row, 0
 next5:          movlw   00100000B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next6
 		movlw   2
-		movwf   column
+		movwf   row, 0
 next6:          movlw   01000000B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next7
 		movlw   3
-		movwf   column
+		movwf   row, 0
 next7:          movlw   10000000B
-		CPFSEQ  value
+		CPFSEQ  value, 0
 		bra     next8
 		movlw   4
-		movwf   column
+		movwf   row, 0
 next8:
 
 Read_Lookup_Table:
@@ -108,14 +108,14 @@ Read_Lookup_Table:
 		movlw   low(Table_Set_Up)
 		movwf   TBLPTRL, A
 		movlw   1
-		subwf   row, 1
+		subwf   row, 1, 0
 		movlw   4
-		mulwf   row
+		mulwf   row, 0
 		movf    PRODL, 0
-		addwf   column, 1
+		addwf   column, 1, 0
 		movlw   4 ; currently writes random values at start of table, don't know why, so added offset to account for this.
-		addwf   column, 0
-		movwf   counter
+		addwf   column, 0, 0
+		movwf   counter, 0
 loop:		tblrd*+
 		movff   TABLAT, KeyPad_Value
 		decfsz  counter, A
