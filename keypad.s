@@ -1,6 +1,6 @@
 #include <xc.inc>
     
-global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
+global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, row, column
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -55,22 +55,22 @@ KeyPad_Output:
 		movlw   00000001B
 		CPFSEQ  value, 0
 		bra     next1
-		movlw   4
+		movlw   1
 		movwf   column, 0
 next1:          movlw   00000010B
 		CPFSEQ  value, 0
 		bra     next2
-		movlw   3
+		movlw   2
 		movwf   column, 0
 next2:          movlw   00000100B
 		CPFSEQ  value, 0
 		bra     next3
-		movlw   2
+		movlw   3
 		movwf   column, 0
 next3:          movlw   00001000B
 		CPFSEQ  value, 0
 		bra     next4
-		movlw   1
+		movlw   4
 		movwf   column, 0
 		
 next4:		movlw   11110000B
@@ -80,22 +80,22 @@ next4:		movlw   11110000B
 		movlw   00010000B
 		CPFSEQ  value, 0
 		bra     next5
-		movlw   4
+		movlw   1
 		movwf   row, 0
 next5:          movlw   00100000B
 		CPFSEQ  value, 0
 		bra     next6
-		movlw   3
+		movlw   2
 		movwf   row, 0
 next6:          movlw   01000000B
 		CPFSEQ  value, 0
 		bra     next7
-		movlw   2
+		movlw   3
 		movwf   row, 0
 next7:          movlw   10000000B
 		CPFSEQ  value, 0
 		bra     next8
-		movlw   1
+		movlw   4
 		movwf   row, 0
 next8:
 
