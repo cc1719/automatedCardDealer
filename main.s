@@ -37,8 +37,10 @@ setup:
 ;	tstfsz  KeyPad_Value, 0
 ;	goto    next
 ;	goto    loop
-;next:	;call    KeyPad_Output
-;	movf    KeyPad_Value, 0, 0
+;next:	;call   KeyPad_Output
+	lfsr    2, 0x20
+	movff   KeyPad_Value, 0x20
+	;movlw   1
 ;	call    LCD_Write_Message
 ;main:
 ;	goto	type
