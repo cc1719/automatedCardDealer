@@ -31,16 +31,16 @@ setup:
 ;	call	PWM_Setup
 ;	call	ADC_Setup
 	call    KeyPad_Setup
-type:	movlw   0
-	movwf   KeyPad_Value, 0
-loop:	call    Check_KeyPress
-	tstfsz  KeyPad_Value, 0
-	goto    next
-	goto    loop
-next:	;call    KeyPad_Output
-	movf    KeyPad_Value, 0, 0
-	call    LCD_Write_Message
-main:
-	goto	type
+;type:	movlw   0
+;	movwf   KeyPad_Value, 0
+;loop:	call    Check_KeyPress
+;	tstfsz  KeyPad_Value, 0
+;	goto    next
+;	goto    loop
+;next:	;call    KeyPad_Output
+;	movf    KeyPad_Value, 0, 0
+;	call    LCD_Write_Message
+;main:
+;	goto	type
 
 	end	rst
