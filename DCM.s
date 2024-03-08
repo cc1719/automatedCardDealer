@@ -20,7 +20,7 @@ DCM_Start:
 	bsf	TMR5ON
 	return
 DCM_Reverse:
-	bsf	PORTA, 4
+	setf	PORTA
 	bcf	PORTA, 1
 	bcf	TMR5ON
 	bcf	TMR5IF
