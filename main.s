@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1
+extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
 
 global	dutytimeL, dutytimeH
     
@@ -14,7 +14,7 @@ psect	data
 psect	code, abs
 	
 rst:	org	0x0
-;	goto	setup
+	goto	setup
 
 int_hi:	
 	org	0x0008	; high vector, no low vector
@@ -25,13 +25,22 @@ setup:
 ;	movwf	dutytimeH, A
 ;	movlw	LOW(dutycycle)
 ;	movwf	dutytimeL, A
-	bcf	CFGS	; point to Flash program memory  
-	bsf	EEPGD 	; access Flash program memory
+;	bcf	CFGS	; point to Flash program memory  
+;	bsf	EEPGD 	; access Flash program memory
 	call	LCD_Setup	; setup UART
-	call	PWM_Setup
-	call	ADC_Setup
-    
+;	call	PWM_Setup
+;	call	ADC_Setup
+	call    KeyPad_Setup
+type:	movlw   0
+	movwf   KeyPad_Value, 0
+loop:	call    Check_KeyPress
+	tstfsz  KeyPad_Value, 0
+	goto    next
+	goto    loop
+next:	;call    KeyPad_Output
+	movf    KeyPad_Value, 0, 0
+	call    LCD_Write_Message
 main:
-	goto	$
+	goto	type
 
 	end	rst
