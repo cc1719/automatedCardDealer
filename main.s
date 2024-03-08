@@ -5,9 +5,12 @@ extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_
 global	dutytimeL, dutytimeH
     
 psect	udata_acs   ; reserve data space in access ram
-    dutytimeL: ds  1
-    dutytimeH: ds  1
-
+    dutytimeL:      ds  1
+    dutytimeH:      ds  1
+    delayCounter:   ds  1
+    counter:        ds  1
+    address:	    ds  1
+    
 psect	data
 	dutycycle EQU 3784
 
@@ -33,16 +36,33 @@ setup:
 	call    KeyPad_Setup
 type:	movlw   0
 	movwf   KeyPad_Value, 0
+	lfsr    2, 0x20
+	movlw   0
+	movwf   counter
+	movlw   1
+	addwf   counter
+	movlw   0x1F
+	movwf   address
+	movlw   1
+	addwf   address
 loop:	call    Check_KeyPress
 	tstfsz  KeyPad_Value, 0
 	goto    next
 	goto    loop
-next:	call   KeyPad_Output
-	lfsr    2, 0x20
-	movff   KeyPad_Value, 0x20
-	movlw   1
+next:	call    KeyPad_Output
+	movff   KeyPad_Value, address
+	movf    counter, 0
 	call    LCD_Write_Message
-main:
+	call    delay
+main:	movlw   0
+	movwf   KeyPad_Value
 	goto	type
+	
+delay:	movlw   0x40
+        movwf   delayCounter, A
+		
+count:  decfsz  delayCounter, A           
+        bra     delayCounter
+        return
 
 	end	rst
