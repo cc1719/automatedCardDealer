@@ -19,10 +19,11 @@
                    projectFiles="true">
       <itemPath>main.s</itemPath>
       <itemPath>config.s</itemPath>
-      <itemPath>TimerInterrupt.s</itemPath>
       <itemPath>keypad.s</itemPath>
       <itemPath>ACD.s</itemPath>
       <itemPath>LCD.s</itemPath>
+      <itemPath>Servo.s</itemPath>
+      <itemPath>DCM.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
