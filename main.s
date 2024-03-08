@@ -27,22 +27,23 @@ setup:
 ;	movwf	dutytimeL, A
 ;	bcf	CFGS	; point to Flash program memory  
 ;	bsf	EEPGD 	; access Flash program memory
-	call	LCD_Setup	; setup UART
+;	call	LCD_Setup	; setup UART
 ;	call	PWM_Setup
 ;	call	ADC_Setup
 	call    KeyPad_Setup
-;type:	movlw   0
-;	movwf   KeyPad_Value, 0
-;loop:	call    Check_KeyPress
-;	tstfsz  KeyPad_Value, 0
-;	goto    next
-;	goto    loop
-;next:	;call   KeyPad_Output
+type:	movlw   0
+	movwf   KeyPad_Value, 0
+loop:	call    Check_KeyPress
+	tstfsz  KeyPad_Value, 0
+	goto    next
+	goto    loop
+next:	NOP
+	call   KeyPad_Output
 	lfsr    2, 0x20
 	movff   KeyPad_Value, 0x20
-	;movlw   1
-;	call    LCD_Write_Message
-;main:
-;	goto	type
+	movlw   1
+	call    LCD_Write_Message
+main:
+	goto	type
 
 	end	rst
