@@ -13,7 +13,7 @@ psect	data
 
 psect	code, abs
 	
-;rst:	org	0x0
+rst:	org	0x0
 ;	goto	setup
 
 int_hi:	
