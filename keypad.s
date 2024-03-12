@@ -17,7 +17,8 @@ KeyPad_Setup:	clrf	LATE, A
                 clrf    TRISD, A
                 return
 
-Table_Set_Up:   bcf     CFGS
+Table_Set_Up:   
+		bcf     CFGS
 		bsf	EEPGD
 		db      0x11, 0x21, 0x41, 0x81
 		db      0x12, 0x22, 0x42, 0x82
