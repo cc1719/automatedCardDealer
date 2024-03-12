@@ -10,7 +10,8 @@ psect	code, abs
 rst:	org	0x0
 	goto	setup
 	
-setup:	;call    KeyPad_Setup
-	;call    LCD_Setup
+setup:	call    KeyPad_Setup
+	call    LCD_Setup
+	
 	
 	end	rst
