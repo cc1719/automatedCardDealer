@@ -23,6 +23,7 @@
       <itemPath>keypad.s</itemPath>
       <itemPath>ACD.s</itemPath>
       <itemPath>LCD.s</itemPath>
+      <itemPath>nbproject/configurations.xml</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -38,7 +39,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>pk4hybrid</platformTool>
         <languageToolchain>pic-as</languageToolchain>
-        <languageToolchainVersion>2.46</languageToolchainVersion>
+        <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
