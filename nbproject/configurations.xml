@@ -21,6 +21,7 @@
       <itemPath>config.s</itemPath>
       <itemPath>keypad.s</itemPath>
       <itemPath>nbproject/configurations.xml</itemPath>
+      <itemPath>LCD.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
