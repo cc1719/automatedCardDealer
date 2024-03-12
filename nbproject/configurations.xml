@@ -23,6 +23,7 @@
       <itemPath>nbproject/configurations.xml</itemPath>
       <itemPath>LCD.s</itemPath>
       <itemPath>settings.s</itemPath>
+      <itemPath>TimerInterrupt.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
