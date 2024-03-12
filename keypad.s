@@ -1,5 +1,6 @@
 #include <xc.inc>
-    
+
+extrn           LCD_Send_Byte_D
 global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -8,6 +9,8 @@ value:		ds  1
 row:		ds  1
 column:		ds  1
 counter:	ds  1
+checkIfPressed: ds  1
+enter:		ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -36,7 +39,8 @@ KeyPad_Columns:
                 movwf   TRISE, A
                 return
     
-Check_KeyPress:
+Check_KeyPress: movlw   0
+		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTE, KeyPad_Value, A
@@ -131,3 +135,25 @@ delay:		movlw   0x40
 countdown:      decfsz  KeyPad_counter, A           
                 bra     countdown
                 return
+			
+write:	        call    KeyPad_Setup
+		call    LCD_Setup
+		movlw   11110000              ; Condition to check if keypad button is pressed or not.
+		movwf   checkIfPressed
+		movlw   01000110B
+		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
+skip:		call    Check_KeyPress
+		tstfsz  KeyPad_Value
+		goto    not
+		goto    skip
+not:		call    KeyPad_Output
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter
+		goto    there
+		return
+there:		call    LCD_Send_Byte_D
+here:		movf    PORTE, 0, 0
+		cpfseq  checkIfPressed
+		goto    here
+		goto    skip		
+		
