@@ -18,8 +18,8 @@ KeyPad_Setup:	clrf	LATE, A
                 return
 
 Table_Set_Up:   
-		bcf     CFGS
-		bsf	EEPGD
+		;bcf     CFGS
+		;bsf	EEPGD
 		db      0x11, 0x21, 0x41, 0x81
 		db      0x12, 0x22, 0x42, 0x82
 		db	0x14, 0x24, 0x44, 0x84
