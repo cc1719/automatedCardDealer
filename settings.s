@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
+extrn   LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
     
 psect	udata_acs  
 counter:        ds  1
@@ -46,9 +46,15 @@ loop2:		tblrd*+
 		decfsz  counter, A
 		bra     loop2
 		return    
-    
+
 settingsInput:  call    readPrompt1
-		movf    counter, 0
+		movf    counter, 0, 0
 		call    LCD_Write_Message
 		call    LCD_line2
-		call    write		
+		call    writeNumPlayers	
+		
+		call    readPrompt2
+		movf    counter, 0, 0
+		call    LCD_Write_Message
+		call    LCD_line2
+		call    writeNumCards	
