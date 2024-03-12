@@ -1,4 +1,4 @@
-; PIC18F87K22 Configuration Bit Settings
+; PIC18F87J50 Configuration Bit Settings
 
 ; Assembly source line config statements
 
