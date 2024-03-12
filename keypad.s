@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn           LCD_Send_Byte_D
-global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
+global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
