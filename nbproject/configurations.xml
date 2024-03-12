@@ -30,7 +30,7 @@
     <conf name="default" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <targetDevice>PIC18F87K22</targetDevice>
+        <targetDevice>PIC18F87J50</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
         <platformTool>pk4hybrid</platformTool>
@@ -39,7 +39,7 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.8.249"/>
+        <pack name="PIC18F-J_DFP" vendor="Microchip" version="1.6.157"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -598,7 +598,7 @@
         <property key="periphComp4.gte" value="gt"/>
         <property key="periphComp5.gte" value="gt"/>
         <property key="periphComp6.gte" value="gt"/>
-        <property key="poweroptions.powerenable" value="false"/>
+        <property key="poweroptions.powerenable" value="true"/>
         <property key="programmerToGoFilePath"
                   value="C:/Users/cc1719/OneDrive - Imperial College London/Y3/PHYS60004 - 3rd Year Lab/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
@@ -1073,6 +1073,14 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
+      <item path="keypad.s" ex="false" overriding="false">
+        <pic-as-assembler>
+        </pic-as-assembler>
+        <pic-as-global>
+        </pic-as-global>
+        <pic-as-linker>
+        </pic-as-linker>
+      </item>
       <pic-as-assembler>
         <property key="fmax-errors" value="20"/>
         <property key="list-custom-assembler-options" value=""/>
@@ -1151,7 +1159,7 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
-        <property key="poweroptions.powerenable" value="false"/>
+        <property key="poweroptions.powerenable" value="true"/>
         <property key="programmerToGoFilePath"
                   value="C:/Users/cc1719/OneDrive - Imperial College London/Y3/PHYS60004 - 3rd Year Lab/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
