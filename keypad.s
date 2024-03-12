@@ -11,6 +11,11 @@ column:		ds  1
 counter:	ds  1
 checkIfPressed: ds  1
 enter:		ds  1
+numPlayersDigit1:	ds  1
+numPlayersDigit2:	ds  1
+numCardsDigit1:	ds  1
+numCardsDigit2:	ds  1
+test:		ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -136,24 +141,65 @@ countdown:      decfsz  KeyPad_counter, A
                 bra     countdown
                 return
 			
-write:	        call    KeyPad_Setup
+writeNumPlayers: call    KeyPad_Setup
 		call    LCD_Setup
 		movlw   11110000              ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed
 		movlw   01000110B
 		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
-skip:		call    Check_KeyPress
+		movlw   0
+		movwf   numPlayersDigit1
+		movwf   numPlayersDigit2
+		movwf   test
+skip1:		call    Check_KeyPress
 		tstfsz  KeyPad_Value
-		goto    not
-		goto    skip
-not:		call    KeyPad_Output
+		goto    not1
+		goto    skip1
+not1:		call    KeyPad_Output
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter
-		goto    there
+		goto    there1
 		return
-there:		call    LCD_Send_Byte_D
-here:		movf    PORTE, 0, 0
+there1:		call    LCD_Send_Byte_D
+		tstfsz  test
+		goto    somewhere1
+		movwf   numPlayersDigit1
+		setf    test
+here1:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed
-		goto    here
-		goto    skip		
+		goto    here1
+		goto    skip1	
+somewhere1:	movwf   numPlayersDigit2
+		return
+
+writeNumCards:  call    KeyPad_Setup
+		call    LCD_Setup
+		movlw   11110000              ; Condition to check if keypad button is pressed or not.
+		movwf   checkIfPressed
+		movlw   01000110B
+		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movlw   0
+		movwf   numCardsDigit1
+		movwf   numCardsDigit2
+		movwf   test
+skip2:		call    Check_KeyPress
+		tstfsz  KeyPad_Value
+		goto    not2
+		goto    skip2
+not2:		call    KeyPad_Output
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter
+		goto    there2
+		return
+there2:		call    LCD_Send_Byte_D
+		tstfsz  test
+		goto    somewhere2
+		movwf   numCardsDigit1
+		setf    test
+here2:		movf    PORTE, 0, 0
+		cpfseq  checkIfPressed
+		goto    here2
+		goto    skip2	
+somewhere2:	movwf   numCardsDigit2
+		return
 		
