@@ -20,7 +20,7 @@
       <itemPath>main.s</itemPath>
       <itemPath>config.s</itemPath>
       <itemPath>keypad.s</itemPath>
-      <itemPath>nbproject/private/configurations.xml</itemPath>
+      <itemPath>nbproject/configurations.xml</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
