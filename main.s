@@ -8,7 +8,6 @@ psect	udata_acs   ; reserve data space in access ram
     dutytimeL:      ds  1
     dutytimeH:      ds  1
     delayCounter:   ds  1
-    clearVariable:  ds  1
     
 psect	data
 	dutycycle EQU 3784
@@ -18,20 +17,9 @@ psect	code, abs
 rst:	org	0x0
 	goto	setup
 
-int_hi:	org	0x0008	; high vector, no low vector
-	tstfsz  KeyPad_Value, 0
-	goto    next
-	goto    next3
-next:	call    KeyPad_Output
-	cpfseq  clearVariable
-	goto    next2
-	goto    clear
-next2:	movf    KeyPad_Value, 0, 0
-	call    LCD_Send_Byte_D	
-	goto    next3
-clear:  call    LCD_clear
-next3:	retfie	f
-	;goto	Timer0
+;int_hi:	
+;	org	0x0008	; high vector, no low vector
+;	goto	Timer0
 	
 setup:	
 ;	movlw	HIGH(dutycycle)
@@ -47,9 +35,19 @@ setup:
 ;	movlw   01000110B
 ;	movwf   clearVariable
 	movlw   0
+	call    KeyPad_Setup
+loop:	movlw   0
 	movwf   KeyPad_Value
 main:			
-
+	call    Check_KeyPress
+	tstfsz  KeyPad_Value, 0
+	goto    next
+	goto    loop
+next:	call    KeyPad_Output
+	movf    KeyPad_Value, 0, 0
+	call    LCD_Send_Byte_D
+	call    delay
+	goto    loop
 delay:	movlw   0x2
         movwf   delayCounter, A
 count:  decfsz  delayCounter, A           
