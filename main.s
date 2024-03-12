@@ -40,16 +40,15 @@ setup:
 ;	movwf	dutytimeL, A
 ;	bcf	CFGS	; point to Flash program memory  
 ;	bsf	EEPGD 	; access Flash program memory
-	call	LCD_Setup	; setup UART
+;	call	LCD_Setup	; setup UART
 ;	call	PWM_Setup
 ;	call	ADC_Setup
-	call    KeyPad_Setup
-	movlw   01000110B
-	movwf   clearVariable
+;	call    KeyPad_Setup
+;	movlw   01000110B
+;	movwf   clearVariable
 	movlw   0
 	movwf   KeyPad_Value
-main:	goto    $
-	
+main:			
 
 delay:	movlw   0x2
         movwf   delayCounter, A
