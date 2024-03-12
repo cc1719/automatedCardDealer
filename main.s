@@ -8,6 +8,7 @@ psect	udata_acs   ; reserve data space in access ram
     dutytimeL:      ds  1
     dutytimeH:      ds  1
     delayCounter:   ds  1
+    clearVariable:  ds  1
     
 psect	data
 	dutycycle EQU 3784
