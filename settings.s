@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_Write_Message, LCD_line2
+extrn   LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
     
 psect	udata_acs  
 counter:        ds  1
@@ -45,20 +45,10 @@ loop2:		tblrd*+
 		movff   TABLAT, POSTINC2
 		decfsz  counter, A
 		bra     loop2
-		return
-		
-int_hi:         org     0x0008
-		goto    timer4
-
-timer4:		btfss   TMR4IF
-		retfie  f
-		
-		
-		
+		return    
+    
 settingsInput:  call    readPrompt1
 		movf    counter, 0
 		call    LCD_Write_Message
 		call    LCD_line2
-		goto    $
-continue1:	
-		
+		call    write		
