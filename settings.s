@@ -50,7 +50,7 @@ loop2:		tblrd*+
 settingsInput:  call    readPrompt1
 		movf    counter, 0, 0
 		call    LCD_Write_Message
-		call    LCD_line2
+		call    LCD_line1
 		call    writeNumPlayers	
 		
 		call    readPrompt2
