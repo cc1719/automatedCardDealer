@@ -11,8 +11,7 @@ storedMessage1:
 		bcf     CFGS
 		bsf	EEPGD
 		db      'Enter no players'
-		message1 EQU 0x20
-		align	 2
+		message1 EQU 0x100
 		return
 
 storedMessage2: 
@@ -20,7 +19,6 @@ storedMessage2:
 		bsf	EEPGD
 		db      'Enter no cards'
 		message2 EQU 0x40
-		align	 2
 		return
 
 readPrompt1:	
@@ -31,7 +29,7 @@ readPrompt1:
 		movwf   TBLPTRH, A
 		movlw   low(storedMessage1)
 		movwf   TBLPTRL, A
-		movlw   20
+		movlw   21
 		movwf   counter
 loop1:		tblrd*+
 		movff   TABLAT, POSTINC2
@@ -46,7 +44,7 @@ readPrompt2:	lfsr    2, message2
 		movwf   TBLPTRH, A
 		movlw   low(storedMessage2)
 		movwf   TBLPTRL, A
-		movlw   14
+		movlw   19
 		movwf   counter
 loop2:		tblrd*+
 		movff   TABLAT, POSTINC2
