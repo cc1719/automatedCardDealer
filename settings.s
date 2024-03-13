@@ -7,19 +7,21 @@ counter:        ds  1
  
 psect		settings_code, class = CODE
 
-setup:
+storedMessage1: 
 		bcf     CFGS
 		bsf	EEPGD
-		return
-storedMessage1: 
 		db      'E','n','t','e','r','n','o','p','l','a','y','e','r','s'
 		message1 EQU 0x50
 		align	 2
+		return
 
 storedMessage2: 
+		bcf     CFGS
+		bsf	EEPGD
 		db      'Enter no cards'
 		message2 EQU 0x40
 		align	 2
+		return
 
 readPrompt1:	
 		lfsr    2, message1
@@ -52,7 +54,8 @@ loop2:		tblrd*+
 		bra     loop2
 		return    
 
-settingsInput:  call setup
+settingsInput:	call    storedMessage1
+		call    storedMessage2
 		call    readPrompt1
 		movf    counter, 0, 0
 		call    LCD_Write_Message
