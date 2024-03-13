@@ -33,7 +33,6 @@ Table_Set_Up:
 		db	0x14, 0x24, 0x44, 0x84
 		db      0x18, 0x28, 0x48, 0x88
 		Lookup_Table  EQU 0x300
-		align	      2
 
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISE, A
