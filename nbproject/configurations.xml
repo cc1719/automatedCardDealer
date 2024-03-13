@@ -22,6 +22,7 @@
       <itemPath>TimerInterrupt.s</itemPath>
       <itemPath>keypad.s</itemPath>
     </logicalFolder>
+    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
