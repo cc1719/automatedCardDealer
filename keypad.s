@@ -32,9 +32,7 @@ KeyPad_Setup:	clrf	LATE, A
                 clrf    TRISD, A
                ; return
 
-Table_Set_Up:   bcf     CFGS
-		bsf	EEPGD
-		db      'Hello'
+Table_Set_Up:   db      'Hello'
 		db      0x12, 0x22, 0x42, 0x82
 		db	0x14, 0x24, 0x44, 0x84
 		db      0x18, 0x28, 0x48, 0x88
