@@ -2,6 +2,7 @@
 
 extrn           LCD_Send_Byte_D, LCD_Setup
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
+global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -105,10 +106,10 @@ next6:          movlw   01000000B
 		movwf   column, A
 next7:          movlw   10000000B
 		cpfseq  value, 0
-		bra     next8
+		goto    Read_Lookup_Table
 		movlw   4
 		movwf   column, A
-next8:		
+next8:		goto    
 
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
@@ -123,8 +124,6 @@ Read_Lookup_Table:
 		movlw   4
 		mulwf   row, 0
 		movf    PRODL, 0, 0
-		addwf   column, 1, 0
-		movlw   4 ; currently writes random values at start of table, don't know why, so added offset to account for this.
 		addwf   column, 0, 0
 		movwf   counter, A
 loop:		tblrd*+
@@ -143,7 +142,7 @@ countdown:      decfsz  KeyPad_counter, A
 ; These functions allow the user to input the number of players and cards respectively into the keypad.
 ; The maximum number of digits is 2, and the F key is the enter key.
 writeNumPlayers: call    KeyPad_Setup
-		movlw   11110000              ; Condition to check if keypad button is pressed or not.
+		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
