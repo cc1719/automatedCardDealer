@@ -54,6 +54,7 @@ settingsInput:	call    LCD_Setup
 		call    LCD_line2
 		call    writeNumPlayers	
 		
+		call    LCD_clear
 		call    readPrompt2
 		movf    count2, 0, 0
 		lfsr    2, message2
