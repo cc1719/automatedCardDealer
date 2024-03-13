@@ -150,9 +150,10 @@ writeNumPlayers: call    KeyPad_Setup
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
 		movlw   0
+		movwf   test, A
+		movlw   0xff
 		movwf   numPlayersDigit1, A
 		movwf   numPlayersDigit2, A
-		movwf   test, A
 everywhere1:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
@@ -177,9 +178,10 @@ writeNumCards:  call    KeyPad_Setup
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
 		movlw   0
+		movwf   test, A
+		movlw   0xff
 		movwf   numCardsDigit1, A
 		movwf   numCardsDigit2, A
-		movwf   test, A
 everywhere2:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
