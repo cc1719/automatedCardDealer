@@ -1159,8 +1159,6 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="C:/Users/cc1719/OneDrive - Imperial College London/Y3/PHYS60004 - 3rd Year Lab/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
