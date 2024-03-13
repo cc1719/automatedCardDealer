@@ -122,7 +122,7 @@ Read_Lookup_Table:
 		addwf   column, 0
 		movwf   counter
 loop:		tblrd*+
-		movff   TABLAT, KeyPad_Value
+		movff   TABLAT, POSTINC0
 		decfsz  counter, A
 		bra     loop
 		return
