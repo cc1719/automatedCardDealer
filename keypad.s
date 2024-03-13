@@ -1,6 +1,7 @@
 #include <xc.inc>
-    
-global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, row, column
+
+extrn           LCD_Send_Byte_D, LCD_Setup
+global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -8,6 +9,13 @@ value:		ds  1
 row:		ds  1
 column:		ds  1
 counter:	ds  1
+checkIfPressed: ds  1
+enter:		ds  1
+numPlayersDigit1:	ds  1
+numPlayersDigit2:	ds  1
+numCardsDigit1:	ds  1
+numCardsDigit2:	ds  1
+test:		ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -17,12 +25,13 @@ KeyPad_Setup:	clrf	LATE, A
                 clrf    TRISD, A
                 return
 
-Table_Set_Up:   bcf     CFGS
-		bsf	EEPGD
-		db      00110001B, 00110010B, 00110011B, 01000110B
-		db      00110100B, 00110101B, 00110110B, 01000101B
-		db	00110111B, 00111000B, 00111001B, 01000100B
-		db      01000001B, 00110000B, 01000010B, 01000011B
+Table_Set_Up:   
+		;bcf     CFGS
+		;bsf	EEPGD
+		db      0x11, 0x21, 0x41, 0x81
+		db      0x12, 0x22, 0x42, 0x82
+		db	0x14, 0x24, 0x44, 0x84
+		db      0x18, 0x28, 0x48, 0x88
 		Lookup_Table  EQU 0x300
 		align	      2
 
@@ -35,7 +44,8 @@ KeyPad_Columns:
                 movwf   TRISE, A
                 return
     
-Check_KeyPress:
+Check_KeyPress: movlw   0
+		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTE, KeyPad_Value, A
@@ -48,56 +58,58 @@ Check_KeyPress:
                 movwf   KeyPad_Value, A
                 return
 
-KeyPad_Output:
+KeyPad_Output:	movlw   1
+		movwf   row
+		movwf   column  ; If an invalid input is entered, row and column remain their initialised values so the output of the keypad is just whatever this maps to.
 		movlw   00001111B
-		andwf   KeyPad_Value, 0, 0
-		movwf   value, 0
+		andwf   KeyPad_Value, 0
+		movwf   value
 		movlw   00000001B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next1
 		movlw   1
-		movwf   column, 0
+		movwf   row
 next1:          movlw   00000010B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next2
 		movlw   2
-		movwf   column, 0
+		movwf   row
 next2:          movlw   00000100B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next3
 		movlw   3
-		movwf   column, 0
+		movwf   row
 next3:          movlw   00001000B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next4
 		movlw   4
-		movwf   column, 0
+		movwf   row 
 		
 next4:		movlw   11110000B
-		andwf   KeyPad_Value, 0, 0
-		movwf   value, 0
+		andwf   KeyPad_Value, 0
+		movwf   value
 		
 		movlw   00010000B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next5
 		movlw   1
-		movwf   row, 0
+		movwf   column
 next5:          movlw   00100000B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next6
 		movlw   2
-		movwf   row, 0
+		movwf   column
 next6:          movlw   01000000B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next7
 		movlw   3
-		movwf   row, 0
+		movwf   column
 next7:          movlw   10000000B
-		CPFSEQ  value, 0
+		cpfseq  value
 		bra     next8
 		movlw   4
-		movwf   row, 0
-next8:
+		movwf   column
+next8:		
 
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
@@ -108,14 +120,14 @@ Read_Lookup_Table:
 		movlw   low(Table_Set_Up)
 		movwf   TBLPTRL, A
 		movlw   1
-		subwf   row, 1, 0
+		subwf   row, 1
 		movlw   4
-		mulwf   row, 0
+		mulwf   row
 		movf    PRODL, 0
-		addwf   column, 1, 0
+		addwf   column, 1
 		movlw   4 ; currently writes random values at start of table, don't know why, so added offset to account for this.
-		addwf   column, 0, 0
-		movwf   counter, 0
+		addwf   column, 0
+		movwf   counter
 loop:		tblrd*+
 		movff   TABLAT, KeyPad_Value
 		decfsz  counter, A
@@ -128,3 +140,68 @@ delay:		movlw   0x40
 countdown:      decfsz  KeyPad_counter, A           
                 bra     countdown
                 return
+
+; These functions allow the user to input the number of players and cards respectively into the keypad.
+; The maximum number of digits is 2, and the F key is the enter key.
+writeNumPlayers: call    KeyPad_Setup
+		call    LCD_Setup
+		movlw   11110000              ; Condition to check if keypad button is pressed or not.
+		movwf   checkIfPressed
+		movlw   01000110B
+		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movlw   0
+		movwf   numPlayersDigit1
+		movwf   numPlayersDigit2
+		movwf   test
+skip1:		call    Check_KeyPress
+		tstfsz  KeyPad_Value
+		goto    not1
+		goto    skip1
+not1:		call    KeyPad_Output
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter
+		goto    there1
+		return
+there1:		call    LCD_Send_Byte_D
+		tstfsz  test
+		goto    somewhere1
+		movwf   numPlayersDigit1
+		setf    test
+here1:		movf    PORTE, 0, 0
+		cpfseq  checkIfPressed
+		goto    here1
+		goto    skip1	
+somewhere1:	movwf   numPlayersDigit2
+		return
+
+writeNumCards:  call    KeyPad_Setup
+		call    LCD_Setup
+		movlw   11110000              ; Condition to check if keypad button is pressed or not.
+		movwf   checkIfPressed
+		movlw   01000110B
+		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movlw   0
+		movwf   numCardsDigit1
+		movwf   numCardsDigit2
+		movwf   test
+skip2:		call    Check_KeyPress
+		tstfsz  KeyPad_Value
+		goto    not2
+		goto    skip2
+not2:		call    KeyPad_Output
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter
+		goto    there2
+		return
+there2:		call    LCD_Send_Byte_D
+		tstfsz  test
+		goto    somewhere2
+		movwf   numCardsDigit1
+		setf    test
+here2:		movf    PORTE, 0, 0
+		cpfseq  checkIfPressed
+		goto    here2
+		goto    skip2	
+somewhere2:	movwf   numCardsDigit2
+		return
+		
