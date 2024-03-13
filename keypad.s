@@ -9,23 +9,26 @@ row:		ds  1
 column:		ds  1
 counter:	ds  1
    
-psect		KeyPad_code, class = CODE
+psect	code, abs
+ 
+;rst:	org	0x0
+;	goto	setup
 
 KeyPad_Setup:	clrf	LATE, A
                 movlb	0x0f
                 bsf     REPU
                 clrf    TRISD, A
-                return
+               ; return
 
 Table_Set_Up:   bcf     CFGS
 		bsf	EEPGD
-		db      0x11, 0x21, 0x41, 0x81
+		db      'Hello'
 		db      0x12, 0x22, 0x42, 0x82
 		db	0x14, 0x24, 0x44, 0x84
 		db      0x18, 0x28, 0x48, 0x88
-		Lookup_Table  EQU 0x300
+		Lookup_Table  EQU 0x20
 		align	      2
-
+goto Read_Lookup_Table
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISE, A
                 return
