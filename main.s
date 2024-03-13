@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	PWM_Setup, Timer0, ADC_Setup, ADC_Read, LCD_clear, settingsInput
+extrn   ADC_Setup, ADC_Read, LCD_clear, settingsInput
 
 global	dutytimeL, dutytimeH
     
