@@ -7,8 +7,8 @@ counter:        ds  1
  
 psect		settings_code, class = CODE
 
-storedMessage1: bcf     CFGS
-		bsf	EEPGD
+storedMessage1: ;bcf     CFGS
+		;bsf	EEPGD
 		db      'Enter no players'
 		message1 EQU 0x20
 		align	 2
