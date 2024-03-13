@@ -11,7 +11,7 @@ storedMessage1:
 		bcf     CFGS
 		bsf	EEPGD
 		db      'E','n','t','e','r','n','o','p','l','a','y','e','r','s'
-		message1 EQU 0x50
+		message1 EQU 0x20
 		align	 2
 		return
 
