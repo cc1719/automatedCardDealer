@@ -59,56 +59,56 @@ Check_KeyPress: movlw   0
                 return
 
 KeyPad_Output:	movlw   1
-		movwf   row
-		movwf   column  ; If an invalid input is entered, row and column remain their initialised values so the output of the keypad is just whatever this maps to.
+		movwf   row, A
+		movwf   column, A  ; If an invalid input is entered, row and column remain their initialised values so the output of the keypad is just whatever this maps to.
 		movlw   00001111B
-		andwf   KeyPad_Value, 0
-		movwf   value
+		andwf   KeyPad_Value, 0, 0
+		movwf   value, A
 		movlw   00000001B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next1
 		movlw   1
-		movwf   row
+		movwf   row, A
 next1:          movlw   00000010B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next2
 		movlw   2
-		movwf   row
+		movwf   row, A
 next2:          movlw   00000100B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next3
 		movlw   3
-		movwf   row
+		movwf   row, A
 next3:          movlw   00001000B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next4
 		movlw   4
-		movwf   row 
+		movwf   row, A
 		
 next4:		movlw   11110000B
-		andwf   KeyPad_Value, 0
-		movwf   value
+		andwf   KeyPad_Value, 0, 0
+		movwf   value, A
 		
 		movlw   00010000B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next5
 		movlw   1
-		movwf   column
+		movwf   column, A
 next5:          movlw   00100000B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next6
 		movlw   2
-		movwf   column
+		movwf   column, A
 next6:          movlw   01000000B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next7
 		movlw   3
-		movwf   column
+		movwf   column, A
 next7:          movlw   10000000B
-		cpfseq  value
+		cpfseq  value, 0
 		bra     next8
 		movlw   4
-		movwf   column
+		movwf   column, A
 next8:		
 
 Read_Lookup_Table:
@@ -120,14 +120,14 @@ Read_Lookup_Table:
 		movlw   low(Table_Set_Up)
 		movwf   TBLPTRL, A
 		movlw   1
-		subwf   row, 1
+		subwf   row, 1, 0
 		movlw   4
-		mulwf   row
-		movf    PRODL, 0
-		addwf   column, 1
+		mulwf   row, 0
+		movf    PRODL, 0, 0
+		addwf   column, 1, 0
 		movlw   4 ; currently writes random values at start of table, don't know why, so added offset to account for this.
-		addwf   column, 0
-		movwf   counter
+		addwf   column, 0, 0
+		movwf   counter, A
 loop:		tblrd*+
 		movff   TABLAT, KeyPad_Value
 		decfsz  counter, A
@@ -146,62 +146,62 @@ countdown:      decfsz  KeyPad_counter, A
 writeNumPlayers: call    KeyPad_Setup
 		call    LCD_Setup
 		movlw   11110000              ; Condition to check if keypad button is pressed or not.
-		movwf   checkIfPressed
+		movwf   checkIfPressed, A
 		movlw   01000110B
-		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
 		movlw   0
-		movwf   numPlayersDigit1
-		movwf   numPlayersDigit2
-		movwf   test
+		movwf   numPlayersDigit1, A
+		movwf   numPlayersDigit2, A
+		movwf   test, A
 skip1:		call    Check_KeyPress
-		tstfsz  KeyPad_Value
+		tstfsz  KeyPad_Value, 0
 		goto    not1
 		goto    skip1
 not1:		call    KeyPad_Output
 		movf    KeyPad_Value, 0, 0
-		cpfseq  enter
+		cpfseq  enter, 0
 		goto    there1
 		return
 there1:		call    LCD_Send_Byte_D
-		tstfsz  test
+		tstfsz  test, 0
 		goto    somewhere1
-		movwf   numPlayersDigit1
-		setf    test
+		movwf   numPlayersDigit1, A
+		setf    test, 0
 here1:		movf    PORTE, 0, 0
-		cpfseq  checkIfPressed
+		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    skip1	
-somewhere1:	movwf   numPlayersDigit2
+somewhere1:	movwf   numPlayersDigit2, A
 		return
 
 writeNumCards:  call    KeyPad_Setup
 		call    LCD_Setup
 		movlw   11110000              ; Condition to check if keypad button is pressed or not.
-		movwf   checkIfPressed
+		movwf   checkIfPressed, A
 		movlw   01000110B
-		movwf   enter                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
 		movlw   0
-		movwf   numCardsDigit1
-		movwf   numCardsDigit2
-		movwf   test
+		movwf   numCardsDigit1, A
+		movwf   numCardsDigit2, A
+		movwf   test, A
 skip2:		call    Check_KeyPress
-		tstfsz  KeyPad_Value
+		tstfsz  KeyPad_Value, 0
 		goto    not2
 		goto    skip2
 not2:		call    KeyPad_Output
 		movf    KeyPad_Value, 0, 0
-		cpfseq  enter
+		cpfseq  enter, 0
 		goto    there2
 		return
 there2:		call    LCD_Send_Byte_D
-		tstfsz  test
+		tstfsz  test, 0
 		goto    somewhere2
-		movwf   numCardsDigit1
-		setf    test
+		movwf   numCardsDigit1, A
+		setf    test, 0
 here2:		movf    PORTE, 0, 0
-		cpfseq  checkIfPressed
+		cpfseq  checkIfPressed, 0
 		goto    here2
 		goto    skip2	
-somewhere2:	movwf   numCardsDigit2
+somewhere2:	movwf   numCardsDigit2, A
 		return
 		
