@@ -8,9 +8,11 @@ counter:        ds  1
 psect		settings_code, class = CODE
 
 storedMessage1: db     'Enter no players'
-		message1  EQU 0x200
+		message1  EQU 0x20
+		return
 storedMessage2: db     'Enter no cards'
-		message2  EQU 0x220
+		message2  EQU 0x40
+		return
 readPrompt1:	lfsr    2, message1
 		movlw   low highword(storedMessage1)
 		movwf   TBLPTRU, A
@@ -41,7 +43,9 @@ loop2:		tblrd*+
 		goto     loop2
 		return    
 
-settingsInput:	call    LCD_Setup
+settingsInput:	call    storedMessage1
+		call    storedMessage2
+		call    LCD_Setup
 		call    LCD_clear
 		call    readPrompt1
 		;movf    count1, 0, 0
