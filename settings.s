@@ -10,14 +10,14 @@ psect		settings_code, class = CODE
 storedMessage1: 
 		bcf     CFGS
 		bsf	EEPGD
-		db      'Enter no players'
-		message1 EQU 0x100
+		db     'Enter no players'
+		message1 EQU 0x20
 		return
 
 storedMessage2: 
 		bcf     CFGS
 		bsf	EEPGD
-		db      'Enter no cards'
+		db     'Enter no cards'
 		message2 EQU 0x40
 		return
 
