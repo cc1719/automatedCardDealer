@@ -2,7 +2,7 @@
 
 extrn           LCD_Send_Byte_D, LCD_Setup
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2
+global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, validInput
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -17,6 +17,7 @@ numPlayersDigit2:	ds  1
 numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
+validInput:	ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -53,11 +54,11 @@ Check_KeyPress: movlw   0
                 iorwf   PORTE, W, A
                 xorlw   0xff
                 movwf   KeyPad_Value, A
-                return
 
-KeyPad_Output:	movlw   1
+KeyPad_Output:	movlw   0
 		movwf   row, A
-		movwf   column, A  ; If an invalid input is entered, row and column remain their initialised values so the output of the keypad is just whatever this maps to.
+		movwf   column, A 
+		movwf   validInput, A
 		
 initialise1:	movlw   00001111B
 		andwf   KeyPad_Value, 0, 0
@@ -83,7 +84,7 @@ next2:          movlw   00000100B
 		goto    initialise2
 next3:          movlw   00001000B
 		cpfseq  value, 0
-		goto    initialise1
+		goto    Check_KeyPress
 		movlw   4
 		movwf   row, A
 		
@@ -96,25 +97,28 @@ next4:		movlw   00010000B
 		bra     next5
 		movlw   1
 		movwf   column, A
-		goto    Read_Lookup_Table
+		goto    checkValidInput
 next5:          movlw   00100000B
 		cpfseq  value, 0
 		bra     next6
 		movlw   2
 		movwf   column, A
-		goto    Read_Lookup_Table
+		goto    checkValidInput
 next6:          movlw   01000000B
 		cpfseq  value, 0
 		bra     next7
 		movlw   3
 		movwf   column, A
-		goto    Read_Lookup_Table
+		goto    checkValidInput
 next7:          movlw   10000000B
 		cpfseq  value, 0
-		goto    initialise1
+		goto    Check_KeyPress
 		movlw   4
 		movwf   column, A
 
+checkValidInput:movlw   1
+		movwf   validInput, A
+		
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
 		movlw   low highword(Table_Set_Up)
@@ -154,11 +158,7 @@ writeNumPlayers: call    KeyPad_Setup
 		movwf   numPlayersDigit1, A
 		movwf   numPlayersDigit2, A
 		movwf   test, A
-skip1:		call    Check_KeyPress
-		tstfsz  KeyPad_Value, 0
-		goto    not1
-		goto    skip1
-not1:		call    KeyPad_Output
+everywhere1:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    there1
@@ -171,7 +171,7 @@ there1:		call    LCD_Send_Byte_D
 here1:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
-		goto    skip1	
+		goto    everywhere1	
 somewhere1:	movwf   numPlayersDigit2, A
 		return
 
