@@ -62,4 +62,4 @@ settingsInput:	call    LCD_Setup
 		call    LCD_line2
 		call    writeNumCards	
 		return
-
+		
