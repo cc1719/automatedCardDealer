@@ -6,6 +6,8 @@ psect	udata_acs
 counter:        ds  1
 count1:		ds  1
 count2:		ds  1
+numPlayers:	ds  1
+numCards:	ds  1
  
 psect		settings_code, class = CODE
 
@@ -61,5 +63,30 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumCards	
+		
+		movlw   0xff
+		cpfseq  numPlayersDigit2, 0
+		goto    oneDigitPlayers	
+		movff   numPlayersDigit1, numPlayers
+oneDigitPlayers:movlw   48
+		subwf   numPlayersDigit1, 1, 0
+		movlw   10
+		mulwf   numPlayersDigit1, 0
+		movff   PRODL, numPlayers
+		movf    numPlayersDigit2, 0, 0
+		addwf   numPlayers, 1, 0
+		
+		movlw   0xff
+		cpfseq  numCardsDigit2, 0
+		goto    oneDigitCards		
+		movff   numCardsDigit1, numCards
+oneDigitCards:	movlw   48
+		subwf   numCardsDigit1, 1, 0
+		movlw   10
+		mulwf   numCardsDigit1, 0
+		movff   PRODL, numCards
+		movf    numCardsDigit2, 0, 0
+		addwf   numCards, 1, 0
+		
 		return
 		
