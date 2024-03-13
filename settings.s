@@ -7,19 +7,11 @@ counter:        ds  1
  
 psect		settings_code, class = CODE
 
-storedMessage1: 
-		bcf     CFGS
-		bsf	EEPGD
-		db     'Enter no players'
-		message1 EQU 0x20
-		return
+storedMessage1: db     'Enter no players'
+		message1 EQU 0x400
 
-storedMessage2: 
-		bcf     CFGS
-		bsf	EEPGD
-		db     'Enter no cards'
+storedMessage2: db     'Enter no cards'
 		message2 EQU 0x40
-		return
 
 readPrompt1:	
 		lfsr    2, message1
@@ -29,8 +21,8 @@ readPrompt1:
 		movwf   TBLPTRH, A
 		movlw   low(storedMessage1)
 		movwf   TBLPTRL, A
-		movlw   21
-		movwf   counter
+		movlw   17
+		movwf   counter, A
 loop1:		tblrd*+
 		movff   TABLAT, POSTINC2
 		decfsz  counter, A
@@ -44,17 +36,15 @@ readPrompt2:	lfsr    2, message2
 		movwf   TBLPTRH, A
 		movlw   low(storedMessage2)
 		movwf   TBLPTRL, A
-		movlw   19
-		movwf   counter
+		movlw   15
+		movwf   counter, A
 loop2:		tblrd*+
 		movff   TABLAT, POSTINC2
 		decfsz  counter, A
 		bra     loop2
 		return    
 
-settingsInput:	call    storedMessage1
-		call    storedMessage2
-		call    readPrompt1
+settingsInput:	call    readPrompt1
 		movf    counter, 0, 0
 		call    LCD_Write_Message
 		call    LCD_line2
