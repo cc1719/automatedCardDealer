@@ -1,5 +1,6 @@
 #include <xc.inc>
-    
+ 
+extrn           LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1, LCD_line2
 global		KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -8,12 +9,22 @@ value:		ds  1
 row:		ds  1
 column:		ds  1
 counter:	ds  1
-   
+    
 psect	code, abs
- 
-;rst:	org	0x0
-;	goto	setup
-
+test:		call    LCD_Setup
+		call    LCD_clear
+		movlw   't'
+		movwf   0x20
+		movlw   'e'
+		movwf   0x21
+		movlw   's'
+		movwf   0x22
+		movlw   't'
+		movwf   0x23
+		lfsr    2, 0x20
+		movlw   4
+		call    LCD_Write_Message
+		nop
 KeyPad_Setup:	clrf	LATE, A
                 movlb	0x0f
                 bsf     REPU
