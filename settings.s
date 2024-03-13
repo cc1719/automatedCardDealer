@@ -7,17 +7,22 @@ counter:        ds  1
  
 psect		settings_code, class = CODE
 
-storedMessage1: ;bcf     CFGS
-		;bsf	EEPGD
-		db      'Enter no players'
-		message1 EQU 0x20
+setup:
+		bcf     CFGS
+		bsf	EEPGD
+		return
+storedMessage1: 
+		db      'E','n','t','e','r','n','o','p','l','a','y','e','r','s'
+		message1 EQU 0x50
 		align	 2
 
-storedMessage2: db      'Enter no cards'
+storedMessage2: 
+		db      'Enter no cards'
 		message2 EQU 0x40
 		align	 2
 
-readPrompt1:	lfsr    2, message1
+readPrompt1:	
+		lfsr    2, message1
 		movlw   low highword(storedMessage1)
 		movwf   TBLPTRU, A
 		movlw   high(storedMessage1)
@@ -47,7 +52,8 @@ loop2:		tblrd*+
 		bra     loop2
 		return    
 
-settingsInput:  call    readPrompt1
+settingsInput:  call setup
+		call    readPrompt1
 		movf    counter, 0, 0
 		call    LCD_Write_Message
 		call    LCD_line2
