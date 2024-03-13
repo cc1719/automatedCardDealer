@@ -60,7 +60,7 @@ KeyPad_Output:	movlw   0
 		movwf   column, A 
 		movwf   validInput, A
 		
-initialise0:	movlw   00001111B
+initialise1:	movlw   00001111B
 		andwf   KeyPad_Value, 0, 0
 		movwf   value, A
 		
