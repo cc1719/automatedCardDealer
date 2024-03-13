@@ -182,7 +182,7 @@ LCD_line1:
 	movlw	10		; wait 40us
 	call	LCD_delay_x4us
 	return
-
+	
 end
 
 
