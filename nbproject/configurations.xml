@@ -24,6 +24,7 @@
       <itemPath>ACD.s</itemPath>
       <itemPath>LCD.s</itemPath>
       <itemPath>nbproject/configurations.xml</itemPath>
+      <itemPath>settings.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
