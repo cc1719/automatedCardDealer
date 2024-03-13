@@ -2,7 +2,7 @@
 
 extrn           LCD_Send_Byte_D, LCD_Setup
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, validInput
+global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -17,7 +17,6 @@ numPlayersDigit2:	ds  1
 numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
-validInput:	ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -58,7 +57,6 @@ Check_KeyPress: movlw   0
 KeyPad_Output:	movlw   0
 		movwf   row, A
 		movwf   column, A 
-		movwf   validInput, A
 		
 initialise1:	movlw   00001111B
 		andwf   KeyPad_Value, 0, 0
@@ -97,27 +95,24 @@ next4:		movlw   00010000B
 		bra     next5
 		movlw   1
 		movwf   column, A
-		goto    checkValidInput
+		goto    Read_Lookup_Table
 next5:          movlw   00100000B
 		cpfseq  value, 0
 		bra     next6
 		movlw   2
 		movwf   column, A
-		goto    checkValidInput
+		goto    Read_Lookup_Table
 next6:          movlw   01000000B
 		cpfseq  value, 0
 		bra     next7
 		movlw   3
 		movwf   column, A
-		goto    checkValidInput
+		goto    Read_Lookup_Table
 next7:          movlw   10000000B
 		cpfseq  value, 0
 		goto    Check_KeyPress
 		movlw   4
 		movwf   column, A
-
-checkValidInput:movlw   1
-		movwf   validInput, A
 		
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
@@ -167,7 +162,8 @@ there1:		call    LCD_Send_Byte_D
 		tstfsz  test, 0
 		goto    somewhere1
 		movwf   numPlayersDigit1, A
-		setf    test, 0
+		movlw   1
+		movwf   test, A
 here1:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
@@ -176,7 +172,7 @@ somewhere1:	movwf   numPlayersDigit2, A
 		return
 
 writeNumCards:  call    KeyPad_Setup
-		movlw   11110000              ; Condition to check if keypad button is pressed or not.
+		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
@@ -184,11 +180,7 @@ writeNumCards:  call    KeyPad_Setup
 		movwf   numCardsDigit1, A
 		movwf   numCardsDigit2, A
 		movwf   test, A
-skip2:		call    Check_KeyPress
-		tstfsz  KeyPad_Value, 0
-		goto    not2
-		goto    skip2
-not2:		call    KeyPad_Output
+everywhere2:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    there2
@@ -197,11 +189,12 @@ there2:		call    LCD_Send_Byte_D
 		tstfsz  test, 0
 		goto    somewhere2
 		movwf   numCardsDigit1, A
-		setf    test, 0
+		movlw   1
+		movwf   test, A
 here2:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here2
-		goto    skip2	
+		goto    everywhere2	
 somewhere2:	movwf   numCardsDigit2, A
 		return
 		
