@@ -26,10 +26,7 @@ KeyPad_Setup:	clrf	LATE, A
                 clrf    TRISD, A
                 return
 
-Table_Set_Up:   
-		;bcf     CFGS
-		;bsf	EEPGD
-		db      0x11, 0x21, 0x41, 0x81
+Table_Set_Up:   db      0x11, 0x21, 0x41, 0x81
 		db      0x12, 0x22, 0x42, 0x82
 		db	0x14, 0x24, 0x44, 0x84
 		db      0x18, 0x28, 0x48, 0x88
@@ -61,55 +58,62 @@ Check_KeyPress: movlw   0
 KeyPad_Output:	movlw   1
 		movwf   row, A
 		movwf   column, A  ; If an invalid input is entered, row and column remain their initialised values so the output of the keypad is just whatever this maps to.
-		movlw   00001111B
+		
+initialise1:	movlw   00001111B
 		andwf   KeyPad_Value, 0, 0
 		movwf   value, A
-		movlw   00000001B
+		
+next0:		movlw   00000001B
 		cpfseq  value, 0
 		bra     next1
 		movlw   1
 		movwf   row, A
+		goto    initialise2
 next1:          movlw   00000010B
 		cpfseq  value, 0
 		bra     next2
 		movlw   2
 		movwf   row, A
+		goto    initialise2
 next2:          movlw   00000100B
 		cpfseq  value, 0
 		bra     next3
 		movlw   3
 		movwf   row, A
+		goto    initialise2
 next3:          movlw   00001000B
 		cpfseq  value, 0
-		bra     next4
+		goto    initialise1
 		movlw   4
 		movwf   row, A
 		
-next4:		movlw   11110000B
+initialise2:	movlw   11110000B
 		andwf   KeyPad_Value, 0, 0
 		movwf   value, A
 		
-		movlw   00010000B
+next4:		movlw   00010000B
 		cpfseq  value, 0
 		bra     next5
 		movlw   1
 		movwf   column, A
+		goto    Read_Lookup_Table
 next5:          movlw   00100000B
 		cpfseq  value, 0
 		bra     next6
 		movlw   2
 		movwf   column, A
+		goto    Read_Lookup_Table
 next6:          movlw   01000000B
 		cpfseq  value, 0
 		bra     next7
 		movlw   3
 		movwf   column, A
+		goto    Read_Lookup_Table
 next7:          movlw   10000000B
 		cpfseq  value, 0
-		goto    Read_Lookup_Table
+		goto    initialise1
 		movlw   4
 		movwf   column, A
-next8:		goto    
 
 Read_Lookup_Table:
 		lfsr    0, Lookup_Table
