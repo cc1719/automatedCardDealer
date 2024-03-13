@@ -11,20 +11,21 @@ column:		ds  1
 counter:	ds  1
     
 psect	code, abs
-test:		call    LCD_Setup
-		call    LCD_clear
-		movlw   't'
-		movwf   0x20
-		movlw   'e'
-		movwf   0x21
-		movlw   's'
-		movwf   0x22
-		movlw   't'
-		movwf   0x23
-		lfsr    2, 0x20
-		movlw   4
-		call    LCD_Write_Message
-		nop
+;test:		call    LCD_Setup
+;		call    LCD_clear
+;		movlw   't'
+;		movwf   0x20
+;		movlw   'e'
+;		movwf   0x21
+;		movlw   's'
+;		movwf   0x22
+;		movlw   't'
+;		movwf   0x23
+;		lfsr    2, 0x20
+;		movlw   4
+;		call    LCD_Write_Message
+;		nop
+
 KeyPad_Setup:	clrf	LATE, A
                 movlb	0x0f
                 bsf     REPU
