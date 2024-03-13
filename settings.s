@@ -47,7 +47,7 @@ readPrompt2:	lfsr    2, message2
 		movlw   low(storedMessage2)
 		movwf   TBLPTRL, A
 		movlw   14
-		movwf   counter, A
+		movwf   counter
 loop2:		tblrd*+
 		movff   TABLAT, POSTINC2
 		decfsz  counter, A
