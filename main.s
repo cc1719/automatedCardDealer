@@ -34,6 +34,6 @@ setup:
 ;	call	ADC_Setup
 ;	call    KeyPad_Setup
 	call    settingsInput
+	goto    $
 	
-	
-	end	rst
+	end rst
