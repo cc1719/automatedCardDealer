@@ -21,7 +21,7 @@ delayVariable:	ds  1
    
 psect		KeyPad_code, class = CODE
 
-KeyPad_Setup:	clrf	LATE, A
+KeyPad_Setup:	clrf	LATC, A
                 movlb	0x0f
                 bsf     REPU
                 clrf    TRISD, A
@@ -34,24 +34,24 @@ Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
 		Lookup_Table  EQU 0x300
 
 KeyPad_Rows:	movlw   0x0f
-                movwf   TRISE, A
+                movwf   TRISC, A
                 return
     
 KeyPad_Columns:
                 movlw   0xf0
-                movwf   TRISE, A
+                movwf   TRISC, A
                 return
     
 Check_KeyPress: movlw   0
 		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
                 call    delay
-                movff   PORTE, KeyPad_Value, A
+                movff   PORTC, KeyPad_Value, A
                 call    KeyPad_Columns
                 call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
-                iorwf   PORTE, W, A
+                iorwf   PORTC, W, A
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 
@@ -168,11 +168,11 @@ there1:		call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numPlayersDigit1
 		movlw   1
 		movwf   test, A
-here1:		movf    PORTE, 0, 0
+here1:		movf    PORTC, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
-somewhere1:	movf    PORTE, 0, 0
+somewhere1:	movf    PORTC, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
 		movff   KeyPad_Value, numPlayersDigit2
@@ -203,11 +203,11 @@ there2:		call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
-here2:		movf    PORTE, 0, 0
+here2:		movf    PORTC, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here2
 		goto    everywhere2	
-somewhere2:	movf    PORTE, 0, 0
+somewhere2:	movf    PORTC, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere2
 		movff   KeyPad_Value, numCardsDigit2
