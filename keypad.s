@@ -24,7 +24,7 @@ psect		KeyPad_code, class = CODE
 KeyPad_Setup:	clrf	LATJ, A
                 movlb	0x0f
                 bsf     REPU
-                clrf    TRISD, A
+		bsf     RJPU
                 return
 
 Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
@@ -35,11 +35,13 @@ Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
 
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISJ, A
+		bcf     TRISE0
                 return
     
 KeyPad_Columns:
                 movlw   0xf0
                 movwf   TRISJ, A
+		bsf     TRISE0
                 return
     
 Check_KeyPress: movlw   0
@@ -47,6 +49,9 @@ Check_KeyPress: movlw   0
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTJ, KeyPad_Value, A
+		;movlw   00000001B
+		;andwf   PORTE, 0, 0
+		
                 call    KeyPad_Columns
                 call    delay
                 movlw   0x0f
