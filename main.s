@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   settingsInput, LCD_Setup, LCD_Send_Byte_D
+extrn   settingsInput, LCD_Setup, LCD_Send_Byte_D, LCD_Write_Message, LCD_clear, LCD_line2, LCD_delay_ms
 
 psect	code, abs
 	
