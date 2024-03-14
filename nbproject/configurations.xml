@@ -26,7 +26,6 @@
       <itemPath>nbproject/configurations.xml</itemPath>
       <itemPath>settings.s</itemPath>
     </logicalFolder>
-    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
