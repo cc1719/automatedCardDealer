@@ -71,7 +71,9 @@ settingsInput:	call    LCD_Setup
 		movlw   0xff
 		cpfseq  numPlayersDigit2, 0
 		goto    twoDigitPlayers	
-		movff   numPlayersDigit1, numPlayers
+		movlw   48
+		subwf   numPlayersDigit1, 0, 0
+		movwf   numPlayers, A
 		goto    skip
 twoDigitPlayers:movlw   48
 		subwf   numPlayersDigit1, 1, 0
@@ -84,8 +86,10 @@ twoDigitPlayers:movlw   48
 		
 skip:		movlw   0xff
 		cpfseq  numCardsDigit2, 0
-		goto    twoDigitCards		
-		movff   numCardsDigit1, numCards
+		goto    twoDigitCards	
+		movlw   48
+		subwf   numCardsDigit1, 0, 0
+		movwf   numCards, A
 		return
 		
 twoDigitCards:	movlw   48
