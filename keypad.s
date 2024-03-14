@@ -61,10 +61,13 @@ Check_KeyPress: movlw   0
 		movlw   00000001B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
-		cpfseq  var, 0
-		bsf     KeyPad_Value, 5, 0
-		bcf     KeyPad_Value, 5, 0
-		movf    KeyPad_Value, 0, 0
+		tstfsz  var, 0
+		goto    notZero1
+		goto    zero1
+notZero1:	bsf     KeyPad_Value, 5, 0
+		goto    moveOn1
+zero1:		bcf     KeyPad_Value, 5, 0
+moveOn1:	movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 
@@ -185,10 +188,13 @@ here1:		movlw   00000001B
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
-		cpfseq  var, 0
-		bsf     var2, 5, 0
-		bcf     var2, 5, 0		
-		movf    var2, 0, 0
+		tstfsz  var, 0
+		goto    notZero2
+		goto    zero2
+notZero2:	bsf     var2, 5, 0
+		goto    moveOn2
+zero2:		bcf     var2, 5, 0		
+moveOn2:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
@@ -227,10 +233,13 @@ here2:		movlw   00000001B
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
-		cpfseq  var, 0
-		bsf     var2, 5, 0
-		bcf     var2, 5, 0		
-		movf    var2, 0, 0    
+		tstfsz  var, 0
+		goto    notZero3
+		goto    zero3
+notZero3	bsf     var2, 5, 0
+		goto    moveOn3
+zero3:		bcf     var2, 5, 0		
+moveOn3:	movf    var2, 0, 0    
 		cpfseq  checkIfPressed, 0
 		goto    here2
 		goto    everywhere2	
