@@ -53,7 +53,7 @@ Check_KeyPress: movlw   0
                 movff   PORTJ, KeyPad_Value, A
 		bcf     KeyPad_Value, 5, 0
                 call    KeyPad_Columns
-                call    delay
+		call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
                 iorwf   PORTJ, W, A
@@ -177,8 +177,8 @@ everywhere1:	call    Check_KeyPress
 		goto    there1
 		return
 there1:		call    LCD_Send_Byte_D
-		movlw   255
-		call    LCD_delay_ms
+		;movlw   255
+		;call    LCD_delay_ms
 		tstfsz  test, 0
 		goto    somewhere1
 		movff   KeyPad_Value, numPlayersDigit1
@@ -202,8 +202,8 @@ somewhere1:	movf    PORTJ, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
 		movff   KeyPad_Value, numPlayersDigit2
-		movlw   255
-		call    LCD_delay_ms
+		;movlw   255
+		;call    LCD_delay_ms
 		return
 
 writeNumCards:  call    KeyPad_Setup
@@ -222,8 +222,8 @@ everywhere2:	call    Check_KeyPress
 		goto    there2
 		return
 there2:		call    LCD_Send_Byte_D
-		movlw   255
-		call    LCD_delay_ms
+		;movlw   255
+		;call    LCD_delay_ms
 		tstfsz  test, 0
 		goto    somewhere2
 		movff   KeyPad_Value, numCardsDigit1
@@ -247,6 +247,6 @@ somewhere2:	movf    PORTJ, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere2
 		movff   KeyPad_Value, numCardsDigit2
-		movlw   255
-		call    LCD_delay_ms
+		;movlw   255
+		;call    LCD_delay_ms
 		return
