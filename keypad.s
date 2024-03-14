@@ -162,14 +162,14 @@ everywhere1:	call    Check_KeyPress
 there1:		call    LCD_Send_Byte_D
 		tstfsz  test, 0
 		goto    somewhere1
-		movwf   numPlayersDigit1, A
+		movff   KeyPad_Value, numPlayersDigit1
 		movlw   1
 		movwf   test, A
 here1:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
-somewhere1:	movwf   numPlayersDigit2, A
+somewhere1:	movff   KeyPad_Value, numPlayersDigit2
 		return
 
 writeNumCards:  call    KeyPad_Setup
@@ -190,13 +190,13 @@ everywhere2:	call    Check_KeyPress
 there2:		call    LCD_Send_Byte_D
 		tstfsz  test, 0
 		goto    somewhere2
-		movwf   numCardsDigit1, A
+		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
 here2:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here2
 		goto    everywhere2	
-somewhere2:	movwf   numCardsDigit2, A
+somewhere2:	movff   KeyPad_Value, numCardsDigit2
 		return
 		
