@@ -26,10 +26,10 @@ KeyPad_Setup:	clrf	LATE, A
                 clrf    TRISD, A
                 return
 
-Table_Set_Up:   db      00110001B, 00110010B, 00110011B, 01000110B
-		db      00110100B, 00110101B, 00110110B, 01000101B
-		db	00110111B, 00111000B, 00111001B, 01000100B
-		db      01000001B, 00110000B, 01000010B, 01000011B
+Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
+		db      00110010B, 00110101B, 00111000B, 00110000B
+		db	00110011B, 00110110B, 00111001B, 01000010B
+		db      01000110B, 01000101B, 01000100B, 01000011B
 		Lookup_Table  EQU 0x300
 
 KeyPad_Rows:	movlw   0x0f
@@ -41,8 +41,8 @@ KeyPad_Columns:
                 movwf   TRISE, A
                 return
     
-Check_KeyPress: ;movlw   0
-		;movwf   KeyPad_Value, A
+Check_KeyPress: movlw   0
+		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTE, KeyPad_Value, A
@@ -53,8 +53,6 @@ Check_KeyPress: ;movlw   0
                 iorwf   PORTE, W, A
                 xorlw   0xff
                 movwf   KeyPad_Value, A
-		
-		goto    $
 
 ifZero:         tstfsz  KeyPad_Value, 0
 		goto    KeyPad_Output
