@@ -168,7 +168,6 @@ LCD_clear:
 	return
 	
 LCD_line2:
-	call	LCD_Setup
 	movlw	11000000B	; move to line 2
 	call	LCD_Send_Byte_I
 	movlw	10		; wait 40us
