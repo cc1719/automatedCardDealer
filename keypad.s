@@ -176,6 +176,8 @@ somewhere1:	movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
 		movff   KeyPad_Value, numPlayersDigit2
+		movlw   255
+		call    LCD_delay_ms
 		return
 
 writeNumCards:  call    KeyPad_Setup
@@ -209,4 +211,6 @@ somewhere2:	movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere2
 		movff   KeyPad_Value, numCardsDigit2
+		movlw   255
+		call    LCD_delay_ms
 		return
