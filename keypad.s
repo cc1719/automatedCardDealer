@@ -24,7 +24,6 @@ psect		KeyPad_code, class = CODE
 KeyPad_Setup:	clrf	LATE, A
                 movlb	0x0f
                 bsf     REPU
-                clrf    TRISD, A
                 return
 
 Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
