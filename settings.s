@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2, delay
+extrn   LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
 global  settingsInput, count1, count2
 psect	udata_acs  
 counter:        ds  1
@@ -8,6 +8,7 @@ count1:		ds  1
 count2:		ds  1
 numPlayers:	ds  1
 numCards:	ds  1
+delayVar:	ds  1
  
 psect		settings_code, class = CODE
 
@@ -89,3 +90,10 @@ oneDigitCards:	movlw   48
 		addwf   numCards, 1, 0
 		
 		return
+
+delay:		movlw   0xff
+                movwf   delayVar, A
+		
+countdown:      decfsz  delayVar, A           
+                bra     countdown
+                return
