@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   settingsInput
+extrn   settingsInput, LCD_Setup, LCD_Send_Byte_D
 
 psect	code, abs
 	
