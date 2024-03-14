@@ -41,8 +41,8 @@ KeyPad_Columns:
                 movwf   TRISE, A
                 return
     
-Check_KeyPress: movlw   0
-		movwf   KeyPad_Value, A
+Check_KeyPress: ;movlw   0
+		;movwf   KeyPad_Value, A
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTE, KeyPad_Value, A
@@ -53,6 +53,8 @@ Check_KeyPress: movlw   0
                 iorwf   PORTE, W, A
                 xorlw   0xff
                 movwf   KeyPad_Value, A
+		
+		goto    $
 
 ifZero:         tstfsz  KeyPad_Value, 0
 		goto    KeyPad_Output
