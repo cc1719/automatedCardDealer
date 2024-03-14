@@ -26,10 +26,10 @@ KeyPad_Setup:	clrf	LATE, A
                 clrf    TRISD, A
                 return
 
-Table_Set_Up:   db      0x11, 0x21, 0x41, 0x81
-		db      0x12, 0x22, 0x42, 0x82
-		db	0x14, 0x24, 0x44, 0x84
-		db      0x18, 0x28, 0x48, 0x88
+Table_Set_Up:   db      00110001B, 00110010B, 00110011B, 01000110B
+		db      00110100B, 00110101B, 00110110B, 01000101B
+		db	00110111B, 00111000B, 00111001B, 01000100B
+		db      01000001B, 00110000B, 01000010B, 01000011B
 		Lookup_Table  EQU 0x300
 
 KeyPad_Rows:	movlw   0x0f
