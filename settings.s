@@ -55,7 +55,7 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumPlayers	
-		movlw   255
+		movlw   100
 		call    LCD_delay_ms
 		call    LCD_clear
 		call    readPrompt2
@@ -64,7 +64,7 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumCards	
-		movlw   255
+		movlw   100
 		call    LCD_delay_ms
 		call    LCD_clear
 		
