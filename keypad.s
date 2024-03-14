@@ -236,7 +236,7 @@ here2:		movlw   00000001B
 		tstfsz  var, 0
 		goto    notZero3
 		goto    zero3
-notZero3	bsf     var2, 5, 0
+notZero3:	bsf     var2, 5, 0
 		goto    moveOn3
 zero3:		bcf     var2, 5, 0		
 moveOn3:	movf    var2, 0, 0    
