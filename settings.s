@@ -38,7 +38,7 @@ readPrompt2:	lfsr    2, message2
 		movwf   TBLPTRH, A
 		movlw   low(storedMessage2)
 		movwf   TBLPTRL, A
-		movlw   15
+		movlw   14
 		movwf   count2,  A
 		movwf   counter, A
 loop2:		tblrd*+
