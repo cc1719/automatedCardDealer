@@ -9,14 +9,7 @@ psect	code, abs
 rst:	org	0x0
 	goto	setup
 	
-setup:	movlw   00000001B 
-	movwf   testVar, A
-	swapf   testVar, 1, 0
-	rlncf   testVar, 1, 0
-	rlncf   testVar, 1, 0
-	rlncf   testVar, 1, 0
-	rlncf   testVar, 1, 0
-	nop
+setup:	
 	;call    settingsInput
 	;goto    $
 	
