@@ -19,6 +19,7 @@ numCardsDigit2:	ds  1
 test:		ds  1
 delayVariable:	ds  1
 var:		ds  1
+var2:		ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -50,23 +51,23 @@ Check_KeyPress: movlw   0
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTJ, KeyPad_Value, A
-		movlw   00001111B
-		andwf   KeyPad_Value, 1, 0
+		bcf     KeyPad_Value, 5, 0
                 call    KeyPad_Columns
                 call    delay
-		movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		swapf   var, 1, 0
-		rlncf   var, 1, 0
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
                 iorwf   PORTJ, W, A
-		andwf   var, 0, 0
+		movwf   KeyPad_Value, A
+		movlw   00000001B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		cpfseq  var, 0
+		bsf     KeyPad_Value, 5, 0
+		bcf     KeyPad_Value, 5, 0
+		movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 
-		
 KeyPad_Output:	movlw   0
 		movwf   row, A
 		movwf   column, A 
@@ -180,7 +181,14 @@ there1:		call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numPlayersDigit1
 		movlw   1
 		movwf   test, A
-here1:		movf    PORTJ, 0, 0
+here1:		movlw   00000001B 
+		andwf   PORTE, 0, 0
+		movwf   var, A	
+		movff   PORTJ, var2
+		cpfseq  var, 0
+		bsf     var2, 5, 0
+		bcf     var2, 5, 0		
+		movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
@@ -215,7 +223,14 @@ there2:		call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
-here2:		movf    PORTJ, 0, 0
+here2:		movlw   00000001B 
+		andwf   PORTE, 0, 0
+		movwf   var, A	
+		movff   PORTJ, var2
+		cpfseq  var, 0
+		bsf     var2, 5, 0
+		bcf     var2, 5, 0		
+		movf    var2, 0, 0    
 		cpfseq  checkIfPressed, 0
 		goto    here2
 		goto    everywhere2	
