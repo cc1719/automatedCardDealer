@@ -38,13 +38,13 @@ Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
 
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISJ, A
-		clrf    TRISE
+		bcf     TRISE, 0, 0
                 return
     
 KeyPad_Columns:
                 movlw   0xf0
                 movwf   TRISJ, A
-		setf    TRISE
+		bsf     TRISE, 0, 0
                 return
     
 Check_KeyPress: movlw   0
