@@ -54,10 +54,6 @@ Check_KeyPress: movlw   0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 
-ifZero:         tstfsz  KeyPad_Value, 0
-		goto    KeyPad_Output
-		goto    Check_KeyPress
-
 KeyPad_Output:	movlw   0
 		movwf   row, A
 		movwf   column, A 
