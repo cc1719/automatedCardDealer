@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn           LCD_Send_Byte_D, LCD_Setup
+extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
 global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2
 psect		udata_acs   
@@ -17,6 +17,7 @@ numPlayersDigit2:	ds  1
 numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
+delayVariable:	ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -160,6 +161,8 @@ everywhere1:	call    Check_KeyPress
 		goto    there1
 		return
 there1:		call    LCD_Send_Byte_D
+		movlw   255
+		call    LCD_delay_ms
 		tstfsz  test, 0
 		goto    somewhere1
 		movff   KeyPad_Value, numPlayersDigit1
@@ -191,6 +194,8 @@ everywhere2:	call    Check_KeyPress
 		goto    there2
 		return
 there2:		call    LCD_Send_Byte_D
+		movlw   255
+		call    LCD_delay_ms
 		tstfsz  test, 0
 		goto    somewhere2
 		movff   KeyPad_Value, numCardsDigit1
@@ -205,4 +210,3 @@ somewhere2:	movf    PORTE, 0, 0
 		goto    somewhere2
 		movff   KeyPad_Value, numCardsDigit2
 		return
-		
