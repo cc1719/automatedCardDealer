@@ -25,6 +25,7 @@
       <itemPath>settings.s</itemPath>
       <itemPath>TimerInterrupt.s</itemPath>
     </logicalFolder>
+    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
