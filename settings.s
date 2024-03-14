@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
+extrn   LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2, delay
 global  settingsInput, count1, count2
 psect	udata_acs  
 counter:        ds  1
@@ -55,7 +55,7 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumPlayers	
-		
+		call    delay
 		call    LCD_clear
 		call    readPrompt2
 		movf    count2, 0, 0
@@ -89,4 +89,3 @@ oneDigitCards:	movlw   48
 		addwf   numCards, 1, 0
 		
 		return
-		
