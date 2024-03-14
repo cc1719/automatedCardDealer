@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
+extrn   LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
 global  settingsInput, count1, count2
 psect	udata_acs  
 counter:        ds  1
@@ -8,7 +8,6 @@ count1:		ds  1
 count2:		ds  1
 numPlayers:	ds  1
 numCards:	ds  1
-delayVar:	ds  1
  
 psect		settings_code, class = CODE
 
@@ -56,7 +55,8 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumPlayers	
-		call    delay
+		movlw   255
+		call    LCD_delay_ms
 		call    LCD_clear
 		call    readPrompt2
 		movf    count2, 0, 0
@@ -64,7 +64,9 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumCards	
-		call    delay
+		movlw   255
+		call    LCD_delay_ms
+		call    LCD_clear
 		
 		movlw   0xff
 		cpfseq  numPlayersDigit2, 0
@@ -89,12 +91,4 @@ oneDigitCards:	movlw   48
 		movff   PRODL, numCards
 		movf    numCardsDigit2, 0, 0
 		addwf   numCards, 1, 0
-		
 		return
-
-delay:		movlw   0xff
-                movwf   delayVar, A
-		
-countdown:      decfsz  delayVar, A           
-                bra     countdown
-                return
