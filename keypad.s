@@ -18,6 +18,7 @@ numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
 delayVariable:	ds  1
+var:		ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -49,17 +50,23 @@ Check_KeyPress: movlw   0
                 call    KeyPad_Rows
                 call    delay
                 movff   PORTJ, KeyPad_Value, A
-		;movlw   00000001B
-		;andwf   PORTE, 0, 0
-		
+		movlw   00001111B
+		andwf   KeyPad_Value, 1, 0
                 call    KeyPad_Columns
                 call    delay
+		movlw   00000001B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		swapf   var, 1, 0
+		rlncf   var, 1, 0
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
                 iorwf   PORTJ, W, A
+		andwf   var, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 
+		
 KeyPad_Output:	movlw   0
 		movwf   row, A
 		movwf   column, A 
