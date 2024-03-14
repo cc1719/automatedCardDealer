@@ -64,6 +64,7 @@ settingsInput:	call    LCD_Setup
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumCards	
+		call    delay
 		
 		movlw   0xff
 		cpfseq  numPlayersDigit2, 0
