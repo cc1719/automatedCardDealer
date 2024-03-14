@@ -10,7 +10,7 @@ rst:	org	0x0
 	goto	setup
 	
 setup:	
-	;call    settingsInput
-	;goto    $
+	call    settingsInput
+	goto    $
 	
 	end rst
