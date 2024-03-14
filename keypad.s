@@ -169,7 +169,10 @@ here1:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
-somewhere1:	movff   KeyPad_Value, numPlayersDigit2
+somewhere1:	movf    PORTE, 0, 0
+		cpfseq  checkIfPressed, 0
+		goto    somewhere1
+		movff   KeyPad_Value, numPlayersDigit2
 		return
 
 writeNumCards:  call    KeyPad_Setup
@@ -197,6 +200,9 @@ here2:		movf    PORTE, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here2
 		goto    everywhere2	
-somewhere2:	movff   KeyPad_Value, numCardsDigit2
+somewhere2:	movf    PORTE, 0, 0
+		cpfseq  checkIfPressed, 0
+		goto    somewhere2
+		movff   KeyPad_Value, numCardsDigit2
 		return
 		
