@@ -11,7 +11,11 @@ rst:	org	0x0
 	
 setup:	movlw   00000001B 
 	movwf   testVar, A
-	comf    testVar, 0, 0
+	swapf   testVar, 1, 0
+	rlncf   testVar, 1, 0
+	rlncf   testVar, 1, 0
+	rlncf   testVar, 1, 0
+	rlncf   testVar, 1, 0
 	nop
 	;call    settingsInput
 	;goto    $
