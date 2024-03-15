@@ -12,16 +12,19 @@ Servo_Setup:
     movwf	TMR3L		; CHANGE BACK TO TMR0L
     movlw	0x63		; 0x63 for 20ms TMR0
     movwf	TMR3H		; CHANGE BACK TO TMR0H
-    movlw	00110000B
+    movlw	00000000B
     movwf	T3CON, A	; TMR0 is 20ms, time LOW
     bsf		TMR3IE		; Enable timer0 interrupt
-    movlw	01011001B
+    movlw	00111000B
     movwf	T2CON, A	; TMR3 is <Duty Cycle>, time HIGH
     bsf		TMR2IE
     movff	timerH, TMR0H
     movff	timerL, TMR0L
-    movlw	00000111B
+    movlw	00000100B
     movwf	T0CON, A
+    movlw	01111011B
+    movwf	T4CON, A
+    bsf		TMR4IE
     bsf		TMR0IE
     bsf		PEIE
     bsf		GIE
@@ -32,6 +35,8 @@ Servo_Start:
     goto	Duty_cycle
     btfsc	TMR0IF
     goto	Servo_Stop
+    btfsc	TMR4IF
+    goto	DCM_On
     setf	PORTF
     bsf		TMR2ON
     bcf		TMR3IF		; CHANGE BACK TO TMR0IF
@@ -51,5 +56,20 @@ Servo_Stop:
     bcf		TMR3ON
     bcf		TMR0ON
     bcf		TMR0IF
+    btfss	PORTD, 4, A
+    bsf		TMR4ON
     bcf		PORTD, 4, A
+    bcf		PORTA, 1, A
     retfie	f
+    
+DCM_On:
+    bsf	    PORTD, 4, A
+    bsf	    PORTA, 1, A
+    bcf	    TMR4ON
+    bcf	    TMR4IF
+    movlw   0xd8
+    movwf   TMR0H
+    movlw   0xef
+    movwf   TMR0L
+    bsf	    TMR0ON
+    retfie  f

@@ -12,14 +12,10 @@ psect	udata_acs   ; named variables in access ram
     timerL:	ds 1
     rottimeL:	ds 1
     rottimeH:	ds 1
-    NUMERATOR:	ds 1
-    DENOMINATOR:ds 1
-    BitCount:	ds 1
-    Remainder:	ds 1
     
 PSECT	udata_acs_ovr,space=1,ovrld,class=COMRAM
-	rottime	EQU 32000	; LCD enable bit
-    
+	rottime	EQU 31000
+	
 psect	code, abs
 	
 rst:	org	0x0
@@ -31,25 +27,26 @@ int_hi:
 	
 setup:	
 	movlw	0xff
-	movwf	timerL
+	movwf	timerL, A
 	movlw	0xff
-	movwf	timerH
+	movwf	timerH, A
 	movlw	low(rottime)
 	subwf	timerL, F, A
 	movlw	high(rottime)
 	subwfb	timerH, F, A
 	call	Servo_Setup
-	bcf	TRISD, 4, A
-	bcf	PORTD, 4, A
+	clrf	TRISD
+	clrf	TRISA
+	clrf	PORTA
+	clrf	PORTD
     
 main:
-	bsf	PORTD, 4, A
 	call	startservo
 	movlw	0xff
 	movwf	delL, A
 	movlw	0xff
 	movwf	delH, A
-	movlw	0x7f
+	movlw	0x0a
 	movwf	delI, A
 	call	bigdelay
 	goto	main  
@@ -59,12 +56,12 @@ startservo:
 	movff	timerL, TMR0L
 	bsf	TMR0ON
 	return
-	
+
 bigdelay:
     movlw   0x0
 dloop:    
     decf    delL, F, A
-    subwfb  delH, F, A
+     subwfb  delH, F, A
     subwfb  delI, F, A
     bc	    dloop
     return
