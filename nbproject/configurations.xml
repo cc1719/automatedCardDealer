@@ -25,7 +25,6 @@
       <itemPath>Servo.s</itemPath>
       <itemPath>DCM.s</itemPath>
     </logicalFolder>
-    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
