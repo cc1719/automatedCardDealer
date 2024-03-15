@@ -2,7 +2,7 @@
 	
 global	Servo_Setup, Servo_Start
     
-extrn	DCM_Stop, DCM_Reverse
+extrn	DCM_Stop, DCM_Reverse, rottime, timerH, timerL
     
 psect	dac_code, class=CODE
 
@@ -18,6 +18,11 @@ Servo_Setup:
     movlw	01011001B
     movwf	T2CON, A	; TMR3 is <Duty Cycle>, time HIGH
     bsf		TMR2IE
+    movff	timerH, TMR0H
+    movff	timerL, TMR0L
+    movlw	00000111B
+    movwf	T0CON, A
+    bsf		TMR0IE
     bsf		PEIE
     bsf		GIE
     return
@@ -26,9 +31,9 @@ Servo_Start:
     btfsc	TMR2IF
     goto	Duty_cycle
     btfsc	TMR0IF
-    goto	DCM_Reverse
-    btfsc	TMR1IF
-    goto	DCM_Stop
+    goto	Servo_Stop
+;    btfsc	TMR1IF
+;    goto	DCM_Stop
     setf	PORTD
     bsf		TMR2ON
     bcf		TMR3IF		; CHANGE BACK TO TMR0IF
@@ -42,4 +47,11 @@ Duty_cycle:
     clrf	PORTD
     bcf		TMR2ON
     bcf		TMR2IF
+    retfie	f
+
+Servo_Stop:
+    bcf		TMR3ON
+    bcf		TMR0ON
+    bcf		TMR0IF
+    bcf		PORTE, 0, A
     retfie	f

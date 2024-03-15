@@ -5,7 +5,7 @@ global  ADC_Setup, ADC_Read
 psect	adc_code, class=CODE
     
 ADC_Setup:
-	;bsf	TRISA, PORTA_RA0_POSN, A  ; pin RA0==AN0 input
+	bsf	TRISA, PORTA_RA0_POSN, A  ; pin RA0==AN0 input
 	movlw	0x0f
 	movwf	TRISA, A
 	movlw	0x0f
