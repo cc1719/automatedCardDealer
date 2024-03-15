@@ -11,6 +11,8 @@ divisor: ds 1
     
 global  output, arg1, arg2, arg3, divisor, divide
 
+psect	divide_code, class=CODE
+    
 divide:		; arg1 + arg2 should equal one of the products of the 16 bit.
 		movlw   0
 		movwf   output, 0
