@@ -238,7 +238,8 @@ moveOn9:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
-somewhere1:	movlw   00000001B 
+somewhere1:	movff   KeyPad_Value, numPlayersDigit2
+		movlw   00000001B 
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
@@ -269,7 +270,6 @@ zero10:		bcf     var2, 2, 0
 moveOn10:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
-		movff   var2, numPlayersDigit2
 		;movlw   255
 		;call    LCD_delay_ms
 		return
@@ -329,7 +329,8 @@ moveOn13:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here9
 		goto    everywhere9	
-somewhere9:	movlw   00000001B 
+somewhere9:	movff   KeyPad_Value, numCardsDigit2
+		movlw   00000001B 
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
@@ -360,7 +361,6 @@ zero16:		bcf     var2, 2, 0
 moveOn16:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
-		movff   var2, numCardsDigit2
 		;movlw   255
 		;call    LCD_delay_ms
 		return
