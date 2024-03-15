@@ -2,7 +2,7 @@
 
 extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, var, var2, rest
+global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, var, var2
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -20,7 +20,6 @@ test:		ds  1
 delayVariable:	ds  1
 var:		ds  1
 var2:		ds  1
-reset:		ds  1
    
 psect		KeyPad_code, class = CODE
 
