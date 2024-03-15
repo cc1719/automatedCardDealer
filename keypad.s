@@ -222,18 +222,18 @@ moveOn2:	movlw   00000010B
 		tstfsz  var, 0
 		goto    notZero8
 		goto    zero8
-notZero8:	bsf     KeyPad_Value, 6, 0
+notZero8:	bsf     var2, 6, 0
 		goto    moveOn8
-zero8:		bcf     KeyPad_Value, 6, 0
+zero8:		bcf     var2, 6, 0
 moveOn8:	movlw   00001000B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
 		goto    notZero9
 		goto    zero9
-notZero9:	bsf     KeyPad_Value, 2, 0
+notZero9:	bsf     var2, 2, 0
 		goto    moveOn9
-zero9:		bcf     KeyPad_Value, 2, 0
+zero9:		bcf     var2, 2, 0
 moveOn9:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
@@ -254,18 +254,18 @@ moveOn4:	movlw   00000010B
 		tstfsz  var, 0
 		goto    notZero20
 		goto    zero20
-notZero20:	bsf     KeyPad_Value, 6, 0
+notZero20:	bsf     var2, 6, 0
 		goto    moveOn20
-zero20:		bcf     KeyPad_Value, 6, 0
+zero20:		bcf     var2, 6, 0
 moveOn20:	movlw   00001000B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
 		goto    notZero10
 		goto    zero10
-notZero10:	bsf     KeyPad_Value, 2, 0
+notZero10:	bsf     var2, 2, 0
 		goto    moveOn10
-zero10:		bcf     KeyPad_Value, 2, 0
+zero10:		bcf     var2, 2, 0
 moveOn10:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
@@ -313,18 +313,18 @@ moveOn11:	movlw   00000010B
 		tstfsz  var, 0
 		goto    notZero12
 		goto    zero12
-notZero12:	bsf     KeyPad_Value, 6, 0
+notZero12:	bsf     var2, 6, 0
 		goto    moveOn12
-zero12:		bcf     KeyPad_Value, 6, 0
+zero12:		bcf     var2, 6, 0
 moveOn12:	movlw   00001000B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
 		goto    notZero13
 		goto    zero13
-notZero13:	bsf     KeyPad_Value, 2, 0
+notZero13:	bsf     var2, 2, 0
 		goto    moveOn13
-zero13:		bcf     KeyPad_Value, 2, 0
+zero13:		bcf     var2, 2, 0
 moveOn13:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here9
@@ -345,18 +345,18 @@ moveOn14:	movlw   00000010B
 		tstfsz  var, 0
 		goto    notZero15
 		goto    zero15
-notZero15:	bsf     KeyPad_Value, 6, 0
+notZero15:	bsf     var2, 6, 0
 		goto    moveOn15
-zero15:		bcf     KeyPad_Value, 6, 0
+zero15:		bcf     var2, 6, 0
 moveOn15:	movlw   00001000B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
 		goto    notZero16
 		goto    zero16
-notZero16:	bsf     KeyPad_Value, 2, 0
+notZero16:	bsf     var2, 2, 0
 		goto    moveOn16
-zero16:		bcf     KeyPad_Value, 2, 0
+zero16:		bcf     var2, 2, 0
 moveOn16:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
