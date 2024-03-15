@@ -38,23 +38,34 @@ Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
 
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISJ, A
-		bcf     TRISE, 3, 0
+		bcf     TRISE, 0, 0
+		bcf     TRISE, 1, 0
+		bsf     TRISE, 3, 0
                 return
     
 KeyPad_Columns:
                 movlw   0xf0
                 movwf   TRISJ, A
-		bsf     TRISE, 3, 0
+		bsf     TRISE, 0, 0
+		bsf     TRISE, 1, 0
+		bcf     TRISE, 3, 0
                 return
     
 Check_KeyPress: movlw   0
 		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
-		goto    $
                 call    delay
                 movff   PORTJ, KeyPad_Value, A
-		bcf     KeyPad_Value, 5, 0
-                call    KeyPad_Columns
+		movlw   00001000B
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero6
+		goto    zero6
+notZero6:	bsf     KeyPad_Value, 2, 0
+		goto    moveOn6
+zero6:		bcf     KeyPad_Value, 2, 0
+moveOn6:	call    KeyPad_Columns	
 		call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
@@ -69,10 +80,19 @@ Check_KeyPress: movlw   0
 notZero1:	bsf     KeyPad_Value, 5, 0
 		goto    moveOn1
 zero1:		bcf     KeyPad_Value, 5, 0
-moveOn1:	movf    KeyPad_Value, 0, 0
+moveOn1:	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero7
+		goto    zero7
+notZero7:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn7
+zero7:		bcf     KeyPad_Value, 6, 0
+moveOn7:	movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
-
+		goto    Check_KeyPress
 KeyPad_Output:	movlw   0
 		movwf   row, A
 		movwf   column, A 
