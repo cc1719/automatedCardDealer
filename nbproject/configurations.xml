@@ -24,6 +24,7 @@
       <itemPath>LCD.s</itemPath>
       <itemPath>settings.s</itemPath>
       <itemPath>TimerInterrupt.s</itemPath>
+      <itemPath>timer2.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -1204,6 +1205,8 @@
                   value="Press to select which tool pack to use"/>
         <property key="voltagevalue" value="3.25"/>
       </pk4hybrid>
+      <item path="timer2.s" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
