@@ -11,9 +11,9 @@ main:	movlw   140
 	movlw   109
 	movwf   arg2, 0
 	movlw   100
-	;movwf   arg3, 0
-	;movlw   5
-	;movwf   divisor, 0
-	;call    divide	
+	movwf   arg3, 0
+	movlw   5
+	movwf   divisor, 0
+	call    divide	
 	nop		
 	end	rst
