@@ -284,46 +284,82 @@ writeNumCards:  call    KeyPad_Setup
 		movlw   0xff
 		movwf   numCardsDigit1, A
 		movwf   numCardsDigit2, A
-everywhere2:	call    Check_KeyPress
+everywhere9:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    there2
+		goto    there9
 		return
-there2:		call    LCD_Send_Byte_D
+there9:		call    LCD_Send_Byte_D
 		;movlw   255
 		;call    LCD_delay_ms
 		tstfsz  test, 0
-		goto    somewhere2
+		goto    somewhere9
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
-here2:		movlw   00000001B 
+here9:		movlw   00000001B 
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
 		tstfsz  var, 0
-		goto    notZero3
-		goto    zero3
-notZero3:	bsf     var2, 5, 0
-		goto    moveOn3
-zero3:		bcf     var2, 5, 0		
-moveOn3:	movf    var2, 0, 0    
+		goto    notZero11
+		goto    zero11
+notZero11:	bsf     var2, 5, 0
+		goto    moveOn11
+zero11:		bcf     var2, 5, 0		
+moveOn11:	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero12
+		goto    zero12
+notZero12:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn12
+zero12:		bcf     KeyPad_Value, 6, 0
+moveOn12:	movlw   00001000B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero13
+		goto    zero13
+notZero13:	bsf     KeyPad_Value, 2, 0
+		goto    moveOn13
+zero13:		bcf     KeyPad_Value, 2, 0
+moveOn13:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
-		goto    here2
-		goto    everywhere2	
-somewhere2:	movlw   00000001B 
+		goto    here9
+		goto    everywhere9	
+somewhere9:	movlw   00000001B 
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
 		tstfsz  var, 0
-		goto    notZero5
-		goto    zero5
-notZero5:	bsf     var2, 5, 0
-		goto    moveOn5
-zero5:		bcf     var2, 5, 0		
-moveOn5:	movf    var2, 0, 0
+		goto    notZero14
+		goto    zero14
+notZero14:	bsf     var2, 5, 0
+		goto    moveOn14
+zero14:		bcf     var2, 5, 0		
+moveOn14:	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero15
+		goto    zero15
+notZero15:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn15
+zero15:		bcf     KeyPad_Value, 6, 0
+moveOn15:	movlw   00001000B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero16
+		goto    zero16
+notZero16:	bsf     KeyPad_Value, 2, 0
+		goto    moveOn16
+zero16:		bcf     KeyPad_Value, 2, 0
+moveOn16:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
-		goto    somewhere2
+		goto    somewhere1
 		movff   var2, numCardsDigit2
 		;movlw   255
 		;call    LCD_delay_ms
