@@ -8,13 +8,15 @@ remainder1: ds 1
 remainder2: ds 1
 divisor: ds 1
 
-global  test
+global  output, arg1, arg2, remainder1, remainder2, divisor
     
 psect	code, abs
 	
 rst:	org	0x0
 
 divide:	;arg1 + arg2 should equal the 16 bit number to be divided.
+		movlw   0
+		movwf   output, 0
 		movf    arg1, 0, 0
 		cpfslt  divisor, 0
 		goto    continue1
@@ -45,4 +47,12 @@ end2:		movwf   remainder2, 0
 		incf    output, 1, 0
 		return
 		
+		movlw   20
+		movwf   arg1, 0
+		movlw   13
+		movwf   arg2, 0
+		movlw   6
+		movwf   divisor, 0
+		call    divide
+		nop
 		end	rst
