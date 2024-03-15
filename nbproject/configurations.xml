@@ -21,8 +21,8 @@
       <itemPath>config.s</itemPath>
       <itemPath>TimerInterrupt.s</itemPath>
       <itemPath>keypad.s</itemPath>
+      <itemPath>divide.s</itemPath>
     </logicalFolder>
-    <itemPath>LCD.s</itemPath>
     <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
@@ -72,6 +72,12 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <item path="LCD.s" ex="true" overriding="false">
+        <pic-as-assembler>
+        </pic-as-assembler>
+        <pic-as-global>
+        </pic-as-global>
+        <pic-as-linker>
+        </pic-as-linker>
       </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
@@ -1087,6 +1093,12 @@
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
       <item path="keypad.s" ex="true" overriding="false">
+        <pic-as-assembler>
+        </pic-as-assembler>
+        <pic-as-global>
+        </pic-as-global>
+        <pic-as-linker>
+        </pic-as-linker>
       </item>
       <item path="main.s" ex="false" overriding="false">
         <pic-as-assembler>
