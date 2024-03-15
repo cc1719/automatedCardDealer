@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	Servo_Setup, Servo_Start, DCM_Setup, DCM_Start, ADC_Setup, ADC_Read, LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Write_Dec, LCD_Send_Byte_D, LCD_clear, LCD_line1
+extrn	Servo_Setup, Servo_Start
 
 global	rottime, timerH, timerL    
 
@@ -18,7 +18,7 @@ psect	udata_acs   ; named variables in access ram
     Remainder:	ds 1
     
 PSECT	udata_acs_ovr,space=1,ovrld,class=COMRAM
-	rottime	EQU 33000	; LCD enable bit
+	rottime	EQU 32000	; LCD enable bit
     
 psect	code, abs
 	
@@ -30,11 +30,6 @@ int_hi:
 	goto	Servo_Start
 	
 setup:	
-	bcf	CFGS	; point to Flash program memory  
-	bsf	EEPGD 	; access Flash program memory
-	;call	LCD_Setup	; setup LCD
-	;call	DCM_Setup
-	;call	ADC_Setup
 	movlw	0xff
 	movwf	timerL
 	movlw	0xff
@@ -44,12 +39,11 @@ setup:
 	movlw	high(rottime)
 	subwfb	timerH, F, A
 	call	Servo_Setup
-	movlw	11110000B
-	movwf	TRISE
-	clrf	PORTE
+	bcf	TRISD, 4, A
+	bcf	PORTD, 4, A
     
 main:
-	bsf	PORTE, 0, A
+	bsf	PORTD, 4, A
 	call	startservo
 	movlw	0xff
 	movwf	delL, A
