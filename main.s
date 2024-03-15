@@ -10,7 +10,7 @@ main:	movlw   140
 	movwf   arg1, 0
 	movlw   109
 	movwf   arg2, 0
-	movlw   227
+	movlw   100
 	movwf   arg3, 0
 	movlw   5
 	movwf   divisor, 0
