@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn	Servo_Setup, Servo_Start
+extrn	Servo_Setup, Servo_Start, divide
 
 global	rottime, timerH, timerL    
 
@@ -26,14 +26,15 @@ int_hi:
 	goto	Servo_Start
 	
 setup:	
+	call	divide
 	movlw	0xff
 	movwf	timerL, A
 	movlw	0xff
 	movwf	timerH, A
-	movlw	low(rottime)
+	movf	PRODL, W, A
 	subwf	timerL, F, A
-	movlw	high(rottime)
-	subwfb	timerH, F, A
+	movf	PRODH, W, A
+   	subwfb	timerH, F, A
 	call	Servo_Setup
 	clrf	TRISD
 	clrf	TRISA

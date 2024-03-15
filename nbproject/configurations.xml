@@ -21,9 +21,10 @@
       <itemPath>config.s</itemPath>
       <itemPath>keypad.s</itemPath>
       <itemPath>nbproject/configurations.xml</itemPath>
-      <itemPath>LCD.s</itemPath>
       <itemPath>Servo.s</itemPath>
+      <itemPath>divide.s</itemPath>
     </logicalFolder>
+    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
