@@ -9,7 +9,7 @@ resetVar:   ds 1
 psect	dac_code, class=CODE
 
 timer2Setup:
-	    movlw   00000100B
+	    movlw   0
 	    movwf   T2CON, A
 	    return
 	    
