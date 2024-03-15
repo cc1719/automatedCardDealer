@@ -360,7 +360,7 @@ notZero16:	bsf     var2, 2, 0
 zero16:		bcf     var2, 2, 0
 moveOn16:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
-		goto    somewhere1
+		goto    somewhere9
 		;movlw   255
 		;call    LCD_delay_ms
 		return
