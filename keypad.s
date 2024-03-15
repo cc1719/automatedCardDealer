@@ -252,12 +252,12 @@ moveOn4:	movlw   00000010B
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
-		goto    notZero9
-		goto    zero9
-notZero9:	bsf     KeyPad_Value, 6, 0
-		goto    moveOn9
-zero9:		bcf     KeyPad_Value, 6, 0
-moveOn9:	movlw   00001000B 
+		goto    notZero20
+		goto    zero20
+notZero20:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn20
+zero20:		bcf     KeyPad_Value, 6, 0
+moveOn20:	movlw   00001000B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
