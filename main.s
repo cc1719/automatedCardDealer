@@ -15,6 +15,7 @@ int_hi: org	0x0008
 main:	call    timer2Setup
 	bsf     TMR2IE
 	bsf     GIE
+	bsf	PEIE
 	call    settingsInput
 	goto    $
 	
