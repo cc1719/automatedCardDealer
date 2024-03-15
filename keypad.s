@@ -92,7 +92,7 @@ zero7:		bcf     KeyPad_Value, 6, 0
 moveOn7:	movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
-		goto    Check_KeyPress
+	
 KeyPad_Output:	movlw   0
 		movwf   row, A
 		movwf   column, A 
@@ -216,7 +216,25 @@ here1:		movlw   00000001B
 notZero2:	bsf     var2, 5, 0
 		goto    moveOn2
 zero2:		bcf     var2, 5, 0		
-moveOn2:	movf    var2, 0, 0
+moveOn2:	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero8
+		goto    zero8
+notZero8:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn8
+zero8:		bcf     KeyPad_Value, 6, 0
+moveOn8:	movlw   00001000B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero9
+		goto    zero9
+notZero9:	bsf     KeyPad_Value, 2, 0
+		goto    moveOn9
+zero9:		bcf     KeyPad_Value, 2, 0
+moveOn9:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    here1
 		goto    everywhere1	
@@ -230,7 +248,25 @@ somewhere1:	movlw   00000001B
 notZero4:	bsf     var2, 5, 0
 		goto    moveOn4
 zero4:		bcf     var2, 5, 0		
-moveOn4:	movf    var2, 0, 0
+moveOn4:	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero9
+		goto    zero9
+notZero9:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn9
+zero9:		bcf     KeyPad_Value, 6, 0
+moveOn9:	movlw   00001000B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero10
+		goto    zero10
+notZero10:	bsf     KeyPad_Value, 2, 0
+		goto    moveOn10
+zero10:		bcf     KeyPad_Value, 2, 0
+moveOn10:	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    somewhere1
 		movff   var2, numPlayersDigit2
