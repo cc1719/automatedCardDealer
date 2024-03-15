@@ -38,18 +38,19 @@ Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
 
 KeyPad_Rows:	movlw   0x0f
                 movwf   TRISJ, A
-		bcf     TRISE, 0, 0
+		bcf     TRISE, 3, 0
                 return
     
 KeyPad_Columns:
                 movlw   0xf0
                 movwf   TRISJ, A
-		bsf     TRISE, 0, 0
+		bsf     TRISE, 3, 0
                 return
     
 Check_KeyPress: movlw   0
 		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
+		goto    $
                 call    delay
                 movff   PORTJ, KeyPad_Value, A
 		bcf     KeyPad_Value, 5, 0
