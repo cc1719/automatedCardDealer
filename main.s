@@ -16,16 +16,7 @@ psect	code, abs
 ;rst:	org	0x0
 ;	goto	setup
 
-int_hi:	
-	org	0x0008	; high vector, no low vector
-	goto	Timer0
-	
-setup:	
-	movlw	HIGH(dutycycle)
-	movwf	dutytimeH, A
-	movlw	LOW(dutycycle)
-	movwf	dutytimeL, A
-	call	PWM_Setup
+;test
     
 main:
 	goto	$
