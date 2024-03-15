@@ -9,17 +9,19 @@ remainder1: ds 1
 remainder2: ds 1
 divisor: ds 1
     
-global  output, arg1, arg2, remainder1, remainder2, divisor
+global  output, arg1, arg2, arg3, remainder1, remainder2, divisor
     
 psect	code, abs
 	
 rst:	org	0x0
 
-		movlw   250
+		movlw   140
 		movwf   arg1, 0
-		movlw   240
+		movlw   109
 		movwf   arg2, 0
-		movlw   6
+		movlw   227
+		movwf   arg3, 0
+		movlw   5
 		movwf   divisor, 0
 		call    divide	
 		nop
