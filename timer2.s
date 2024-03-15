@@ -11,7 +11,9 @@ psect	dac_code, class=CODE
 timer2Setup:
 	    movlw   01111010B
 	    movwf   T2CON, A
-	    call    KeyPad_Setup
+	    bsf     TMR2IE
+	    bsf     GIE
+	    bsf	    PEIE
 	    return
 	    
 timer2:	    btfss   TMR2IF
