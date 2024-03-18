@@ -2,6 +2,8 @@
 
 global  divide
 
+extrn numPlayers
+    
 psect	udata_acs
 arg1:	 ds 1 
 arg2:	 ds 1 ; arg1 + arg2 should equal one factor of the total number to be divided - max = 510, dont divide by 1.
@@ -20,8 +22,7 @@ divide:		; arg1 + arg2 should equal one of the products of the 16 bit.
 		movwf   arg2, 0
 		movlw   155
 		movwf   arg3, 0
-		movlw   2
-		movwf   divisor, 0
+		movff	numPlayers, divisor, A
 		movlw   0
 		movwf   output, 0
     	        movf    arg1, 0, 0
