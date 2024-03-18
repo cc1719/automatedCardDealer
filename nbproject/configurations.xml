@@ -22,8 +22,10 @@
       <itemPath>nbproject/keypad.s</itemPath>
       <itemPath>nbproject/LCD.s</itemPath>
       <itemPath>nbproject/settings.s</itemPath>
+      <itemPath>Servo.s</itemPath>
+      <itemPath>divide.s</itemPath>
+      <itemPath>main.s</itemPath>
     </logicalFolder>
-    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
@@ -33,7 +35,7 @@
     <conf name="default" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <targetDevice>PIC18F87K22</targetDevice>
+        <targetDevice>PIC18F87J50</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
         <platformTool>pk4hybrid</platformTool>
@@ -42,7 +44,7 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.8.249"/>
+        <pack name="PIC18F-J_DFP" vendor="Microchip" version="1.6.157"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -1155,6 +1157,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/Users/cc1719/OneDrive - Imperial College London/Y3/PHYS60004 - 3rd Year Lab/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
