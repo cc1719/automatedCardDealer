@@ -2,20 +2,15 @@
 
 extrn   LCD_clear, settingsInput, Servo_Setup, Servo_Start, divide, numCards, numPlayers	
 
-global	rottime, timerH, timerL, cardno 
+global	cardno, timerL, timerH
     
 psect	udata_acs   ; reserve data space in access ram
     delL:	ds 1	
     delH:	ds 1	
     delI:	ds 1
-    timerH:	ds 1
     timerL:	ds 1
-    rottimeL:	ds 1
-    rottimeH:	ds 1
+    timerH: 	ds 1
     cardno:	ds 1
-    
-PSECT	udata_acs_ovr,space=1,ovrld,class=COMRAM
-	rottime	EQU 31000		; Calibrated for one rotation of continuous servo
 
 psect	code, abs
 	
@@ -31,15 +26,10 @@ setup:
 	movf	numCards, W, A
 	mulwf	numPlayers, A
 	movff	PRODL, cardno, A	; Total number of DCM spins stored in cardno
-	call	divide			; Calculation for Servo rotation
 	movlw	0xff
 	movwf	timerL, A
-	movlw	0xff
+	movlw	0x7f
 	movwf	timerH, A
-	movf	PRODL, W, A
-	subwf	timerL, F, A
-	movf	PRODH, W, A
-   	subwfb	timerH, F, A
 	call	Servo_Setup		; Servo.s setup
 	goto	main
 
