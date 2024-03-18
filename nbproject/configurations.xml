@@ -17,14 +17,12 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.s</itemPath>
-      <itemPath>config.s</itemPath>
-      <itemPath>keypad.s</itemPath>
       <itemPath>nbproject/configurations.xml</itemPath>
       <itemPath>LCD.s</itemPath>
+      <itemPath>config.s</itemPath>
+      <itemPath>keypad.s</itemPath>
+      <itemPath>main.s</itemPath>
       <itemPath>settings.s</itemPath>
-      <itemPath>TimerInterrupt.s</itemPath>
-      <itemPath>timer2.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -38,7 +36,7 @@
         <targetDevice>PIC18F87J50</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>pk4hybrid</platformTool>
+        <platformTool>Simulator</platformTool>
         <languageToolchain>pic-as</languageToolchain>
         <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>3</platform>
@@ -547,14 +545,6 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
-      <item path="TimerInterrupt.s" ex="true" overriding="false">
-        <pic-as-assembler>
-        </pic-as-assembler>
-        <pic-as-global>
-        </pic-as-global>
-        <pic-as-linker>
-        </pic-as-linker>
-      </item>
       <Tool>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="Freeze Peripherals" value="true"/>
@@ -576,7 +566,6 @@
         <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="true"/>
-        <property key="event.recorder.debugger.behavior" value="Running"/>
         <property key="event.recorder.enabled" value="false"/>
         <property key="event.recorder.scvd.files" value=""/>
         <property key="freeze.timers" value="false"/>
@@ -612,7 +601,7 @@
         <property key="periphComp4.gte" value="gt"/>
         <property key="periphComp5.gte" value="gt"/>
         <property key="periphComp6.gte" value="gt"/>
-        <property key="poweroptions.powerenable" value="true"/>
+        <property key="poweroptions.powerenable" value="false"/>
         <property key="programmerToGoFilePath"
                   value="C:/Users/cc1719/OneDrive - Imperial College London/Y3/PHYS60004 - 3rd Year Lab/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
@@ -636,7 +625,6 @@
         <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.smart.program" value="When debugging only"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="ptgProgramImage" value="true"/>
         <property key="ptgSendImage" value="true"/>
@@ -1088,14 +1076,6 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
-      <item path="keypad.s" ex="false" overriding="false">
-        <pic-as-assembler>
-        </pic-as-assembler>
-        <pic-as-global>
-        </pic-as-global>
-        <pic-as-linker>
-        </pic-as-linker>
-      </item>
       <pic-as-assembler>
         <property key="fmax-errors" value="20"/>
         <property key="list-custom-assembler-options" value=""/>
@@ -1174,7 +1154,7 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
-        <property key="poweroptions.powerenable" value="true"/>
+        <property key="poweroptions.powerenable" value="false"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
@@ -1205,14 +1185,6 @@
                   value="Press to select which tool pack to use"/>
         <property key="voltagevalue" value="3.25"/>
       </pk4hybrid>
-      <item path="timer2.s" ex="true" overriding="false">
-        <pic-as-assembler>
-        </pic-as-assembler>
-        <pic-as-global>
-        </pic-as-global>
-        <pic-as-linker>
-        </pic-as-linker>
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>
