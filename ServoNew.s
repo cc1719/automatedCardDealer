@@ -7,7 +7,7 @@ global	Servo_Setup, Servo_Start
 psect	servo_code, class=CODE
 
 Servo_Setup:
-    clrf	TRISF
+    clrf	TRISF		; port f controls continuous servo
     movlw	0xc0		; 0xc0 for 20ms TMR0
     movwf	TMR3L		; CHANGE BACK TO TMR0L
     movlw	0x63		; 0x63 for 20ms TMR0
@@ -39,7 +39,7 @@ Servo_Start:
     goto	Duty_cycle
     btfsc	TMR0IF
     goto	Servo_Stop
-    btfsc	TMR4IF
+    btfsc	TMR4IF   ; timer 4 measures full length of PWM
     goto	DCM_On
     setf	PORTF
     bsf		TMR2ON
@@ -50,13 +50,13 @@ Servo_Start:
     movwf	TMR3H		; CHANGE BACK TO TMR0H
     retfie	f
 
-Duty_cycle:
+Duty_cycle: ;measured by timer 2
     clrf	PORTF
     bcf		TMR2ON
     bcf		TMR2IF
     retfie	f
 
-Servo_Stop:
+Servo_Stop:  ; servo time measured by timer 0
     bcf		TMR3ON
     bcf		TMR0ON
     bcf		TMR0IF
