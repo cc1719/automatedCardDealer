@@ -23,6 +23,8 @@
       <itemPath>keypad.s</itemPath>
       <itemPath>main.s</itemPath>
       <itemPath>settings.s</itemPath>
+      <itemPath>settingsNew.s</itemPath>
+      <itemPath>keypadNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
