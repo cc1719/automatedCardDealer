@@ -2,7 +2,7 @@
 	
 global	Servo_Setup, Servo_Start
     
-extrn	rottime, timerH, timerL
+extrn	rottime, timerH, timerL, cardno
     
 psect	dac_code, class=CODE
 
@@ -26,6 +26,8 @@ Servo_Setup:
     movwf	T4CON, A
     bsf		TMR4IE
     bsf		TMR0IE
+    clrf	PORTB
+    clrf	TRISB
     bsf		PEIE
     bsf		GIE
     return
@@ -57,9 +59,11 @@ Servo_Stop:
     bcf		TMR0ON
     bcf		TMR0IF
     btfss	PORTD, 4, A
-    bsf		TMR4ON
+    goto	Motor_Break
     bcf		PORTD, 4, A
     bcf		PORTA, 1, A
+    decf	cardno, A
+    bcf		PORTB, 0, A
     retfie	f
     
 DCM_On:
@@ -73,3 +77,7 @@ DCM_On:
     movwf   TMR0L
     bsf	    TMR0ON
     retfie  f
+
+Motor_Break: 
+    bsf		TMR4ON
+    retfie	f
