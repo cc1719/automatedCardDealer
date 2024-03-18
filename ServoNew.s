@@ -69,8 +69,8 @@ Servo_Stop:  ; servo time measured by timer 0
     retfie	f
     
 DCM_On:
-    bsf	    PORTD, 4, A
-    bsf	    PORTA, 1, A
+    bsf	    PORTD, 4, A  ; control dc motor
+    bsf	    PORTA, 1, A  ;  control dc motor
     bcf	    TMR4ON
     bcf	    TMR4IF
     movlw   0xd8
