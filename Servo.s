@@ -5,7 +5,7 @@ extrn	rottime, timerH, timerL, cardno
 global	Servo_Setup, Servo_Start
     
 psect	servo_code, class=CODE
-;test
+
 Servo_Setup:
     clrf	TRISF
     movlw	0xc0		; 0xc0 for 20ms TMR0
