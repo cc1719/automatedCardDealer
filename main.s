@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_clear, settingsInput, Servo_Setup, Servo_Start, divide, numCards, numPlayers	
+extrn   LCD_clear, settingsInput, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers	
 
 global	cardno, timerL, timerH
     
@@ -11,6 +11,8 @@ psect	udata_acs   ; reserve data space in access ram
     timerL:	ds 1
     timerH: 	ds 1
     cardno:	ds 1
+    currentPlayer: ds 1
+    posdelta: 	ds 1
 
 psect	code, abs
 	
@@ -19,23 +21,23 @@ rst:	org	0x0
 
 int_hi:	
 	org	0x0008	; high vector, no low vector
-	goto	Servo_Start
+	goto	Interrupt_Check
 	
 setup:	
-	call    settingsInput		; Run Keypad & LCD Scripts, output numCards & numPlayers
-	movf	numCards, W, A
-	mulwf	numPlayers, A
-	movff	PRODL, cardno, A	; Total number of DCM spins stored in cardno
+	call	Servo_Setup			; Servo.s setup
+ 	bsf	TMR3ON				; Start PWM on Servo
+	call    settingsInput			; Run Keypad & LCD Scripts, output numCards & numPlayers
 	movlw	0xff
 	movwf	timerL, A
 	movlw	0x7f
-	movwf	timerH, A
-	call	Servo_Setup		; Servo.s setup
+	movwf	timerH, A			; Time for Servo to reach desired position
+ 	movff	numPlayers, currentPlayer, A 	; currentPlayer will count down as dealer faces relevant player
+ 	; insert divide code here to set posdelta
 	goto	main
 
 main:
 	btfss	PORTA, 7, A		; Check if interrupt is currently actively dealing a card
-	call	Dealing			; If not, move to Deal function
+	goto	Dealing			; If not, move to Deal function
 	goto	main			; Repeatedly check this flag
 
 Dealing:
@@ -46,17 +48,34 @@ Dealing:
 	movlw	0x05
 	movwf	delI, A
 	call	bigdelay		; Implemented manual 32bit delay so that there is break between dealt card and servo rotation
-	tstfsz	cardno, A		; Check if machine has dealt all the necesary cards
-	call	startservo		; If not, move servo and DCM to deal a card
-	return
-	
-startservo:
-	bsf	TMR3ON			; Start PWM on Servo
+ 	movlw	0x00
+  	cpfsgt	numCards, A		; Check if all players have been dealt cards
+   	goto 	$			; If yes, end code
+  	cpfsgt	currentPlayer, A	; Check if dealer has moved to final player position
+   	goto	Player1			; If yes, return to player 1 and deal
+	movf	numPlayers, W, A
+ 	cpfseq	currentPlayer, A	; Check if dealer is facing player 1
+  	goto	Next_Player		; If not, move to next player and deal
+   	goto	Deal_card		; If yes, deal a card
+
+Player1: 				; Dealer has dealt to last player, back to player 1
+	decf	numCards
+ 	movff	numPlayers, currentPlayer, A
+ 	movlw	0x32
+  	movwf	PR2, A
+   	goto	Deal_card
+
+Next_Player: 				; Dealer has dealt to player 1, move on to next
+	movf	posdelta, W, A
+   	addwf	PR2, F, A
+    	goto	Deal_card
+ 
+Deal_card:
 	bsf	PORTA, 7, A		; Set flag - card is being dispensed!
 	movff	timerH, TMR0H
 	movff	timerL, TMR0L
 	bsf	TMR0ON			; Timer0 sets how long servo should spin - timerH and timerL were calculated in divide.s
-	return
+	goto	main
 
 bigdelay: 				; 32bit delay function
     movlw   0x00
