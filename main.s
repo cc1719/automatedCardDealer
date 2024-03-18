@@ -27,7 +27,7 @@ int_hi:
 	goto	Servo_Start
 	
 setup:	
-	movlw	0x5
+	movlw	0xA
 	movwf	cardno, A
 	call	divide
 	movlw	0xff
@@ -38,10 +38,6 @@ setup:
 	subwf	timerL, F, A
 	movf	PRODH, W, A
    	subwfb	timerH, F, A
-	clrf	TRISD
-	clrf	TRISA
-	clrf	PORTA
-	clrf	PORTD
 	call	Servo_Setup
 	nop
  
@@ -50,7 +46,14 @@ main:
 	call	Dealing
 	goto	main
 
-Dealing: 
+Dealing:
+	movlw	0xff
+	movwf	delL, A
+	movlw	0xff
+	movwf	delH, A
+	movlw	0x05
+	movwf	delI, A
+	call	bigdelay
 	tstfsz	cardno, A
 	call	startservo
 	return
@@ -62,3 +65,12 @@ startservo:
 	movff	timerL, TMR0L
 	bsf	TMR0ON
 	return
+
+bigdelay: 
+    movlw   0x00
+dloop: 
+    decf    delL, F, A
+    subwfb  delH, F, A
+    subwfb  delI, F, A
+    bc	    dloop
+    return

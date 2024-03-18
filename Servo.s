@@ -28,6 +28,10 @@ Servo_Setup:
     bsf		TMR0IE
     clrf	PORTB
     clrf	TRISB
+    clrf	TRISD
+    clrf	TRISA
+    clrf	PORTA
+    clrf	PORTD
     bsf		PEIE
     bsf		GIE
     return
