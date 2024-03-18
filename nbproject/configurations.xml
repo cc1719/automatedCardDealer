@@ -25,6 +25,7 @@
       <itemPath>Servo.s</itemPath>
       <itemPath>divide.s</itemPath>
       <itemPath>main.s</itemPath>
+      <itemPath>ServoNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -73,6 +74,8 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
+      <item path="Servo.s" ex="true" overriding="false">
+      </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>
@@ -1157,6 +1160,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/Users/ncw21/OneDrive - Imperial College London/Year 3/Year 3 Lab/Microprocessors/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
