@@ -1,9 +1,11 @@
 #include <xc.inc>
 
 extrn   LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global  settingsInput, count1, count2, numPlayers, numCards
+
+global  settingsInput, count1, count2, numPlayers, numCards   
+
 psect	udata_acs  
-counter:        ds  1
+counter:        ds  1    ; reserve 1 byte in access RAM for the following variables.
 count1:		ds  1
 count2:		ds  1
 numPlayers:	ds  1
@@ -11,11 +13,13 @@ numCards:	ds  1
  
 psect		settings_code, class = CODE
 
-storedMessage1: db     'Enter no players'
-		message1  EQU 0x240
+storedMessage1: db     'Enter no players'       ; Stores the input prompts in program memory.
+		message1  EQU 0x240	    	; Location to copy to in RAM.
+  
 storedMessage2: db     'Enter no cards'
 		message2  EQU 0x250
-readPrompt1:	lfsr    2, message1
+  
+readPrompt1:	lfsr    2, message1		; Load file select register 2 with the location of prompt1.
 		movlw   low highword(storedMessage1)
 		movwf   TBLPTRU, A
 		movlw   high(storedMessage1)
