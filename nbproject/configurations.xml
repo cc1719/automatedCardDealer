@@ -26,7 +26,6 @@
       <itemPath>config.s</itemPath>
       <itemPath>LCDNEWW.s</itemPath>
     </logicalFolder>
-    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
