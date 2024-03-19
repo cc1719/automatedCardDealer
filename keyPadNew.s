@@ -34,14 +34,14 @@ Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
 		db      01000110B, 01000101B, 01000100B, 01000011B
 		Lookup_Table  EQU 0x300
 
-KeyPad_Rows:	movlw   0x0f
+KeyPad_Columns:	movlw   0x0f
                 movwf   TRISJ, A
 		bcf     TRISE, 0, 0
 		bcf     TRISE, 1, 0
 		bsf     TRISE, 3, 0
                 return
     
-KeyPad_Columns:
+KeyPad_Rows:
                 movlw   0xf0
                 movwf   TRISJ, A
 		bsf     TRISE, 0, 0
@@ -78,11 +78,11 @@ zero3:		bcf     KeyPad_Value, 2, 0
     
 Check_KeyPress: movlw   0
 		movwf   KeyPad_Value, A
-                call    KeyPad_Rows
+                call    KeyPad_Columns
                 call    delay
 		movff   PORTJ, KeyPad_Value, A
                 call    Convert
-	    	call    KeyPad_Columns	
+	    	call    KeyPad_Rows
 		call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
