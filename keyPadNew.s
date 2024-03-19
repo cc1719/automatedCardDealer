@@ -2,7 +2,7 @@
 
 extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms, LCD_clear
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, var, var2, Write_Y_Or_N, resetVar
+global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, Write_Y_Or_N, resetVar
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -18,8 +18,6 @@ numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
 delayVariable:	ds  1
-var:		ds  1
-var2:		ds  1
 resetVar:	ds  1
    
 psect		KeyPad_code, class = CODE
@@ -55,8 +53,7 @@ KeyPad_Columns:
 	
 Convert:	movlw   00000001B 
 J5toE0:		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
+		tstfsz  WREG, 0
 		goto    notZero1
 		goto    zero1
 notZero1:	bsf     KeyPad_Value, 5, 0
@@ -64,8 +61,7 @@ notZero1:	bsf     KeyPad_Value, 5, 0
 zero1:		bcf     KeyPad_Value, 5, 0
 J6toE1:	    	movlw   00000010B 
 		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
+		tstfsz  WREG, 0
 		goto    notZero2
 		goto    zero2
 notZero2:	bsf     KeyPad_Value, 6, 0
@@ -73,8 +69,7 @@ notZero2:	bsf     KeyPad_Value, 6, 0
 zero2:		bcf     KeyPad_Value, 6, 0
 J2toE3:		movlw   00001000B 
 		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
+		tstfsz  WREG, 0
 		goto    notZero3
 		goto    zero3
 notZero3:	bsf     KeyPad_Value, 2, 0
