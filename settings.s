@@ -1,5 +1,5 @@
 #include <xc.inc>
-
+;g
 extrn   LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
 global  settingsInput, count1, count2, numPlayers, numCards
 psect	udata_acs  
