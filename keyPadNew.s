@@ -52,45 +52,50 @@ KeyPad_Columns:
 		bcf     TRISE, 3, 0
                 return
 		
-Check_KeyPress: movlw   0
-		movwf   KeyPad_Value, A
-                call    KeyPad_Rows
-                call    delay
-                movff   PORTJ, KeyPad_Value, A
-		movlw   00001000B
-		andwf   PORTE, 0, 0
+	
+Convert:	movlw   00000001B 
+J5toE0:		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
 		goto    notZero1
 		goto    zero1
-notZero1:	bsf     KeyPad_Value, 2, 0
-		goto    moveOn1
-zero1:		bcf     KeyPad_Value, 2, 0
+notZero1:	bsf     KeyPad_Value, 5, 0
+		goto    J6toE1
+zero1:		bcf     KeyPad_Value, 5, 0
+J6toE1:	    	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero2
+		goto    zero2
+notZero2:	bsf     KeyPad_Value, 6, 0
+		goto    J2toE3
+zero2:		bcf     KeyPad_Value, 6, 0
+J2toE3:		movlw   00001000B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero3
+		goto    zero3
+notZero3:	bsf     KeyPad_Value, 2, 0
+		return
+zero3:		bcf     KeyPad_Value, 2, 0
+		return
+    
+Check_KeyPress: movlw   0
+		movwf   KeyPad_Value, A
+                call    KeyPad_Rows
+                call    delay
+		movff   PORTJ, KeyPad_Value, A
+                call    Convert
 moveOn1:	call    KeyPad_Columns	
 		call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
                 iorwf   PORTJ, W, A
 		movwf   KeyPad_Value, A
-		movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero2
-		goto    zero2
-notZero2:	bsf     KeyPad_Value, 5, 0
-		goto    moveOn2
-zero2:		bcf     KeyPad_Value, 5, 0
-moveOn2:	movlw   00000010B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero3
-		goto    zero3
-notZero3:	bsf     KeyPad_Value, 6, 0
-		goto    moveOn3
-zero3:		bcf     KeyPad_Value, 6, 0
-moveOn3:	movf    KeyPad_Value, 0, 0
+		call    Convert
+		movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 	
