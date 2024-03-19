@@ -25,7 +25,6 @@
       <itemPath>Servo.s</itemPath>
       <itemPath>divide.s</itemPath>
       <itemPath>main.s</itemPath>
-      <itemPath>ServoNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
