@@ -18,6 +18,11 @@ storedMessage2: db     'Enter no cards'
 		message2  EQU 0x250
 storedMessage3:	db     'Deal again?'
 		message3  EQU 0x260
+  
+settingsSetup:	call    KeyPad_Setup
+		call    LCD_Setup
+		return
+		
 readPrompt1:	lfsr    2, message1
 		movlw   low highword(storedMessage1)
 		movwf   TBLPTRU, A
@@ -66,8 +71,7 @@ loop3:		tblrd*+
 		goto    loop3
 		return    
 
-settingsInput:	call    LCD_Setup
-		call    LCD_clear
+settingsInput:	call    LCD_clear
 		call    readPrompt1
 		movf    count1, 0, 0
 		lfsr    2, message1
