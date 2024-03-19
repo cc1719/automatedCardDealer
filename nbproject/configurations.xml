@@ -18,13 +18,14 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>nbproject/configurations.xml</itemPath>
+      <itemPath>main.s</itemPath>
       <itemPath>LCD.s</itemPath>
       <itemPath>config.s</itemPath>
       <itemPath>keypad.s</itemPath>
-      <itemPath>main.s</itemPath>
+      <itemPath>keypadNew.s</itemPath>
       <itemPath>settings.s</itemPath>
       <itemPath>settingsNew.s</itemPath>
-      <itemPath>keypadNew.s</itemPath>
+      <itemPath>timer2.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -38,7 +39,7 @@
         <targetDevice>PIC18F87J50</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>Simulator</platformTool>
+        <platformTool>pk4hybrid</platformTool>
         <languageToolchain>pic-as</languageToolchain>
         <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>3</platform>
