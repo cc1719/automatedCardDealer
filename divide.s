@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 global  divide2, output
-;b
+
 extrn numPlayers
     
 psect	udata_acs
