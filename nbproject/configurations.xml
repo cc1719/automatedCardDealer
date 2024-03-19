@@ -25,7 +25,6 @@
       <itemPath>Servo.s</itemPath>
       <itemPath>divide.s</itemPath>
       <itemPath>main.s</itemPath>
-      <itemPath>ServoNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -41,7 +40,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>pk4hybrid</platformTool>
         <languageToolchain>pic-as</languageToolchain>
-        <languageToolchainVersion>2.46</languageToolchainVersion>
+        <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
@@ -74,7 +73,7 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
-      <item path="Servo.s" ex="true" overriding="false">
+      <item path="Servo.s" ex="false" overriding="false">
         <pic-as-assembler>
         </pic-as-assembler>
         <pic-as-global>

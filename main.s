@@ -1,8 +1,8 @@
 #include <xc.inc>
 
-extrn   LCD_clear, settingsInput, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers	
+extrn   LCD_clear, settingsInput, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
 
-global	cardno, timerL, timerH
+global	cardno, timerL, timerH, currentPlayer
     
 psect	udata_acs   ; reserve data space in access ram
     delL:	ds 1	
@@ -32,7 +32,8 @@ setup:
 	movlw	0x7f
 	movwf	timerH, A			; Time for Servo to reach desired position
  	movff	numPlayers, currentPlayer, A 	; currentPlayer will count down as dealer faces relevant player
- 	; insert divide code here to set posdelta
+	call	divide2
+	movff	output, posdelta, A
 	goto	main
 
 main:
@@ -59,7 +60,7 @@ Dealing:
    	goto	Deal_card		; If yes, deal a card
 
 Player1: 				; Dealer has dealt to last player, back to player 1
-	decf	numCards
+	decf	numCards, A
  	movff	numPlayers, currentPlayer, A
  	movlw	0x32
   	movwf	PR2, A

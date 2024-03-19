@@ -1,6 +1,6 @@
 #include <xc.inc>
     
-extrn	rottime, timerH, timerL, cardno
+extrn	timerH, timerL, cardno, currentPlayer
 	
 global	Servo_Setup, Interrupt_Check
     
