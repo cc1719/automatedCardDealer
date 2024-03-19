@@ -18,13 +18,13 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>nbproject/configurations.xml</itemPath>
-      <itemPath>Divide.s</itemPath>
-      <itemPath>Keypad.s</itemPath>
       <itemPath>LCD.s</itemPath>
-      <itemPath>Main.s</itemPath>
-      <itemPath>Servo.s</itemPath>
-      <itemPath>Settings.s</itemPath>
-      <itemPath>Config.s</itemPath>
+      <itemPath>config.s</itemPath>
+      <itemPath>divide.s</itemPath>
+      <itemPath>keypad.s</itemPath>
+      <itemPath>main.s</itemPath>
+      <itemPath>servo.s</itemPath>
+      <itemPath>settings.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
