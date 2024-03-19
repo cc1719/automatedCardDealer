@@ -219,9 +219,9 @@ writeNumPlayers:
 		call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    testIfZero
+		goto    testIfZeroP
 		goto    writeNumPlayers
-testIfZero:	movlw   00110000B
+testIfZeroP:	movlw   00110000B
 		cpfseq  KeyPad_Value, 0
 		goto    digit1P
 		goto    writeNumPlayers
@@ -244,8 +244,14 @@ writeNumCards:
 digit1Or2C:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    digit1C
+		goto    testIfZeroC
 		return
+testIfZeroC:	tstfsz  test, 0
+		goto    digit1C
+		movlw   00110000B
+		cpfseq  KeyPad_Value, 0
+		goto    digit1C
+		goto    writeNumCards
 digit1C:	call    LCD_Send_Byte_D
 		tstfsz  test, 0
 		goto    digit2C
