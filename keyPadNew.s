@@ -188,30 +188,30 @@ Check_No_KeyPress:
 		movwf   var, A	
 		movff   PORTJ, var2
 		tstfsz  var, 0
-		goto    notZero2
-		goto    zero2
-notZero2:	bsf     var2, 5, 0
-		goto    moveOn2
-zero2:		bcf     var2, 5, 0		
-moveOn2:	movlw   00000010B 
+		goto    notZero4
+		goto    zero4
+notZero4:	bsf     var2, 5, 0
+		goto    moveOn4
+zero4:		bcf     var2, 5, 0		
+moveOn4:	movlw   00000010B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
-		goto    notZero8
-		goto    zero8
-notZero8:	bsf     var2, 6, 0
-		goto    moveOn8
-zero8:		bcf     var2, 6, 0
-moveOn8:	movlw   00001000B 
+		goto    notZero5
+		goto    zero5
+notZero5:	bsf     var2, 6, 0
+		goto    moveOn5
+zero5:		bcf     var2, 6, 0
+moveOn5:	movlw   00001000B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
-		goto    notZero9
-		goto    zero9
-notZero9:	bsf     var2, 2, 0
-		goto    moveOn9
-zero9:		bcf     var2, 2, 0
-moveOn9:  	movf    var2, 0, 0
+		goto    notZero6
+		goto    zero6
+notZero6:	bsf     var2, 2, 0
+		goto    moveOn6
+zero6:		bcf     var2, 2, 0
+moveOn6:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    Check_No_KeyPress
 		return
