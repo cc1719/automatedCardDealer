@@ -41,7 +41,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>pk4hybrid</platformTool>
         <languageToolchain>pic-as</languageToolchain>
-        <languageToolchainVersion>2.45</languageToolchainVersion>
+        <languageToolchainVersion>2.46</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
@@ -1079,9 +1079,15 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
-      <item path="keyPadNew.s" ex="true" overriding="false">
+      <item path="keyPadNew.s" ex="false" overriding="false">
+        <pic-as-assembler>
+        </pic-as-assembler>
+        <pic-as-global>
+        </pic-as-global>
+        <pic-as-linker>
+        </pic-as-linker>
       </item>
-      <item path="keypad.s" ex="false" overriding="false">
+      <item path="keypad.s" ex="true" overriding="false">
         <pic-as-assembler>
         </pic-as-assembler>
         <pic-as-global>
