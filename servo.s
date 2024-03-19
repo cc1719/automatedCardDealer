@@ -25,9 +25,9 @@ Servo_Setup:
     movlw	00000100B
     movwf	T0CON, A	; TMR0 is set to Servo rotation time
     bsf		TMR0IE		; Enable TMR0 interrupt
-    movlw	01111011B	
-    movwf	T4CON, A	; TMR4 is for small delay between Servo rotation complete and start DCM rotation
-    bsf		TMR4IE		; Enable TMR4 interrupt
+    movlw	00100000B	
+    movwf	T1CON, B	; TMR4 is for small delay between Servo rotation complete and start DCM rotation
+    bsf		TMR1IE		; Enable TMR4 interrupt
     clrf	TRISD
     clrf	TRISA
     clrf	PORTA
@@ -43,7 +43,7 @@ Interrupt_Check: 		; Start by checking what interrupt has been triggered
     goto	Duty_cycle	; Duty cycle is over, PORTF should be pulled low
     btfsc	TMR0IF
     goto	Servo_Stop	; Servo/DCM has run and should be turned off
-    btfsc	TMR4IF
+    btfsc	TMR1IF
     goto	DCM_On		; Servo stopped and TMR4 is done, DCM should be turned on
 
 Servo_Start:			
@@ -77,8 +77,8 @@ Servo_Stop:
 DCM_On:
     bsf	    PORTD, 4, A		; DCM On flag (LED on PIC18)
     bsf	    PORTA, 0, A		; TMR4 is complete, Turn on DCM
-    bcf	    TMR4ON		; Turn off TMR4
-    bcf	    TMR4IF		; Clear TMR4 flag
+    bcf	    TMR1ON		; Turn off TMR4
+    bcf	    TMR1IF		; Clear TMR4 flag
     movlw   0xd8
     movwf   TMR0H
     movlw   0xef
@@ -87,7 +87,7 @@ DCM_On:
     retfie  f
 
 Motor_Break: 
-    bsf		TMR4ON		; Turn on TMR4 for break between servo and DCM spins
+    bsf		TMR1ON		; Turn on TMR4 for break between servo and DCM spins
     retfie	f
 
 

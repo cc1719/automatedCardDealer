@@ -46,7 +46,7 @@ Dealing:
 	movwf	delL, A
 	movlw	0xff
 	movwf	delH, A
-	movlw	0x05
+	movlw	0x07
 	movwf	delI, A
 	call	bigdelay		; Implemented manual 32bit delay so that there is break between dealt card and servo rotation
  	movlw	0x00
@@ -83,7 +83,6 @@ Play_Again:
 	call    Reset_Settings
 	tstfsz  resetVar, 0
 	goto    reStart
-	goto    $
 reStart:	movlw   0
 		movwf   numPlayers, A
 		movlw   0
