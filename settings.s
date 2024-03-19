@@ -6,6 +6,7 @@ psect	udata_acs
 counter:        ds  1
 count1:		ds  1
 count2:		ds  1
+count3:		ds  1
 numPlayers:	ds  1
 numCards:	ds  1
  
@@ -15,6 +16,8 @@ storedMessage1: db     'Enter no players'
 		message1  EQU 0x240
 storedMessage2: db     'Enter no cards'
 		message2  EQU 0x250
+storedMessage3:	db     'Deal again?'
+		message3  EQU 0x260
 readPrompt1:	lfsr    2, message1
 		movlw   low highword(storedMessage1)
 		movwf   TBLPTRU, A
@@ -44,7 +47,23 @@ readPrompt2:	lfsr    2, message2
 loop2:		tblrd*+
 		movff   TABLAT, POSTINC2
 		decfsz  counter, A
-		goto     loop2
+		goto    loop2
+		return    
+
+readPrompt3:	lfsr    2, message3
+		movlw   low highword(storedMessage3)
+		movwf   TBLPTRU, A
+		movlw   high(storedMessage3)
+		movwf   TBLPTRH, A
+		movlw   low(storedMessage3)
+		movwf   TBLPTRL, A
+		movlw   11
+		movwf   count3,  A
+		movwf   counter, A
+loop3:		tblrd*+
+		movff   TABLAT, POSTINC2
+		decfsz  counter, A
+		goto    loop3
 		return    
 
 settingsInput:	call    LCD_Setup
