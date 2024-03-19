@@ -172,7 +172,27 @@ loop:		tblrd*+
 		movff   TABLAT, KeyPad_Value
 		decfsz  counter, A
 		bra     loop
+		
+		movlw   01000101B
+		cpfseq  KeyPad_Value
+		goto    next8
+		goto    Check_KeyPress
+next8:		movlw   01000100B
+		cpfseq  KeyPad_Value
+		goto    next9
+		goto    Check_KeyPress
+next9:		movlw   01000011B
+		cpfseq  KeyPad_Value
+		goto    next10
+		goto    Check_KeyPress
+next10:		movlw   01000001B
+		cpfseq  KeyPad_Value
+		goto    next11
+		goto    Check_KeyPress
+next11:		movlw   01000010B
+		cpfseq  KeyPad_Value
 		return
+		goto    Check_KeyPress
                 
 delay:		movlw   0x40
                 movwf   KeyPad_counter, A
