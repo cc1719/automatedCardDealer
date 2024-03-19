@@ -88,7 +88,7 @@ Check_KeyPress: movlw   0
                 call    delay
 		movff   PORTJ, KeyPad_Value, A
                 call    Convert
-moveOn1:	call    KeyPad_Columns	
+	    	call    KeyPad_Columns	
 		call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
