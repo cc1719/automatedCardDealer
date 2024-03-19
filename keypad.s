@@ -183,7 +183,7 @@ countdown:      decfsz  KeyPad_counter, A
 
 ; These functions allow the user to input the number of players and cards respectively into the keypad.
 ; The maximum number of digits is 2, and the F key is the enter key.
-writeNumPlayers: call    KeyPad_Setup
+writeNumPlayers: 
 		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
 		movlw   01000110B
@@ -274,7 +274,7 @@ moveOn10:	movf    var2, 0, 0
 		;call    LCD_delay_ms
 		return
 
-writeNumCards:  call    KeyPad_Setup
+writeNumCards: 
 		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
 		movlw   01000110B
