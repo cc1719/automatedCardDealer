@@ -174,23 +174,23 @@ loop:		tblrd*+
 		bra     loop
 		
 		movlw   01000101B
-		cpfseq  KeyPad_Value
+		cpfseq  KeyPad_Value, 0
 		goto    next8
 		goto    Check_KeyPress
 next8:		movlw   01000100B
-		cpfseq  KeyPad_Value
+		cpfseq  KeyPad_Value, 0
 		goto    next9
 		goto    Check_KeyPress
 next9:		movlw   01000011B
-		cpfseq  KeyPad_Value
+		cpfseq  KeyPad_Value, 0
 		goto    next10
 		goto    Check_KeyPress
 next10:		movlw   01000001B
-		cpfseq  KeyPad_Value
+		cpfseq  KeyPad_Value, 0
 		goto    next11
 		goto    Check_KeyPress
 next11:		movlw   01000010B
-		cpfseq  KeyPad_Value
+		cpfseq  KeyPad_Value, 0
 		return
 		goto    Check_KeyPress
                 
@@ -219,6 +219,10 @@ writeNumPlayers:
 		call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
+		goto    testIfZero
+		goto    writeNumPlayers
+testIfZero:	movlw   00110000B
+		cpfseq  KeyPad_Value, 0
 		goto    digit1P
 		goto    writeNumPlayers
 		return
