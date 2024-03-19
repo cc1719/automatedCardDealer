@@ -25,6 +25,7 @@
       <itemPath>servo.s</itemPath>
       <itemPath>settings.s</itemPath>
       <itemPath>config.s</itemPath>
+      <itemPath>keyPadNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
