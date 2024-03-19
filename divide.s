@@ -60,9 +60,9 @@ end2:		movwf   remainder2, 0
 		return
 
 divide2:    ; divides (arg1+arg2) by numPlayers, result in output.
-		movlw   100
+		movlw   150
 		movwf   arg1, 0
-		movlw   100
+		movlw   103
 		movwf   arg2, 0
 		movff	numPlayers, divisor, A
 		movlw   0
