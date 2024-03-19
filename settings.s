@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn   resetVar, Write_Y_Or_N, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayers, numCardsDigit1, numCardsDigit2
-global  Settings_Setup, Settings_Input, numPlayers, numCards, Reset_Settings
+global  Settings_Setup, Settings_Input, numPlayers, numCards, Reset_Settings, Dealing_Message
 psect	udata_acs  
 counter:        ds  1
 count:		ds  1
@@ -102,4 +102,17 @@ Reset_Settings:	call    LCD_clear
 		call    Write_Y_Or_N
 		movlw   100
 		call    LCD_delay_ms
+		return
+		
+Dealing_Message:
+		call    LCD_clear
+		movlw   10
+		movwf   count, 0
+		movwf   counter, 0
+		movff   messageLocation4, messageLocation
+		movff   Stored_Message4, message
+		call    Read_Prompt
+		movf    count, 0, 0
+		lfsr    2, messageLocation4
+		call    LCD_Write_Message
 		return
