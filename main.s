@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
+extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output, Reset_Settings, resetVar
 
 global	cardno, timerL, timerH, currentPlayer, numCards
     
@@ -80,7 +80,15 @@ Deal_card:
 Play_Again: 
 	movlw	0x32
   	movwf	PR2, A			; Return to player 1 position
-	goto	$
+	call    Reset_Settings
+	tstfsz  resetVar, 0
+	goto    reStart
+	goto    $
+reStart:	movlw   0
+		movwf   numPlayers, A
+		movlw   0
+		movwf   numCards, A
+		goto    setup
 	
 bigdelay: 				; 32bit delay function
     movlw   0x00
