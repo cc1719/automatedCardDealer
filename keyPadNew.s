@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms, LCD_clear
-global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
+global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numCardsDigit1, numCardsDigit2
 global		numPlayers, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, Write_Y_Or_N, resetVar
 psect		udata_acs   
 KeyPad_counter: ds  1       
