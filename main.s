@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, resetVar
+extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, resetVar, Dealing_Message
 
 global	cardno, timerL, timerH, currentPlayer, numCards
     
@@ -42,6 +42,7 @@ main:
 	goto	main			; Repeatedly check this flag
 
 Dealing:
+	call    Dealing_Message
 	movlw	0xff
 	movwf	delL, A
 	movlw	0xff
