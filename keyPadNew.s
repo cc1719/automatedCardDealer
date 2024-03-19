@@ -61,12 +61,12 @@ Check_KeyPress: movlw   0
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
-		goto    notZero6
-		goto    zero6
-notZero6:	bsf     KeyPad_Value, 2, 0
-		goto    moveOn6
-zero6:		bcf     KeyPad_Value, 2, 0
-moveOn6:	call    KeyPad_Columns	
+		goto    notZero1
+		goto    zero1
+notZero1:	bsf     KeyPad_Value, 2, 0
+		goto    moveOn1
+zero1:		bcf     KeyPad_Value, 2, 0
+moveOn1:	call    KeyPad_Columns	
 		call    delay
                 movlw   0x0f
                 andwf   KeyPad_Value, W, A
@@ -76,21 +76,21 @@ moveOn6:	call    KeyPad_Columns
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
-		goto    notZero1
-		goto    zero1
-notZero1:	bsf     KeyPad_Value, 5, 0
-		goto    moveOn1
-zero1:		bcf     KeyPad_Value, 5, 0
-moveOn1:	movlw   00000010B 
+		goto    notZero2
+		goto    zero2
+notZero2:	bsf     KeyPad_Value, 5, 0
+		goto    moveOn2
+zero2:		bcf     KeyPad_Value, 5, 0
+moveOn2:	movlw   00000010B 
 		andwf   PORTE, 0, 0
 		movwf   var, A
 		tstfsz  var, 0
-		goto    notZero7
-		goto    zero7
-notZero7:	bsf     KeyPad_Value, 6, 0
-		goto    moveOn7
-zero7:		bcf     KeyPad_Value, 6, 0
-moveOn7:	movf    KeyPad_Value, 0, 0
+		goto    notZero3
+		goto    zero3
+notZero3:	bsf     KeyPad_Value, 6, 0
+		goto    moveOn3
+zero3:		bcf     KeyPad_Value, 6, 0
+moveOn3:	movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 	
