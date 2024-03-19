@@ -24,6 +24,7 @@
       <itemPath>settings.s</itemPath>
       <itemPath>keypad.s</itemPath>
       <itemPath>config.s</itemPath>
+      <itemPath>LCDNEWW.s</itemPath>
     </logicalFolder>
     <itemPath>LCD.s</itemPath>
   </logicalFolder>
