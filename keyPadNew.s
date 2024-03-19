@@ -51,7 +51,7 @@ KeyPad_Columns:
 		bsf     TRISE, 1, 0
 		bcf     TRISE, 3, 0
                 return
-    
+		
 Check_KeyPress: movlw   0
 		movwf   KeyPad_Value, A
                 call    KeyPad_Rows
@@ -182,32 +182,8 @@ countdown:      decfsz  KeyPad_counter, A
                 bra     countdown
                 return
 
-; These functions allow the user to input the number of players and cards respectively into the keypad.
-; The maximum number of digits is 2, and the F key is the enter key.
-writeNumPlayers: 
-		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
-		movwf   checkIfPressed, A
-		movlw   01000110B
-		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
-		movlw   0
-		movwf   test, A
-		movlw   0xff
-		movwf   numPlayersDigit1, A
-		movwf   numPlayersDigit2, A
-everywhere1:	call    Check_KeyPress
-		movf    KeyPad_Value, 0, 0
-		cpfseq  enter, 0
-		goto    there1
-		return
-there1:		call    LCD_Send_Byte_D
-		;movlw   255
-		;call    LCD_delay_ms
-		tstfsz  test, 0
-		goto    somewhere1
-		movff   KeyPad_Value, numPlayersDigit1
-		movlw   1
-		movwf   test, A
-here1:		movlw   00000001B 
+Check_No_KeyPress:
+		movlw   00000001B 
 		andwf   PORTE, 0, 0
 		movwf   var, A	
 		movff   PORTJ, var2
@@ -237,8 +213,36 @@ notZero9:	bsf     var2, 2, 0
 zero9:		bcf     var2, 2, 0
 moveOn9:  	movf    var2, 0, 0
 		cpfseq  checkIfPressed, 0
-		goto    here1
-		goto    everywhere1	
+		goto    Check_No_KeyPress
+		return
+
+; These functions allow the user to input the number of players and cards respectively into the keypad.
+; The maximum number of digits is 2, and the F key is the enter key.
+writeNumPlayers: 
+		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+		movwf   checkIfPressed, A
+		movlw   01000110B
+		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movlw   0
+		movwf   test, A
+		movlw   0xff
+		movwf   numPlayersDigit1, A
+		movwf   numPlayersDigit2, A
+everywhere1:	call    Check_KeyPress
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter, 0
+		goto    there1
+		return
+there1:		call    LCD_Send_Byte_D
+		;movlw   255
+		;call    LCD_delay_ms
+		tstfsz  test, 0
+		goto    somewhere1
+		movff   KeyPad_Value, numPlayersDigit1
+		movlw   1
+		movwf   test, A
+		call    Check_No_KeyPress
+		goto    everywhere1
 somewhere1:	movff   KeyPad_Value, numPlayersDigit2
 		movlw   00000001B 
 		andwf   PORTE, 0, 0
