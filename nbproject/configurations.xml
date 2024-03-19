@@ -24,7 +24,7 @@
       <itemPath>Main.s</itemPath>
       <itemPath>Servo.s</itemPath>
       <itemPath>Settings.s</itemPath>
-      <itemPath>config.s</itemPath>
+      <itemPath>Config.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
