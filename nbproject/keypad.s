@@ -22,7 +22,7 @@ var:		ds  1
 var2:		ds  1
    
 psect		KeyPad_code, class = CODE
-
+;test
 KeyPad_Setup:	clrf	LATJ, A
 		clrf    LATE, A
                 movlb	0x0f
