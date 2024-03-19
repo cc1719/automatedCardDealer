@@ -21,27 +21,27 @@ resetVar:	ds  1
    
 psect		KeyPad_code, class = CODE
 
-KeyPad_Setup:	clrf	LATJ, A
+KeyPad_Setup:	clrf	LATJ, A	    ; Clears the requred ports. We use pins from multiple ports for the keypad.
 		clrf    LATE, A
-                movlb	0x0f
+                movlb	0x0f	    ; Sets the pull-up resistors.
                 bsf     REPU
 		bsf     RJPU
                 return
 
-Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B
+Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B   ; Defines the ascii characters for the keypad.
 		db      00110010B, 00110101B, 00111000B, 00110000B
 		db	00110011B, 00110110B, 00111001B, 01000010B
 		db      01000110B, 01000101B, 01000100B, 01000011B
 		Lookup_Table  EQU 0x300
 
-KeyPad_Columns:	movlw   0x0f
+KeyPad_Columns:	movlw   0x0f		; Sets up to read the column number.
                 movwf   TRISJ, A
 		bcf     TRISE, 0, 0
 		bcf     TRISE, 1, 0
 		bsf     TRISE, 3, 0
                 return
     
-KeyPad_Rows:
+KeyPad_Rows:				; Sets up to read the row number.
                 movlw   0xf0
                 movwf   TRISJ, A
 		bsf     TRISE, 0, 0
@@ -50,10 +50,10 @@ KeyPad_Rows:
                 return
 		
 	
-Convert:	movlw   00000001B 
-J5toE0:		andwf   PORTE, 0, 0
-		tstfsz  WREG, 0
-		goto    notZero1
+Convert:	movlw   00000001B		; Collates data from each port connected to the keypad.
+J5toE0:		andwf   PORTE, 0, 0		; We use port J for most of the keypad connections, except for J5, 6 and 2. 
+		tstfsz  WREG, 0			; This tests the relevant bit in the other ports connected to the keypad.   
+		goto    notZero1		; and sets the corresponding bit accordingly.
 		goto    zero1
 notZero1:	bsf     KeyPad_Value, 5, 0
 		goto    J6toE1
@@ -76,8 +76,8 @@ notZero3:	bsf     KeyPad_Value, 2, 0
 zero3:		bcf     KeyPad_Value, 2, 0
 		return
     
-Check_KeyPress: movlw   0
-		movwf   KeyPad_Value, A
+Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a variable with a 1 in the place
+		movwf   KeyPad_Value, A		    ; of the column in the low nibble and row for the high nibble.
                 call    KeyPad_Columns
                 call    delay
 		movff   PORTJ, KeyPad_Value, A
@@ -93,7 +93,7 @@ Check_KeyPress: movlw   0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 	
-KeyPad_Output:	movlw   0
+KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii. Loops if keypad output is invalid.
 		movwf   row, A
 		movwf   column, A 
 		
@@ -153,7 +153,7 @@ next7:          movlw   10000000B
 		movlw   4
 		movwf   column, A
 		
-Read_Lookup_Table:
+Read_Lookup_Table:					; Reads the look-up table into data memory.
 		lfsr    0, Lookup_Table
 		movlw   low highword(Table_Set_Up)
 		movwf   TBLPTRU, A
@@ -173,7 +173,7 @@ loop:		tblrd*+
 		decfsz  counter, A
 		bra     loop
 		
-		movlw   01000101B
+		movlw   01000101B		    ; Checks if the output is a letter, if so it loops until valid input entered.
 		cpfseq  KeyPad_Value, 0
 		goto    next8
 		goto    Check_KeyPress
@@ -201,7 +201,7 @@ countdown:      decfsz  KeyPad_counter, A
                 bra     countdown
                 return
 
-Check_No_KeyPress:
+Check_No_KeyPress:					; This loops until no keys are pressed.
 		movff   PORTJ, KeyPad_Value, A
 		call    Convert
 		movf    KeyPad_Value, 0, 0
@@ -209,10 +209,8 @@ Check_No_KeyPress:
 		goto    Check_No_KeyPress
 		return
 
-; These functions allow the user to input the number of players and cards respectively into the keypad.
-; The maximum number of digits is 2, and the F key is the enter key.
-writeNumPlayers: 
-		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+writeNumPlayers:					
+		movlw   11110000B           
 		movwf   checkIfPressed, A
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
