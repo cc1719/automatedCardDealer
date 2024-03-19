@@ -1,7 +1,7 @@
 ; PIC18F87J50 Configuration Bit Settings
 
 ; Assembly source line config statements
-;a
+
 #include <xc.inc>
 
 ; CONFIG1L
