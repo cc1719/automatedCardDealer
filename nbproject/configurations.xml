@@ -26,6 +26,8 @@
       <itemPath>divide.s</itemPath>
       <itemPath>main.s</itemPath>
     </logicalFolder>
+    <itemPath>LCD.s</itemPath>
+    <itemPath>LCD.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
