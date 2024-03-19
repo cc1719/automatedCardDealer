@@ -1,5 +1,5 @@
 #include <xc.inc>
-
+;teststststst
 extrn   LCD_clear, settingsInput, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
 
 global	cardno, timerL, timerH, currentPlayer, numCards
