@@ -2,7 +2,7 @@
 
 extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms, LCD_clear
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, Write_Y_Or_N, resetVar
+global		numPlayers, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, Write_Y_Or_N, resetVar
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -12,8 +12,7 @@ column:		ds  1
 counter:	ds  1
 checkIfPressed: ds  1
 enter:		ds  1
-numPlayersDigit1:	ds  1
-numPlayersDigit2:	ds  1
+numPlayers:	ds  1
 numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
@@ -197,25 +196,14 @@ writeNumPlayers:
 		movwf   checkIfPressed, A
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
-		movlw   0
-		movwf   test, A
-		movlw   0xff
-		movwf   numPlayersDigit1, A
-		movwf   numPlayersDigit2, A
-digit1Or2P:	call    Check_KeyPress
+		call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    digit1P
+		goto    writeNumPlayers
 		return
 digit1P:	call    LCD_Send_Byte_D
-		tstfsz  test, 0
-		goto    digit2P
-		movff   KeyPad_Value, numPlayersDigit1
-		movlw   1
-		movwf   test, A
-		call    Check_No_KeyPress
-		goto    digit1Or2P
-digit2P:	movff   KeyPad_Value, numPlayersDigit2
+		movff   KeyPad_Value, numPlayers	
 		call    Check_No_KeyPress
 		return
 
