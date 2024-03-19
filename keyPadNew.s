@@ -228,20 +228,20 @@ writeNumPlayers:
 		movlw   0xff
 		movwf   numPlayersDigit1, A
 		movwf   numPlayersDigit2, A
-everywhere1:	call    Check_KeyPress
+digit1Or2P:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    there1
+		goto    digit1P
 		return
-there1:		call    LCD_Send_Byte_D
+digit1P:	call    LCD_Send_Byte_D
 		tstfsz  test, 0
-		goto    somewhere1
+		goto    digit2P
 		movff   KeyPad_Value, numPlayersDigit1
 		movlw   1
 		movwf   test, A
 		call    Check_No_KeyPress
-		goto    everywhere1
-somewhere1:	movff   KeyPad_Value, numPlayersDigit2
+		goto    digit1Or2P
+digit2P:	movff   KeyPad_Value, numPlayersDigit2
 		call    Check_No_KeyPress
 		return
 
@@ -255,20 +255,20 @@ writeNumCards:
 		movlw   0xff
 		movwf   numCardsDigit1, A
 		movwf   numCardsDigit2, A
-everywhere9:	call    Check_KeyPress
+digit1Or2C:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    there9
+		goto    digit1C
 		return
-there9:		call    LCD_Send_Byte_D
+digit1C:	call    LCD_Send_Byte_D
 		tstfsz  test, 0
-		goto    somewhere9
+		goto    digit2C
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
 		call    Check_No_KeyPress
-		goto    everywhere9	
-somewhere9:	movff   KeyPad_Value, numCardsDigit2
+		goto    digit1Or2C	
+digit2C:        movff   KeyPad_Value, numCardsDigit2
 		call    Check_No_KeyPress
 		return
 
@@ -276,20 +276,20 @@ Write_Y_Or_N:	movlw   0
 		movwf   resetVar, A
 		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
-who:		call    LCD_clear
+again:		call    LCD_clear
 	    	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		call    LCD_Send_Byte_D	
 		call    Check_No_KeyPress
 		movlw   00110001B
 		cpfseq  KeyPad_Value, 0
-		goto    carryon
+		goto    carryon1
 		goto    Yes
-carryon:	movlw	00110010B
+carryon1:	movlw	00110010B
 		cpfseq  KeyPad_Value, 0
 		goto    carryon2
 		goto    No
-carryon2:	goto    who
+carryon2:	goto    again
 Yes:		movlw   1
 		movwf   resetVar, A
 		return
