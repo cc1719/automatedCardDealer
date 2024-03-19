@@ -234,8 +234,6 @@ everywhere1:	call    Check_KeyPress
 		goto    there1
 		return
 there1:		call    LCD_Send_Byte_D
-		;movlw   255
-		;call    LCD_delay_ms
 		tstfsz  test, 0
 		goto    somewhere1
 		movff   KeyPad_Value, numPlayersDigit1
@@ -244,39 +242,7 @@ there1:		call    LCD_Send_Byte_D
 		call    Check_No_KeyPress
 		goto    everywhere1
 somewhere1:	movff   KeyPad_Value, numPlayersDigit2
-		movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A	
-		movff   PORTJ, var2
-		tstfsz  var, 0
-		goto    notZero4
-		goto    zero4
-notZero4:	bsf     var2, 5, 0
-		goto    moveOn4
-zero4:		bcf     var2, 5, 0		
-moveOn4:	movlw   00000010B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero20
-		goto    zero20
-notZero20:	bsf     var2, 6, 0
-		goto    moveOn20
-zero20:		bcf     var2, 6, 0
-moveOn20:	movlw   00001000B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero10
-		goto    zero10
-notZero10:	bsf     var2, 2, 0
-		goto    moveOn10
-zero10:		bcf     var2, 2, 0
-moveOn10:	movf    var2, 0, 0
-		cpfseq  checkIfPressed, 0
-		goto    somewhere1
-		;movlw   255
-		;call    LCD_delay_ms
+		call    Check_No_KeyPress
 		return
 
 writeNumCards: 
@@ -295,79 +261,15 @@ everywhere9:	call    Check_KeyPress
 		goto    there9
 		return
 there9:		call    LCD_Send_Byte_D
-		;movlw   255
-		;call    LCD_delay_ms
 		tstfsz  test, 0
 		goto    somewhere9
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
-here9:		movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A	
-		movff   PORTJ, var2
-		tstfsz  var, 0
-		goto    notZero11
-		goto    zero11
-notZero11:	bsf     var2, 5, 0
-		goto    moveOn11
-zero11:		bcf     var2, 5, 0		
-moveOn11:	movlw   00000010B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero12
-		goto    zero12
-notZero12:	bsf     var2, 6, 0
-		goto    moveOn12
-zero12:		bcf     var2, 6, 0
-moveOn12:	movlw   00001000B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero13
-		goto    zero13
-notZero13:	bsf     var2, 2, 0
-		goto    moveOn13
-zero13:		bcf     var2, 2, 0
-moveOn13:  	movf    var2, 0, 0
-		cpfseq  checkIfPressed, 0
-		goto    here9
+		call    Check_No_KeyPress
 		goto    everywhere9	
 somewhere9:	movff   KeyPad_Value, numCardsDigit2
-		movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A	
-		movff   PORTJ, var2
-		tstfsz  var, 0
-		goto    notZero14
-		goto    zero14
-notZero14:	bsf     var2, 5, 0
-		goto    moveOn14
-zero14:		bcf     var2, 5, 0		
-moveOn14:	movlw   00000010B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero15
-		goto    zero15
-notZero15:	bsf     var2, 6, 0
-		goto    moveOn15
-zero15:		bcf     var2, 6, 0
-moveOn15:	movlw   00001000B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero16
-		goto    zero16
-notZero16:	bsf     var2, 2, 0
-		goto    moveOn16
-zero16:		bcf     var2, 2, 0
-moveOn16:	movf    var2, 0, 0
-		cpfseq  checkIfPressed, 0
-		goto    somewhere9
-		;movlw   255
-		;call    LCD_delay_ms
+		call    Check_No_KeyPress
 		return
 
 Write_Y_Or_N:	movlw   0
@@ -378,37 +280,7 @@ who:		call    LCD_clear
 	    	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		call    LCD_Send_Byte_D	
-here100:	movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A	
-		movff   PORTJ, var2
-		tstfsz  var, 0
-		goto    notZero200
-		goto    zero200
-notZero200:	bsf     var2, 5, 0
-		goto    moveOn200
-zero200:	bcf     var2, 5, 0		
-moveOn200:	movlw   00000010B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero800
-		goto    zero800
-notZero800:	bsf     var2, 6, 0
-		goto    moveOn800
-zero800:        bcf     var2, 6, 0
-moveOn800:	movlw   00001000B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero900
-		goto    zero900
-notZero900:	bsf     var2, 2, 0
-		goto    moveOn900
-zero900:	bcf     var2, 2, 0
-moveOn900:  	movf    var2, 0, 0
-		cpfseq  checkIfPressed, 0
-		goto    here100
+		call    Check_No_KeyPress
 		movlw   00110001B
 		cpfseq  KeyPad_Value, 0
 		goto    carryon
