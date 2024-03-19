@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-global  divide
+global  divide, divide2, output
 
 extrn numPlayers
     
@@ -59,7 +59,7 @@ end2:		movwf   remainder2, 0
 		
 		return
 
-divide2:		
+divide2:    ; divides (arg1+arg2) by numPlayers, result in output.
 		movlw   100
 		movwf   arg1, 0
 		movlw   100
