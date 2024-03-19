@@ -68,7 +68,7 @@ Servo_Stop:
     btfss	PORTD, 4, A	; Check if the DCM is currently active (this function stops both DCM and Servo)
     goto	Motor_Break	; If DCM is not on, start TMR4, after which DCM will turn on
     bcf		PORTD, 4, A	; If DCM is already on, TMR0 has finished (card is dealt), clear DCM flag
-    bcf		PORTA, 1, A	; TMR0 has finished and DCM has finished spinning, turn off DCM
+    bcf		PORTA, 0, A	; TMR0 has finished and DCM has finished spinning, turn off DCM
     dcfsnz	currentPlayer, A; Move to next player
     decf	numCards, A
     bcf		PORTA, 7, A	; Clear Dealing flag, so main.s can determine whether more cards should be dealt
@@ -76,7 +76,7 @@ Servo_Stop:
     
 DCM_On:
     bsf	    PORTD, 4, A		; DCM On flag (LED on PIC18)
-    bsf	    PORTA, 1, A		; TMR4 is complete, Turn on DCM
+    bsf	    PORTA, 0, A		; TMR4 is complete, Turn on DCM
     bcf	    TMR4ON		; Turn off TMR4
     bcf	    TMR4IF		; Clear TMR4 flag
     movlw   0xd8
