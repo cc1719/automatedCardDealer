@@ -10,7 +10,7 @@ psect	udata_acs   ; reserve data space in access ram
 
 psect	data
 	dutycycle EQU 2000
-
+;testing
 psect	code, abs
 	
 ;rst:	org	0x0
