@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_clear, settingsSetup, settingsInput, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
+extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
 
 global	cardno, timerL, timerH, currentPlayer, numCards
     
@@ -23,10 +23,10 @@ int_hi:
 	org	0x0008	; high vector, no low vector
 	goto	Interrupt_Check
 	
-setup:	call    settingsSetup
+setup:	call    Settings_Setup
 	call	Servo_Setup			; Servo.s setup
  	bsf	TMR3ON				; Start PWM on Servo
-	call    settingsInput			; Run Keypad & LCD Scripts, output numCards & numPlayers
+	call    Settings_Input			; Run Keypad & LCD Scripts, output numCards & numPlayers
 	movlw	0xff
 	movwf	timerL, A
 	movlw	0x7f
