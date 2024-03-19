@@ -1,13 +1,12 @@
 #include <xc.inc>
 
-extrn   resetVar, Write_Y_Or_N, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
+extrn   resetVar, Write_Y_Or_N, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayers, numCardsDigit1, numCardsDigit2
 global  Settings_Setup, Settings_Input, count1, count2, numPlayers, numCards, Reset_Settings
 psect	udata_acs  
 counter:        ds  1
 count1:		ds  1
 count2:		ds  1
 count3:		ds  1
-numPlayers:	ds  1
 numCards:	ds  1
  
 psect		settings_code, class = CODE
@@ -91,23 +90,10 @@ Settings_Input:	call    LCD_clear
 		call    LCD_delay_ms
 		call    LCD_clear
 		
-		movlw   0xff
-		cpfseq  numPlayersDigit2, 0
-		goto    Two_Digit_Players	
 		movlw   48
-		subwf   numPlayersDigit1, 0, 0
-		movwf   numPlayers, A
-		goto    skip
-Two_Digit_Players:movlw   48
-		subwf   numPlayersDigit1, 1, 0
-		movlw   10
-		mulwf   numPlayersDigit1, 0
-		movff   PRODL, numPlayers
-		movlw   48
-		subwf   numPlayersDigit2, 0, 0
-		addwf   numPlayers, 1, 0
+		subwf   numPlayers, 1, 0
 		
-skip:		movlw   0xff
+		movlw   0xff
 		cpfseq  numCardsDigit2, 0
 		goto    Two_Digit_Cards	
 		movlw   48
