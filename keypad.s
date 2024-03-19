@@ -1,8 +1,8 @@
 #include <xc.inc>
 
-extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms
+extrn           LCD_Send_Byte_D, LCD_Setup, LCD_delay_ms, LCD_clear
 global		Check_KeyPress, KeyPad_Rows, KeyPad_Columns, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, var, var2
+global		numPlayersDigit1, numPlayersDigit2, checkIfPressed, enter, KeyPad_Value, test, numCardsDigit1, numCardsDigit2, var, var2, Write_Y_Or_N, resetVar
 psect		udata_acs   
 KeyPad_counter: ds  1       
 KeyPad_Value:   ds  1
@@ -20,6 +20,7 @@ test:		ds  1
 delayVariable:	ds  1
 var:		ds  1
 var2:		ds  1
+resetVar:	ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -365,5 +366,57 @@ moveOn16:	movf    var2, 0, 0
 		;call    LCD_delay_ms
 		return
 
-
-
+Write_Y_Or_N:	movlw   0
+		movwf   resetVar, A
+		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+		movwf   checkIfPressed, A
+who:		call    LCD_clear
+	    	call    Check_KeyPress
+		movf    KeyPad_Value, 0, 0
+		call    LCD_Send_Byte_D	
+here100:	movlw   00000001B 
+		andwf   PORTE, 0, 0
+		movwf   var, A	
+		movff   PORTJ, var2
+		tstfsz  var, 0
+		goto    notZero200
+		goto    zero200
+notZero200:	bsf     var2, 5, 0
+		goto    moveOn200
+zero200:	bcf     var2, 5, 0		
+moveOn200:	movlw   00000010B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero800
+		goto    zero800
+notZero800:	bsf     var2, 6, 0
+		goto    moveOn800
+zero800:        bcf     var2, 6, 0
+moveOn800:	movlw   00001000B 
+		andwf   PORTE, 0, 0
+		movwf   var, A
+		tstfsz  var, 0
+		goto    notZero900
+		goto    zero900
+notZero900:	bsf     var2, 2, 0
+		goto    moveOn900
+zero900:	bcf     var2, 2, 0
+moveOn900:  	movf    var2, 0, 0
+		cpfseq  checkIfPressed, 0
+		goto    here100
+		movlw   00110001B
+		cpfseq  KeyPad_Value, 0
+		goto    carryon
+		goto    Yes
+carryon:	movlw	00110010B
+		cpfseq  KeyPad_Value, 0
+		goto    carryon2
+		goto    No
+carryon2:	goto    who
+Yes:		movlw   1
+		movwf   resetVar, A
+		return
+No:		movlw   0
+		movwf   resetVar, A
+		return
