@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output, Reset_Settings, resetVar
+extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, resetVar
 
 global	cardno, timerL, timerH, currentPlayer, numCards
     
@@ -32,7 +32,7 @@ setup:	call    Settings_Setup
 	movlw	0x7f
 	movwf	timerH, A			; Time for Servo to reach desired position
  	movff	numPlayers, currentPlayer, A 	; currentPlayer will count down as dealer faces relevant player
-	call	divide2
+	call	divide
 	movff	output, posdelta, A
 	goto	main
 
