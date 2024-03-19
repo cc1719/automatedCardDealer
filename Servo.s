@@ -1,6 +1,6 @@
 #include <xc.inc>
     
-extrn	timerH, timerL, cardno, currentPlayer
+extrn	timerH, timerL, cardno, currentPlayer, numCards
 	
 global	Servo_Setup, Interrupt_Check
     
@@ -69,7 +69,8 @@ Servo_Stop:
     goto	Motor_Break	; If DCM is not on, start TMR4, after which DCM will turn on
     bcf		PORTD, 4, A	; If DCM is already on, TMR0 has finished (card is dealt), clear DCM flag
     bcf		PORTA, 1, A	; TMR0 has finished and DCM has finished spinning, turn off DCM
-    decf	currentPlayer, A; Move to next player
+    dcfsnz	currentPlayer, A; Move to next player
+    decf	numCards, A
     bcf		PORTA, 7, A	; Clear Dealing flag, so main.s can determine whether more cards should be dealt
     retfie	f
     

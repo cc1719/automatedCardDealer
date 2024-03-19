@@ -20,7 +20,9 @@ divide2:    ; divides (arg1+arg2) by numPlayers, result in output.
 		movwf   arg1, 0
 		movlw   100
 		movwf   arg2, 0
-		movff	numPlayers, divisor, A
+		movlw	0x01
+		subwf	numPlayers, W, A
+		movwf	divisor, A
 		movlw   0
 		movwf   output, 0
     	        movf    arg1, 0, 0

@@ -2,7 +2,7 @@
 
 extrn   LCD_clear, settingsInput, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
 
-global	cardno, timerL, timerH, currentPlayer
+global	cardno, timerL, timerH, currentPlayer, numCards
     
 psect	udata_acs   ; reserve data space in access ram
     delL:	ds 1	
@@ -51,7 +51,7 @@ Dealing:
 	call	bigdelay		; Implemented manual 32bit delay so that there is break between dealt card and servo rotation
  	movlw	0x00
   	cpfsgt	numCards, A		; Check if all players have been dealt cards
-   	goto 	$			; If yes, end code
+   	goto 	Play_Again		; If yes, restart?
   	cpfsgt	currentPlayer, A	; Check if dealer has moved to final player position
    	goto	Player1			; If yes, return to player 1 and deal
 	movf	numPlayers, W, A
@@ -60,7 +60,6 @@ Dealing:
    	goto	Deal_card		; If yes, deal a card
 
 Player1: 				; Dealer has dealt to last player, back to player 1
-	decf	numCards, A
  	movff	numPlayers, currentPlayer, A
  	movlw	0x32
   	movwf	PR2, A
@@ -78,6 +77,11 @@ Deal_card:
 	bsf	TMR0ON			; Timer0 sets how long servo should spin - timerH and timerL were calculated in divide.s
 	goto	main
 
+Play_Again: 
+	movlw	0x32
+  	movwf	PR2, A			; Return to player 1 position
+	goto	$
+	
 bigdelay: 				; 32bit delay function
     movlw   0x00
 dloop: 
