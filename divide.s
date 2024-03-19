@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-global  divide2, output
+global  divide, output
 
 extrn numPlayers
     
@@ -15,7 +15,7 @@ divisor: ds 1
 
 psect		divide_code, class = CODE
     
-divide2:    ; divides (arg1+arg2) by numPlayers, result in output.
+divide:    ; divides (arg1+arg2) by numPlayers, result in output.
 		movlw   100
 		movwf   arg1, 0
 		movlw   100
