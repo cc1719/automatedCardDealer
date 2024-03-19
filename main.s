@@ -3,7 +3,7 @@
 extrn   LCD_clear, settingsInput, Servo_Setup, Interrupt_Check, divide2, numCards, numPlayers, output	
 
 global	cardno, timerL, timerH, currentPlayer, numCards
-    
+    ;e
 psect	udata_acs   ; reserve data space in access ram
     delL:	ds 1	
     delH:	ds 1	
