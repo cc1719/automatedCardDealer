@@ -188,35 +188,9 @@ countdown:      decfsz  KeyPad_counter, A
                 return
 
 Check_No_KeyPress:
-		movlw   00000001B 
-		andwf   PORTE, 0, 0
-		movwf   var, A	
-		movff   PORTJ, var2
-		tstfsz  var, 0
-		goto    notZero4
-		goto    zero4
-notZero4:	bsf     var2, 5, 0
-		goto    moveOn4
-zero4:		bcf     var2, 5, 0		
-moveOn4:	movlw   00000010B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero5
-		goto    zero5
-notZero5:	bsf     var2, 6, 0
-		goto    moveOn5
-zero5:		bcf     var2, 6, 0
-moveOn5:	movlw   00001000B 
-		andwf   PORTE, 0, 0
-		movwf   var, A
-		tstfsz  var, 0
-		goto    notZero6
-		goto    zero6
-notZero6:	bsf     var2, 2, 0
-		goto    moveOn6
-zero6:		bcf     var2, 2, 0
-moveOn6:  	movf    var2, 0, 0
+		movff   PORTJ, KeyPad_Value, A
+		call    Convert
+		movf    KeyPad_Value, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    Check_No_KeyPress
 		return
