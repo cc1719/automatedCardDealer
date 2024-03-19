@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   LCD_clear, settingsInput, Servo_Setup, Servo_Start, divide, numCards, numPlayers	
+extrn   LCD_clear, settingsInput, Servo_Setup, Servo_Start, divide, divide2, output, numCards, numPlayers	
 
 global	rottime, timerH, timerL, cardno 
     
@@ -20,30 +20,34 @@ PSECT	udata_acs_ovr,space=1,ovrld,class=COMRAM
 psect	code, abs
 	
 rst:	org	0x0
-	goto	setup
+	goto	main
 
 int_hi:	
 	org	0x0008	; high vector, no low vector
 	goto	Servo_Start
 	
 setup:	
-	call    settingsInput		; Run Keypad & LCD Scripts, output numCards & numPlayers
-	movf	numCards, W, A
-	mulwf	numPlayers, A
-	movff	PRODL, cardno, A	; Total number of DCM spins stored in cardno
-	call	divide			; Calculation for Servo rotation
-	movlw	0xff
-	movwf	timerL, A
-	movlw	0xff
-	movwf	timerH, A
-	movf	PRODL, W, A
-	subwf	timerL, F, A
-	movf	PRODH, W, A
-   	subwfb	timerH, F, A
-	call	Servo_Setup		; Servo.s setup
-	goto	main
+	;call    settingsInput		; Run Keypad & LCD Scripts, output numCards & numPlayers
+	;movf	numCards, W, A
+	;mulwf	numPlayers, A
+	;movff	PRODL, cardno, A	; Total number of DCM spins stored in cardno
+	;call	divide			; Calculation for Servo rotation
+	;movlw	0xff
+	;movwf	timerL, A
+	;movlw	0xff
+	;movwf	timerH, A
+	;movf	PRODL, W, A
+	;subwf	timerL, F, A
+	;movf	PRODH, W, A
+   	;subwfb	timerH, F, A
+	;call	Servo_Setup		; Servo.s setup
+	;goto	main
 
-main:
+main:	movlw   3
+	movwf   numPlayers, A
+	call    divide2
+	nop
+	
 	btfss	PORTA, 7, A		; Check if interrupt is currently actively dealing a card
 	call	Dealing			; If not, move to Deal function
 	goto	main			; Repeatedly check this flag
