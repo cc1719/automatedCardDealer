@@ -19,12 +19,6 @@
                    projectFiles="true">
       <itemPath>nbproject/configurations.xml</itemPath>
       <itemPath>LCD.s</itemPath>
-      <itemPath>config.s</itemPath>
-      <itemPath>divide.s</itemPath>
-      <itemPath>keypad.s</itemPath>
-      <itemPath>main.s</itemPath>
-      <itemPath>servo.s</itemPath>
-      <itemPath>settings.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
