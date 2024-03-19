@@ -1,7 +1,7 @@
 #include <xc.inc>
 
-extrn   LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
-global  Settings_Setup, Settings_Input, count1, count2, numPlayers, numCards
+extrn   resetVar, Write_Y_Or_N, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, Check_KeyPress, KeyPad_Value, KeyPad_Output, writeNumPlayers, writeNumCards, numPlayersDigit1, numPlayersDigit2, numCardsDigit1, numCardsDigit2
+global  Settings_Setup, Settings_Input, count1, count2, numPlayers, numCards, Reset_Settings
 psect	udata_acs  
 counter:        ds  1
 count1:		ds  1
@@ -16,7 +16,7 @@ Stored_Message1: db     'Enter no players'
 		message1  EQU 0x240
 Stored_Message2: db     'Enter no cards'
 		message2  EQU 0x250
-Stored_Message3:	db     'Deal again?'
+Stored_Message3: db     'Re-deal? 1-Y 2-N'
 		message3  EQU 0x260
   
 Settings_Setup:	call    KeyPad_Setup
@@ -125,5 +125,13 @@ Two_Digit_Cards:	movlw   48
 		addwf   numCards, 1, 0
 		return
 
-
-
+Reset_Settings:	call    LCD_clear
+		call    Read_Prompt3
+		movf    count3, 0, 0
+		lfsr    2, message3
+		call    LCD_Write_Message
+		call    LCD_line2
+		call    Write_Y_Or_N
+		movlw   100
+		call    LCD_delay_ms
+		return
