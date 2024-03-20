@@ -79,9 +79,9 @@ DCM_On:
     bsf	    PORTA, 0, A		; TMR4 is complete, Turn on DCM
     bcf	    TMR1ON		; Turn off TMR4
     bcf	    TMR1IF		; Clear TMR4 flag
-    movlw   0xd8
+    movlw   0xEA
     movwf   TMR0H
-    movlw   0xef
+    movlw   0x60
     movwf   TMR0L		; Calibrated time for DCM to spin
     bsf	    TMR0ON		; Turn on TMR0 for DCM to spin
     retfie  f
