@@ -26,6 +26,7 @@
       <itemPath>settings.s</itemPath>
       <itemPath>config.s</itemPath>
       <itemPath>keyPadNew.s</itemPath>
+      <itemPath>settingsNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -1079,7 +1080,7 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
-      <item path="keyPadNew.s" ex="true" overriding="false">
+      <item path="keyPadNew.s" ex="false" overriding="false">
         <pic-as-assembler>
         </pic-as-assembler>
         <pic-as-global>
@@ -1087,7 +1088,7 @@
         <pic-as-linker>
         </pic-as-linker>
       </item>
-      <item path="keypad.s" ex="false" overriding="false">
+      <item path="keypad.s" ex="true" overriding="false">
         <pic-as-assembler>
         </pic-as-assembler>
         <pic-as-global>
@@ -1206,6 +1207,8 @@
                   value="Press to select which tool pack to use"/>
         <property key="voltagevalue" value="3.25"/>
       </pk4hybrid>
+      <item path="settingsNew.s" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
