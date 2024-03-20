@@ -203,7 +203,7 @@ countdown:      decfsz  KeyPad_counter, A
                 return
 
 Check_No_KeyPress:					; This loops until no keys are pressed.
-		movff   PORTJ, KeyPad_Value, A
+		movff   PORTJ, conversion, A	
 		call    Convert
 		movf    conversion, 0, 0
 		cpfseq  checkIfPressed, 0
@@ -228,8 +228,8 @@ testIfZeroP:	movlw   00110000B
 		return
 digit1P:	movf    KeyPad_Value, 0, 0
 		call    LCD_Send_Byte_D
-		movff   KeyPad_Value, numPlayers	
 		call    Check_No_KeyPress
+		movff   KeyPad_Value, numPlayers	
 		return
 
 writeNumCards: 
@@ -253,16 +253,25 @@ digit1C:	call    Check_KeyPress
 		goto    zeroTest
 		goto    digit1C 
 zeroTest:	cpfseq  checkIfZero, 0
-		goto    not
+		goto    negative1
 		goto    digit1C
-not:		call    LCD_Send_Byte_D
+negative1:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
 		call    Check_No_KeyPress
 		goto    digit1Or2C	
-digit2C:        movff   KeyPad_Value, numCardsDigit2
+digit2C:        call    Check_KeyPress
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter, 0
+		goto    negative2
 		call    Check_No_KeyPress
+		return  
+negative2:	call    LCD_Send_Byte_D
+		movff   KeyPad_Value, numCardsDigit2
+		call    Check_No_KeyPress
+		movlw   50
+		call    LCD_delay_ms
 		return	
 
 Write_Y_Or_N:	movlw   0
