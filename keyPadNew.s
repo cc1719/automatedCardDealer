@@ -92,48 +92,6 @@ Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a 
 		andwf   KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
-	nop
-;Check_KeyPress: movlw   0
-;		movwf   KeyPad_Value, A
-;                call    KeyPad_Rows
-;                call    delay
-;                movff   PORTJ, KeyPad_Value, A
-;		movlw   00001000B
-;		andwf   PORTE, 0, 0
-;		movwf   var, A
-;		tstfsz  var, 0
-;		goto    notZero60
-;		goto    zero60
-;notZero60:	bsf     KeyPad_Value, 2, 0
-;		goto    moveOn60
-;zero60:		bcf     KeyPad_Value, 2, 0
-;moveOn60:	call    KeyPad_Columns	
-;		call    delay
-;                movlw   0x0f
-;                andwf   KeyPad_Value, W, A
-;                iorwf   PORTJ, W, A
-;		movwf   KeyPad_Value, A
-;		movlw   00000001B 
-;		andwf   PORTE, 0, 0
-;		movwf   var, A
-;		tstfsz  var, 0
-;		goto    notZero10
-;		goto    zero10
-;notZero10:	bsf     KeyPad_Value, 5, 0
-;		goto    moveOn10
-;zero10:		bcf     KeyPad_Value, 5, 0
-;moveOn10:	movlw   00000010B 
-;		andwf   PORTE, 0, 0
-;		movwf   var, A
-;		tstfsz  var, 0
-;		goto    notZero70
-;		goto    zero70
-;notZero70:	bsf     KeyPad_Value, 6, 0
-;		goto    moveOn70
-;zero70:		bcf     KeyPad_Value, 6, 0
-;moveOn70:	movf    KeyPad_Value, 0, 0
-;                xorlw   0xff
-;                movwf   KeyPad_Value, A
 		
 KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii. Loops if keypad output is invalid.
 		movwf   row, A
