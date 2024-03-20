@@ -18,9 +18,16 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>nbproject/configurations.xml</itemPath>
-      <itemPath>Servo.s</itemPath>
       <itemPath>divide.s</itemPath>
       <itemPath>main.s</itemPath>
+      <itemPath>LCD.s</itemPath>
+      <itemPath>LCDNEWW.s</itemPath>
+      <itemPath>config.s</itemPath>
+      <itemPath>keyPadNew.s</itemPath>
+      <itemPath>keypad.s</itemPath>
+      <itemPath>settings.s</itemPath>
+      <itemPath>settingsNew.s</itemPath>
+      <itemPath>servo.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -69,13 +76,7 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
-      <item path="Servo.s" ex="false" overriding="false">
-        <pic-as-assembler>
-        </pic-as-assembler>
-        <pic-as-global>
-        </pic-as-global>
-        <pic-as-linker>
-        </pic-as-linker>
+      <item path="LCDNEWW.s" ex="true" overriding="false">
       </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
@@ -1082,6 +1083,8 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
+      <item path="keypad.s" ex="true" overriding="false">
+      </item>
       <pic-as-assembler>
         <property key="fmax-errors" value="20"/>
         <property key="list-custom-assembler-options" value=""/>
@@ -1161,6 +1164,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/Users/ncw21/OneDrive - Imperial College London/Year 3/Year 3 Lab/Microprocessors/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
@@ -1191,6 +1196,8 @@
                   value="Press to select which tool pack to use"/>
         <property key="voltagevalue" value="3.25"/>
       </pk4hybrid>
+      <item path="settingsNew.s" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
