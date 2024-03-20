@@ -18,6 +18,7 @@ numCardsDigit2:	ds  1
 test:		ds  1
 delayVariable:	ds  1
 resetVar:	ds  1
+conversion:	ds  1
    
 psect		KeyPad_code, class = CODE
 
@@ -55,44 +56,85 @@ J5toE0:		andwf   PORTE, 0, 0		; We use port J for most of the keypad connections
 		tstfsz  WREG, 0			; This tests the relevant bit in the other ports connected to the keypad.   
 		goto    notZero1		; and sets the corresponding bit accordingly.
 		goto    zero1
-notZero1:	bsf     KeyPad_Value, 5, 0
+notZero1:	bsf     conversion, 5, 0
 		goto    J6toE1
-zero1:		bcf     KeyPad_Value, 5, 0
+zero1:		bcf     conversion, 5, 0
 J6toE1:	    	movlw   00000010B 
 		andwf   PORTE, 0, 0
 		tstfsz  WREG, 0
 		goto    notZero2
 		goto    zero2
-notZero2:	bsf     KeyPad_Value, 6, 0
+notZero2:	bsf     conversion, 6, 0
 		goto    J2toE3
-zero2:		bcf     KeyPad_Value, 6, 0
+zero2:		bcf     conversion, 6, 0
 J2toE3:		movlw   00001000B 
 		andwf   PORTE, 0, 0
 		tstfsz  WREG, 0
 		goto    notZero3
 		goto    zero3
-notZero3:	bsf     KeyPad_Value, 2, 0
+notZero3:	bsf     conversion, 2, 0
 		return
-zero3:		bcf     KeyPad_Value, 2, 0
+zero3:		bcf     conversion, 2, 0
 		return
     
 Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a variable with a 1 in the place
 		movwf   KeyPad_Value, A		    ; of the column in the low nibble and row for the high nibble.
                 call    KeyPad_Columns
                 call    delay
-		movff   PORTJ, KeyPad_Value, A
+		movff   PORTJ, conversion, A
                 call    Convert
+		movff   conversion, KeyPad_Value
 	    	call    KeyPad_Rows
 		call    delay
-                movlw   0x0f
-                andwf   KeyPad_Value, W, A
-                iorwf   PORTJ, W, A
-		movwf   KeyPad_Value, A
-		call    Convert
-		movf    KeyPad_Value, 0, 0
+                movff   PORTJ, conversion, A
+		call    conversion
+		movf    conversion, 0, 0
+		andwf   KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 	nop
+;Check_KeyPress: movlw   0
+;		movwf   KeyPad_Value, A
+;                call    KeyPad_Rows
+;                call    delay
+;                movff   PORTJ, KeyPad_Value, A
+;		movlw   00001000B
+;		andwf   PORTE, 0, 0
+;		movwf   var, A
+;		tstfsz  var, 0
+;		goto    notZero60
+;		goto    zero60
+;notZero60:	bsf     KeyPad_Value, 2, 0
+;		goto    moveOn60
+;zero60:		bcf     KeyPad_Value, 2, 0
+;moveOn60:	call    KeyPad_Columns	
+;		call    delay
+;                movlw   0x0f
+;                andwf   KeyPad_Value, W, A
+;                iorwf   PORTJ, W, A
+;		movwf   KeyPad_Value, A
+;		movlw   00000001B 
+;		andwf   PORTE, 0, 0
+;		movwf   var, A
+;		tstfsz  var, 0
+;		goto    notZero10
+;		goto    zero10
+;notZero10:	bsf     KeyPad_Value, 5, 0
+;		goto    moveOn10
+;zero10:		bcf     KeyPad_Value, 5, 0
+;moveOn10:	movlw   00000010B 
+;		andwf   PORTE, 0, 0
+;		movwf   var, A
+;		tstfsz  var, 0
+;		goto    notZero70
+;		goto    zero70
+;notZero70:	bsf     KeyPad_Value, 6, 0
+;		goto    moveOn70
+;zero70:		bcf     KeyPad_Value, 6, 0
+;moveOn70:	movf    KeyPad_Value, 0, 0
+;                xorlw   0xff
+;                movwf   KeyPad_Value, A
+		
 KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii. Loops if keypad output is invalid.
 		movwf   row, A
 		movwf   column, A 
