@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Write_Y_Or_N, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, writeNumPlayers, writeNumCards, numPlayers, numCardsDigit1, numCardsDigit2
+extrn   Write_Y_Or_N, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, writeNumPlayers, writeNumCards, numCardsDigit1, numPlayers, numCardsDigit2
 global  Settings_Setup, Settings_Input, numCards, Reset_Settings, Dealing_Message
 psect	udata_acs  
 counter:        ds  1
