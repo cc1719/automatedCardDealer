@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn           LCD_Send_Byte_D, LCD_clear, LCD_delay_ms, LCD_Write_Message, LCD_line2, Settings_Input
+extrn           LCD_Send_Byte_D, LCD_clear, LCD_delay_ms, LCD_Write_Message, LCD_line2, Settings_Input, Read_Prompt1, messageLocation1, Read_Prompt2, messageLocation2, count
 global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Y_Or_N, numCardsDigit1, numCardsDigit2, numPlayers, resetVar, KeyPad_Value, conversion
 
 psect		udata_acs   
@@ -207,29 +207,6 @@ Check_No_KeyPress:					; This loops until no keys are pressed.
 		goto    Check_No_KeyPress
 		nop
 		return
-
-;writeNumPlayers:					
-;		movlw   11110000B           
-;		movwf   checkIfPressed, A
-;		movlw   01000110B
-;		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
-;		movlw   01000101B
-;		movwf   clear, A
-;		call    Check_KeyPress
-;		movf    KeyPad_Value, 0, 0
-;		cpfseq  enter, 0
-;		goto    testIfZeroP
-;		goto    writeNumPlayers
-;testIfZeroP:	movlw   00110000B
-;		cpfseq  KeyPad_Value, 0
-;		goto    digit1P
-;		goto    writeNumPlayers
-;		return
-;digit1P:	movf    KeyPad_Value, 0, 0
-;		call    LCD_Send_Byte_D
-;		call    Check_No_KeyPress
-;		movff   KeyPad_Value, numPlayers	
-;		return
 		
 writeNumPlayers:		
 		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
@@ -251,9 +228,9 @@ digit1P:	call    Check_KeyPress
 		goto    zeroTest1
 		goto    digit1P 
 zeroTest1:	cpfseq  checkIfZero, 0
-		goto    clearTest
+		goto    clearTest1
 		goto    digit1P
-clearTest:      cpfseq  clear, 0
+clearTest1:     cpfseq  clear, 0
 		goto    negative1
 		goto    digit1P
 negative1:	call    LCD_Send_Byte_D
@@ -270,13 +247,15 @@ digit2P:        call    Check_KeyPress
 		return  
 negative2:	cpfseq  clear, 0 
 		goto    digit2P
-		clrf    test, 0
 		call    Check_No_KeyPress
-		goto    Settings_Input
-;		movlw   50
-;		call    LCD_delay_ms
-		return	
-
+		call    LCD_clear
+		call    Read_Prompt1
+		movf    count, 0, 0
+		lfsr    2, messageLocation1
+		call    LCD_Write_Message
+		call    LCD_line2
+		goto    writeNumPlayers
+	
 writeNumCards: 
 		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
@@ -284,6 +263,8 @@ writeNumCards:
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
 		movlw   00110000B
 		movwf   checkIfZero, A
+		movlw   01000101B
+		movwf   clear, A
 		movlw   0
 		movwf   test, A
 		movlw   0xff
@@ -298,6 +279,9 @@ digit1C:	call    Check_KeyPress
 		goto    zeroTest2
 		goto    digit1C 
 zeroTest2:	cpfseq  checkIfZero, 0
+		goto    clearTest2
+		goto    digit1C
+clearTest2:	cpfseq  clear, 0
 		goto    negative3
 		goto    digit1C
 negative3:	call    LCD_Send_Byte_D
@@ -309,15 +293,37 @@ negative3:	call    LCD_Send_Byte_D
 digit2C:        call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    negative4
+		goto    clearTest3
 		call    Check_No_KeyPress
 		return  
+clearTest3:     cpfseq  clear, 0
+		goto    negative4
+		call    Check_No_KeyPress
+		call    LCD_clear
+		call    Read_Prompt2
+		movf    count, 0, 0
+		lfsr    2, messageLocation2
+		call    LCD_Write_Message
+		call    LCD_line2
+		goto    writeNumCards
 negative4:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit2
+loop2:		call    Check_KeyPress
+		movf    KeyPad_Value, 0, 0
+		cpfseq  enter, 0
+		goto    clearTest4
 		call    Check_No_KeyPress
-		movlw   50
-		call    LCD_delay_ms
-		return	
+		return
+clearTest4:	cpfseq  clear, 0
+		goto    loop2
+		call    Check_No_KeyPress
+		call    LCD_clear
+		call    Read_Prompt2
+		movf    count, 0, 0
+		lfsr    2, messageLocation2
+		call    LCD_Write_Message
+		call    LCD_line2
+		goto    writeNumCards  
 
 Write_Y_Or_N:	movlw   0
 		movwf   resetVar, A
