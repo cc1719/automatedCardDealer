@@ -24,26 +24,72 @@ Settings_Setup:	call    KeyPad_Setup
 		call    LCD_Setup
 		return
 		
-Read_Prompt:	lfsr    2, messageLocation
-		movlw   low highword(message)
+Read_Prompt1:	lfsr    2, messageLocation1
+		movlw   low highword(Stored_Message1)
 		movwf   TBLPTRU, A
-		movlw   high(message)
+		movlw   high(Stored_Message1)
 		movwf   TBLPTRH, A
-		movlw   low(message)
+		movlw   low(Stored_Message1)
 		movwf   TBLPTRL, A
-loop:		tblrd*+
-		movff   TABLAT, POSTINC2
-		decfsz  counter, A
-		goto    loop
-		return
-
-Settings_Input:	call    LCD_clear
 		movlw   17
 		movwf   count, 0
 		movwf   counter, 0
-		movff   messageLocation1, messageLocation
-		movff   Stored_Message1, message
-		call    Read_Prompt
+loop1:		tblrd*+
+		movff   TABLAT, POSTINC2
+		decfsz  counter, A
+		goto    loop1
+		return
+
+Read_Prompt2:	lfsr    2, messageLocation2
+		movlw   low highword(Stored_Message2)
+		movwf   TBLPTRU, A
+		movlw   high(Stored_Message2)
+		movwf   TBLPTRH, A
+		movlw   low(Stored_Message2)
+		movwf   TBLPTRL, A
+		movlw   14
+		movwf   count, 0
+		movwf   counter, 0
+loop2:		tblrd*+
+		movff   TABLAT, POSTINC2
+		decfsz  counter, A
+		goto    loop2
+		return
+		
+Read_Prompt3:	lfsr    2, messageLocation3
+		movlw   low highword(Stored_Message3)
+		movwf   TBLPTRU, A
+		movlw   high(Stored_Message3)
+		movwf   TBLPTRH, A
+		movlw   low(Stored_Message3)
+		movwf   TBLPTRL, A
+		movlw   16
+		movwf   count, 0
+		movwf   counter, 0
+loop3:		tblrd*+
+		movff   TABLAT, POSTINC2
+		decfsz  counter, A
+		goto    loop3
+		return
+
+Read_Prompt4:	lfsr    2, messageLocation4
+		movlw   low highword(Stored_Message4)
+		movwf   TBLPTRU, A
+		movlw   high(Stored_Message4)
+		movwf   TBLPTRH, A
+		movlw   low(Stored_Message4)
+		movwf   TBLPTRL, A
+		movlw   11
+		movwf   count, 0
+		movwf   counter, 0
+loop4:		tblrd*+
+		movff   TABLAT, POSTINC2
+		decfsz  counter, A
+		goto    loop4
+		return
+
+Settings_Input:	call    LCD_clear
+		call    Read_Prompt1
 		movf    count, 0, 0
 		lfsr    2, messageLocation1
 		call    LCD_Write_Message
@@ -52,12 +98,7 @@ Settings_Input:	call    LCD_clear
 		movlw   100
 		call    LCD_delay_ms
 		call    LCD_clear
-		movlw   14
-		movwf   count, 0
-		movwf   counter, 0
-		movff   messageLocation2, messageLocation
-		movff   Stored_Message2, message
-		call    Read_Prompt
+		call    Read_Prompt2
 		movf    count, 0, 0
 		lfsr    2, messageLocation2
 		call    LCD_Write_Message
@@ -89,12 +130,7 @@ Two_Digit_Cards:	movlw   48
 		return
 
 Reset_Settings:	call    LCD_clear
-		movlw   11
-		movwf   count, 0
-		movwf   counter, 0
-		movff   messageLocation3, messageLocation
-		movff   Stored_Message3, message
-		call    Read_Prompt
+		call    Read_Prompt3
 		movf    count, 0, 0
 		lfsr    2, messageLocation3
 		call    LCD_Write_Message
@@ -106,12 +142,7 @@ Reset_Settings:	call    LCD_clear
 		
 Dealing_Message:
 		call    LCD_clear
-		movlw   10
-		movwf   count, 0
-		movwf   counter, 0
-		movff   messageLocation4, messageLocation
-		movff   Stored_Message4, message
-		call    Read_Prompt
+		call    Read_Prompt4
 		movf    count, 0, 0
 		lfsr    2, messageLocation4
 		call    LCD_Write_Message
