@@ -11,6 +11,7 @@ row:		ds  1
 column:		ds  1
 counter:	ds  1
 checkIfPressed: ds  1
+checkIfZero:	ds  1
 enter:		ds  1
 numPlayers:	ds  1
 numCardsDigit1:	ds  1
@@ -204,9 +205,10 @@ countdown:      decfsz  KeyPad_counter, A
 Check_No_KeyPress:					; This loops until no keys are pressed.
 		movff   PORTJ, KeyPad_Value, A
 		call    Convert
-		movf    KeyPad_Value, 0, 0
+		movf    conversion, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    Check_No_KeyPress
+		nop
 		return
 
 writeNumPlayers:					
@@ -235,25 +237,25 @@ writeNumCards:
 		movwf   checkIfPressed, A
 		movlw   01000110B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movlw   00110000B
+		movwf   checkIfZero, A
 		movlw   0
 		movwf   test, A
 		movlw   0xff
 		movwf   numCardsDigit1, A
 		movwf   numCardsDigit2, A
-digit1Or2C:	call    Check_KeyPress
+digit1Or2C:    	tstfsz  test, 0
+		goto    digit2C
+		goto    digit1C
+digit1C:	call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
-		goto    testIfZeroC
-		return
-testIfZeroC:	tstfsz  test, 0
+		goto    zeroTest
+		goto    digit1C 
+zeroTest:	cpfseq  checkIfZero, 0
+		goto    not
 		goto    digit1C
-		movlw   00110000B
-		cpfseq  KeyPad_Value, 0
-		goto    digit1C
-		goto    writeNumCards
-digit1C:	call    LCD_Send_Byte_D
-		tstfsz  test, 0
-		goto    digit2C
+not:		call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
@@ -261,7 +263,7 @@ digit1C:	call    LCD_Send_Byte_D
 		goto    digit1Or2C	
 digit2C:        movff   KeyPad_Value, numCardsDigit2
 		call    Check_No_KeyPress
-		return
+		return	
 
 Write_Y_Or_N:	movlw   0
 		movwf   resetVar, A
