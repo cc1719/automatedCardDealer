@@ -1,7 +1,7 @@
 #include <xc.inc>
 
-extrn           LCD_Send_Byte_D, LCD_clear
-global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Y_Or_N, numCardsDigit1, numCardsDigit2, numPlayers, resetVar, KeyPad_Value
+extrn           LCD_Send_Byte_D, LCD_clear, LCD_delay_ms
+global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Y_Or_N, numCardsDigit1, numCardsDigit2, numPlayers, resetVar, KeyPad_Value, conversion
 
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -87,9 +87,9 @@ Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a 
 	    	call    KeyPad_Rows
 		call    delay
                 movff   PORTJ, conversion, A
-		call    conversion
+		call    Convert
 		movf    conversion, 0, 0
-		andwf   KeyPad_Value, 0, 0
+		iorwf   KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 		
@@ -224,7 +224,8 @@ testIfZeroP:	movlw   00110000B
 		goto    digit1P
 		goto    writeNumPlayers
 		return
-digit1P:	call    LCD_Send_Byte_D
+digit1P:	movf    KeyPad_Value, 0, 0
+		call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numPlayers	
 		call    Check_No_KeyPress
 		return
