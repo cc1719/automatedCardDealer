@@ -63,7 +63,7 @@ Read_Prompt3:	lfsr    2, messageLocation3
 		movwf   TBLPTRH, A
 		movlw   low(Stored_Message3)
 		movwf   TBLPTRL, A
-		movlw   16
+		movlw   12
 		movwf   count, 0
 		movwf   counter, 0
 loop3:		tblrd*+
@@ -136,8 +136,6 @@ Reset_Settings:	call    LCD_clear
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    Write_Reset
-		movlw   100
-		call    LCD_delay_ms
 		return
 		
 Dealing_Message:
