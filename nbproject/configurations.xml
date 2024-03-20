@@ -21,10 +21,7 @@
       <itemPath>divide.s</itemPath>
       <itemPath>main.s</itemPath>
       <itemPath>LCD.s</itemPath>
-      <itemPath>config.s</itemPath>
       <itemPath>settings.s</itemPath>
-      <itemPath>servo.s</itemPath>
-      <itemPath>settingsNew.s</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
