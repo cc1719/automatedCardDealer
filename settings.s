@@ -79,7 +79,7 @@ Read_Prompt4:	lfsr    2, messageLocation4
 		movwf   TBLPTRH, A
 		movlw   low(Stored_Message4)
 		movwf   TBLPTRL, A
-		movlw   11
+		movlw   10
 		movwf   count, 0
 		movwf   counter, 0
 loop4:		tblrd*+
