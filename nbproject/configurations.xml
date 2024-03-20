@@ -1079,7 +1079,7 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
-      <item path="keyPadNew.s" ex="false" overriding="false">
+      <item path="keyPadNew.s" ex="true" overriding="false">
         <pic-as-assembler>
         </pic-as-assembler>
         <pic-as-global>
@@ -1087,7 +1087,7 @@
         <pic-as-linker>
         </pic-as-linker>
       </item>
-      <item path="keypad.s" ex="true" overriding="false">
+      <item path="keypad.s" ex="false" overriding="false">
         <pic-as-assembler>
         </pic-as-assembler>
         <pic-as-global>
@@ -1174,6 +1174,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/Users/ncw21/OneDrive - Imperial College London/Year 3/Year 3 Lab/Microprocessors/automatedCardDealer/debug/default/default_ptg"/>
         <property key="programmerToGoImageName" value="default_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
