@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn           LCD_Send_Byte_D, LCD_clear, LCD_delay_ms, LCD_Write_Message, LCD_line2, Settings_Input, Read_Prompt1, messageLocation1, Read_Prompt2, messageLocation2, count
-global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Y_Or_N, numCardsDigit1, numCardsDigit2, numPlayers, resetVar, KeyPad_Value, conversion
+global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Reset, numCardsDigit1, numCardsDigit2, numPlayers, KeyPad_Value, conversion
 
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -18,10 +18,10 @@ numCardsDigit1:	ds  1
 numCardsDigit2:	ds  1
 test:		ds  1
 delayVariable:	ds  1
-resetVar:	ds  1
 conversion:	ds  1
 clear:		ds  1
-    
+one:		ds  1
+two:		ds  1
 psect		KeyPad_code, class = CODE
 
 KeyPad_Setup:	clrf	LATJ, A	    ; Clears the requred ports. We use pins from multiple ports for the keypad.
@@ -325,29 +325,15 @@ clearTest4:	cpfseq  clear, 0
 		call    LCD_line2
 		goto    writeNumCards  
 
-Write_Y_Or_N:	movlw   0
-		movwf   resetVar, A
-		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+Write_Reset:	movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
-again:		call    LCD_clear
-	    	call    Check_KeyPress
-		movf    KeyPad_Value, 0, 0
-		call    LCD_Send_Byte_D	
-		call    Check_No_KeyPress
 		movlw   00110001B
-		cpfseq  KeyPad_Value, 0
-		goto    carryon1
-		goto    Yes
-carryon1:	movlw	00110010B
-		cpfseq  KeyPad_Value, 0
-		goto    carryon2
-		goto    No
-carryon2:	goto    again
-Yes:		movlw   1
-		movwf   resetVar, A
+		movwf   one, A
+again:		call    Check_KeyPress
+		movf    KeyPad_Value, 0, 0
+		cpfseq  one, 0
+		goto    again
+		call    Check_No_KeyPress
+		movlw   50
+		call    LCD_delay_ms
 		return
-No:		movlw   0
-		movwf   resetVar, A
-		return
-
-
