@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn           LCD_Send_Byte_D, LCD_clear
-global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Y_Or_N, numCardsDigit1, numCardsDigit2, numPlayers, resetVar
+global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Y_Or_N, numCardsDigit1, numCardsDigit2, numPlayers, resetVar, KeyPad_Value
 
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -92,7 +92,7 @@ Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a 
 		movf    KeyPad_Value, 0, 0
                 xorlw   0xff
                 movwf   KeyPad_Value, A
-	
+	nop
 KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii. Loops if keypad output is invalid.
 		movwf   row, A
 		movwf   column, A 
