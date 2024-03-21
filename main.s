@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, Dealing_Message, pauseDeal, stopDeal, Pause_Deal, Stop_Deal
+extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, Dealing_Message
 
 global	cardno, timerL, timerH, currentPlayer, numCards
     
@@ -39,9 +39,6 @@ setup:	call    Settings_Setup
 main:
 	btfss	LATA, 7, A		; Check if interrupt is currently actively dealing a card
 	goto	Dealing			; If not, move to Deal function
-	call    Stop_Deal
-	tstfsz  stopDeal, 0
-	goto	setup
 	goto	main			; Repeatedly check this flag
 
 Dealing:
