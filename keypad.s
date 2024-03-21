@@ -295,8 +295,18 @@ zeroTest2:	cpfseq  checkIfZero, 0
 		goto    clearTest2
 		goto    digit1C
 clearTest2:	cpfseq  clear, 0
-		goto    negative3
+		goto    beginningTest3
 		goto    digit1C
+beginningTest3:	cpfseq  beginning, 0
+		goto    negative3
+		call    Check_No_KeyPress
+		call    LCD_clear
+		call    Read_Prompt1
+		movf    count, 0, 0
+		lfsr    2, messageLocation1
+		call    LCD_Write_Message
+		call    LCD_line2
+		goto    writeNumPlayers
 negative3:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
@@ -310,7 +320,7 @@ digit2C:        call    Check_KeyPress
 		call    Check_No_KeyPress
 		return  
 clearTest3:     cpfseq  clear, 0
-		goto    negative4
+		goto    beginningTest4
 		call    Check_No_KeyPress
 		call    LCD_clear
 		call    Read_Prompt2
@@ -319,6 +329,16 @@ clearTest3:     cpfseq  clear, 0
 		call    LCD_Write_Message
 		call    LCD_line2
 		goto    writeNumCards
+beginningTest4:	cpfseq  beginning, 0
+		goto    negative4
+		call    Check_No_KeyPress
+		call    LCD_clear
+		call    Read_Prompt1
+		movf    count, 0, 0
+		lfsr    2, messageLocation1
+		call    LCD_Write_Message
+		call    LCD_line2
+		goto    writeNumPlayers
 negative4:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit2
 loop2:		call    Check_KeyPress
@@ -328,7 +348,7 @@ loop2:		call    Check_KeyPress
 		call    Check_No_KeyPress
 		return
 clearTest4:	cpfseq  clear, 0
-		goto    loop2
+		goto    beginningTest5
 		call    Check_No_KeyPress
 		call    LCD_clear
 		call    Read_Prompt2
@@ -337,6 +357,16 @@ clearTest4:	cpfseq  clear, 0
 		call    LCD_Write_Message
 		call    LCD_line2
 		goto    writeNumCards  
+beginnginTest5:	cpfseq  beginning, 0
+		goto    loop2
+		call    Check_No_KeyPress
+		call    LCD_clear
+		call    Read_Prompt1
+		movf    count, 0, 0
+		lfsr    2, messageLocation1
+		call    LCD_Write_Message
+		call    LCD_line2
+		goto    writeNumPlayers
 
 Write_Reset:	movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
