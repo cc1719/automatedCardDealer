@@ -25,8 +25,8 @@
       <itemPath>servo.s</itemPath>
       <itemPath>settings.s</itemPath>
       <itemPath>nbproject/configurations.xml</itemPath>
+      <itemPath>keypadNew.s</itemPath>
     </logicalFolder>
-    <itemPath>keypadNew.s</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
@@ -1079,6 +1079,8 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
+      <item path="keypadNew.s" ex="true" overriding="false">
+      </item>
       <pic-as-assembler>
         <property key="fmax-errors" value="20"/>
         <property key="list-custom-assembler-options" value=""/>
