@@ -37,7 +37,7 @@ setup:	call    Settings_Setup
 	goto	main
 
 main:
-	btfss	PORTA, 7, A		; Check if interrupt is currently actively dealing a card
+	btfss	LATA, 7, A		; Check if interrupt is currently actively dealing a card
 	goto	Dealing			; If not, move to Deal function
 	goto	main			; Repeatedly check this flag
 
@@ -72,7 +72,7 @@ Next_Player: 				; Dealer has dealt to player 1, move on to next
     	goto	Deal_card
  
 Deal_card:
-	bsf	PORTA, 7, A		; Set flag - card is being dispensed!
+	bsf	LATA, 7, A		; Set flag - card is being dispensed!
 	movff	timerH, TMR0H
 	movff	timerL, TMR0L
 	bsf	TMR0ON			; Timer0 sets how long servo should spin - timerH and timerL were calculated in divide.s
