@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn           LCD_Send_Byte_D, LCD_clear, LCD_delay_ms, LCD_Write_Message, LCD_line2, Settings_Input, Read_Prompt1, messageLocation1, Read_Prompt2, messageLocation2, count
-global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Reset, numCardsDigit1, numCardsDigit2, numPlayers, KeyPad_Value, conversion, testVar
+global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Reset, numCardsDigit1, numCardsDigit2, numPlayers, KeyPad_Value, conversion, testVar, pauseDeal, stopDeal, Pause_Deal, Stop_Deal
 
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -24,6 +24,8 @@ one:		ds  1
 two:		ds  1
 beginning:	ds  1
 testVar:	ds  1
+pauseDeal:	ds 1
+stopDeal:	ds 1
     
 psect		KeyPad_code, class = CODE
 
@@ -204,7 +206,40 @@ Check_No_KeyPress:					; This loops until no keys are pressed.
 		movf    conversion, 0, 0
 		cpfseq  checkIfPressed, 0
 		goto    Check_No_KeyPress
-		nop
+		return
+		
+;Stop_Deal:				
+;		movlw   0
+;		movwf   stopDeal, A
+;		movff   PORTJ, conversion, A	
+;		call    Convert
+;		movf    conversion, 0, 0
+;		cpfseq  checkIfPressed, 0
+;		goto    stop
+;		return
+;stop:		call    Check_KeyPress
+;		movlw   01000110B
+;		cpfseq  KeyPad_Value, 0
+;		return
+;		movlw   1
+;		movwf   stopDeal, A
+;		return
+		
+Pause_Deal:				
+		movlw   0
+		movwf   pauseDeal, A
+		movff   PORTJ, conversion, A	
+		call    Convert
+		movf    conversion, 0, 0
+		cpfseq  checkIfPressed, 0
+		goto    pause
+		return
+pause:		call    Check_KeyPress
+		movlw   01000101B
+		cpfseq  KeyPad_Value, 0
+		return
+		movlw   1
+		movwf   pauseDeal, A
 		return
 		
 writeNumPlayers:		
