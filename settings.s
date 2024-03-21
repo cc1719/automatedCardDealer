@@ -11,8 +11,8 @@ numCards:	ds  1
  
 psect		settings_code, class = CODE
 
-Stored_Message1: db     'Enter no players'
-		messageLocation1  EQU 0x240
+Stored_Message1: db     'Enter no players'	; Stores the various messages to output on the LCD in program memory.
+		messageLocation1  EQU 0x240	; These variables are the desired location in data memory.
 Stored_Message2: db     'Enter no cards'
 		messageLocation2  EQU 0x250
 Stored_Message3: db     '1 to restart'
@@ -20,11 +20,11 @@ Stored_Message3: db     '1 to restart'
 Stored_Message4: db     'Dealing...'
 		messageLocation4  EQU 0x270
   
-Settings_Setup:	call    KeyPad_Setup
+Settings_Setup:	call    KeyPad_Setup		; Set-up routines for LCD and keypad.
 		call    LCD_Setup
 		return
 		
-Read_Prompt1:	lfsr    2, messageLocation1
+Read_Prompt1:	lfsr    2, messageLocation1		    ; These routines read the corresponding message from program memory, and copies them into data memory.
 		movlw   low highword(Stored_Message1)
 		movwf   TBLPTRU, A
 		movlw   high(Stored_Message1)
@@ -88,7 +88,7 @@ loop4:		tblrd*+
 		goto    loop4
 		return
 
-Settings_Input:	call    LCD_clear
+Settings_Input:	call    LCD_clear		    ; This routine prompts the user to input the settings, and reads the response and saves them to numPlayers and numCards.
 		call    Read_Prompt1
 		movf    count, 0, 0
 		lfsr    2, messageLocation1
