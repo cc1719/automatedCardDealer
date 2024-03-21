@@ -1,7 +1,7 @@
 #include <xc.inc>
 
 extrn           LCD_Send_Byte_D, LCD_clear, LCD_delay_ms, LCD_Write_Message, LCD_line2, Settings_Input, Read_Prompt1, messageLocation1, Read_Prompt2, messageLocation2, count
-global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Reset, numCardsDigit1, numCardsDigit2, numPlayers, KeyPad_Value, conversion
+global		KeyPad_Setup, writeNumPlayers, writeNumCards, Write_Reset, numCardsDigit1, numCardsDigit2, numPlayers, KeyPad_Value, conversion, testVar
 
 psect		udata_acs   
 KeyPad_counter: ds  1       
@@ -23,6 +23,7 @@ clear:		ds  1
 one:		ds  1
 two:		ds  1
 beginning:	ds  1
+testVar:	ds  1
     
 psect		KeyPad_code, class = CODE
 
@@ -270,6 +271,8 @@ beginningTest2:	cpfseq  beginning, 0
 		goto    writeNumPlayers
 	
 writeNumCards: 
+		movlw   0
+		movwf   testVar, A
 		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
 		movlw   01000101B
@@ -300,13 +303,9 @@ clearTest2:	cpfseq  clear, 0
 beginningTest3:	cpfseq  beginning, 0
 		goto    negative3
 		call    Check_No_KeyPress
-		call    LCD_clear
-		call    Read_Prompt1
-		movf    count, 0, 0
-		lfsr    2, messageLocation1
-		call    LCD_Write_Message
-		call    LCD_line2
-		goto    writeNumPlayers
+		movlw   1
+		movwf   testVar, A
+		return
 negative3:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
@@ -332,13 +331,9 @@ clearTest3:     cpfseq  clear, 0
 beginningTest4:	cpfseq  beginning, 0
 		goto    negative4
 		call    Check_No_KeyPress
-		call    LCD_clear
-		call    Read_Prompt1
-		movf    count, 0, 0
-		lfsr    2, messageLocation1
-		call    LCD_Write_Message
-		call    LCD_line2
-		goto    writeNumPlayers
+		movlw   1
+		movwf   testVar, A
+		return
 negative4:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit2
 loop2:		call    Check_KeyPress
@@ -360,13 +355,9 @@ clearTest4:	cpfseq  clear, 0
 beginningTest5:	cpfseq  beginning, 0
 		goto    loop2
 		call    Check_No_KeyPress
-		call    LCD_clear
-		call    Read_Prompt1
-		movf    count, 0, 0
-		lfsr    2, messageLocation1
-		call    LCD_Write_Message
-		call    LCD_line2
-		goto    writeNumPlayers
+		movlw   1
+		movwf   testVar, A
+		return
 
 Write_Reset:	movlw   11110000B             ; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
