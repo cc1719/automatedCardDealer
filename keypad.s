@@ -208,22 +208,22 @@ Check_No_KeyPress:					; This loops until no keys are pressed.
 		goto    Check_No_KeyPress
 		return
 		
-;Stop_Deal:				
-;		movlw   0
-;		movwf   stopDeal, A
-;		movff   PORTJ, conversion, A	
-;		call    Convert
-;		movf    conversion, 0, 0
-;		cpfseq  checkIfPressed, 0
-;		goto    stop
-;		return
-;stop:		call    Check_KeyPress
-;		movlw   01000110B
-;		cpfseq  KeyPad_Value, 0
-;		return
-;		movlw   1
-;		movwf   stopDeal, A
-;		return
+Stop_Deal:				
+		movlw   0
+		movwf   stopDeal, A
+		movff   PORTJ, conversion, A	
+		call    Convert
+		movf    conversion, 0, 0
+		cpfseq  checkIfPressed, 0
+		goto    stop
+		return
+stop:		call    Check_KeyPress
+		movlw   01000110B
+		cpfseq  KeyPad_Value, 0
+		return
+		movlw   1
+		movwf   stopDeal, A
+		return
 		
 Pause_Deal:				
 		movlw   0
