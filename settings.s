@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Write_Reset, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, writeNumPlayers, writeNumCards, numCardsDigit1, numPlayers, numCardsDigit2
+extrn   Write_Reset, LCD_delay_ms, LCD_clear, LCD_Write_Message, LCD_line2, LCD_Setup, KeyPad_Setup, writeNumPlayers, writeNumCards, numCardsDigit1, numPlayers, numCardsDigit2, testVar
 global  Settings_Setup, Settings_Input, numCards, Reset_Settings, Dealing_Message, count, Read_Prompt1, Read_Prompt2, messageLocation1, messageLocation2
 psect	udata_acs  
 counter:        ds  1
@@ -15,7 +15,7 @@ Stored_Message1: db     'Enter no players'
 		messageLocation1  EQU 0x240
 Stored_Message2: db     'Enter no cards'
 		messageLocation2  EQU 0x250
-Stored_Message3: db     '1 to re-deal'
+Stored_Message3: db     '1 to restart'
 		messageLocation3  EQU 0x260
 Stored_Message4: db     'Dealing...'
 		messageLocation4  EQU 0x270
@@ -104,6 +104,8 @@ Settings_Input:	call    LCD_clear
 		call    LCD_Write_Message
 		call    LCD_line2
 		call    writeNumCards	
+		tstfsz  testVar, 0
+		goto    Settings_Input
 		movlw   100
 		call    LCD_delay_ms
 		call    LCD_clear
