@@ -29,7 +29,7 @@ setup:	call    Settings_Setup
 	call    Settings_Input			; Run Keypad & LCD Scripts, output numCards & numPlayers
 	movlw	0xff
 	movwf	timerL, A
-	movlw	0x7f
+	movlw	0xaf
 	movwf	timerH, A			; Time for Servo to reach desired position
  	movff	numPlayers, currentPlayer, A 	; currentPlayer will count down as dealer faces relevant player
 	call	divide
@@ -47,7 +47,7 @@ Dealing:
 	movwf	delL, A
 	movlw	0xff
 	movwf	delH, A
-	movlw	0x07
+	movlw	0x09
 	movwf	delI, A
 	call	bigdelay		; Implemented manual 32bit delay so that there is break between dealt card and servo rotation
  	movlw	0x00
