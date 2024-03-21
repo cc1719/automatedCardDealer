@@ -82,9 +82,9 @@ DCM_On:
     bcf	    LATD, 2, A		; TMR4 is complete, Turn on DCM
     bcf	    TMR1ON		; Turn off TMR4
     bcf	    TMR1IF		; Clear TMR4 flag
-    movlw   0xD6
+    movlw   0xC7
     movwf   TMR0H
-    movlw   0xD8
+    movlw   0x38
     movwf   TMR0L		; Calibrated time for DCM to spin
     bsf	    TMR0ON		; Turn on TMR0 for DCM to spin
     retfie  f
@@ -95,9 +95,9 @@ Motor_Break:
 
 Motor_Reverse:
     bcf	    LATA, 0, A
-    movlw   0xD6
+    movlw   0xEA
     movwf   TMR0H
-    movlw   0xD8
+    movlw   0x60
     movwf   TMR0L
     bsf	    TMR0ON
     retfie  f
