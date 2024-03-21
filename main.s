@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, Dealing_Message
+extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, Dealing_Message, pauseDeal, stopDeal, Pause_Deal, Stop_Deal
 
 global	cardno, timerL, timerH, currentPlayer, numCards
     
@@ -39,6 +39,9 @@ setup:	call    Settings_Setup
 main:
 	btfss	LATA, 7, A		; Check if interrupt is currently actively dealing a card
 	goto	Dealing			; If not, move to Deal function
+	call    Stop_Deal
+	tstfsz  stopDeal, 0
+	goto	setup
 	goto	main			; Repeatedly check this flag
 
 Dealing:
@@ -58,23 +61,29 @@ Dealing:
 	movf	numPlayers, W, A
  	cpfseq	currentPlayer, A	; Check if dealer is facing player 1
   	goto	Next_Player		; If not, move to next player and deal
+	movff	timerH, TMR0H
+	movff	timerL, TMR0L
    	goto	Deal_card		; If yes, deal a card
 
 Player1: 				; Dealer has dealt to last player, back to player 1
  	movff	numPlayers, currentPlayer, A
  	movlw	0x32
   	movwf	PR2, A
+	movlw	0x01
+	movwf	TMR0H, A
+	movlw	0xff
+	movwf	TMR0L, A
    	goto	Deal_card
 
 Next_Player: 				; Dealer has dealt to player 1, move on to next
 	movf	posdelta, W, A
    	addwf	PR2, F, A
+	movff	timerH, TMR0H
+	movff	timerL, TMR0L
     	goto	Deal_card
  
 Deal_card:
 	bsf	LATA, 7, A		; Set flag - card is being dispensed!
-	movff	timerH, TMR0H
-	movff	timerL, TMR0L
 	bsf	TMR0ON			; Timer0 sets how long servo should spin - timerH and timerL were calculated in divide.s
 	goto	main
 
