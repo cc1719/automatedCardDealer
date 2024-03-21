@@ -357,7 +357,7 @@ clearTest4:	cpfseq  clear, 0
 		call    LCD_Write_Message
 		call    LCD_line2
 		goto    writeNumCards  
-beginnginTest5:	cpfseq  beginning, 0
+beginningTest5:	cpfseq  beginning, 0
 		goto    loop2
 		call    Check_No_KeyPress
 		call    LCD_clear
