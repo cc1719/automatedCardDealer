@@ -290,6 +290,7 @@ digit1Or2C:    	tstfsz  test, 0
 		goto    digit2C
 		goto    digit1C
 digit1C:	call    Check_KeyPress
+		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    zeroTest2
@@ -302,7 +303,6 @@ clearTest2:	cpfseq  clear, 0
 		goto    digit1C
 beginningTest3:	cpfseq  beginning, 0
 		goto    negative3
-		call    Check_No_KeyPress
 		movlw   1
 		movwf   testVar, A
 		return
@@ -310,17 +310,15 @@ negative3:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
-		call    Check_No_KeyPress
 		goto    digit1Or2C	
 digit2C:        call    Check_KeyPress
+		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    clearTest3
-		call    Check_No_KeyPress
 		return  
 clearTest3:     cpfseq  clear, 0
 		goto    beginningTest4
-		call    Check_No_KeyPress
 		call    LCD_clear
 		call    Read_Prompt2
 		movf    count, 0, 0
@@ -330,7 +328,6 @@ clearTest3:     cpfseq  clear, 0
 		goto    writeNumCards
 beginningTest4:	cpfseq  beginning, 0
 		goto    negative4
-		call    Check_No_KeyPress
 		movlw   1
 		movwf   testVar, A
 		return
@@ -340,11 +337,9 @@ loop2:		call    Check_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    clearTest4
-		call    Check_No_KeyPress
 		return
 clearTest4:	cpfseq  clear, 0
 		goto    beginningTest5
-		call    Check_No_KeyPress
 		call    LCD_clear
 		call    Read_Prompt2
 		movf    count, 0, 0
@@ -354,7 +349,6 @@ clearTest4:	cpfseq  clear, 0
 		goto    writeNumCards  
 beginningTest5:	cpfseq  beginning, 0
 		goto    loop2
-		call    Check_No_KeyPress
 		movlw   1
 		movwf   testVar, A
 		return
