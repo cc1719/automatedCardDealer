@@ -223,6 +223,7 @@ digit1Or2P:    	tstfsz  test, 0
 		goto    digit2P
 		goto    digit1P
 digit1P:	call    Check_KeyPress
+		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    zeroTest1
@@ -240,17 +241,15 @@ negative1:	call    LCD_Send_Byte_D
 		movff   KeyPad_Value, numPlayers
 		movlw   1
 		movwf   test, A
-		call    Check_No_KeyPress
 		goto    digit1Or2P	
 digit2P:        call    Check_KeyPress
+		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    negative2
-		call    Check_No_KeyPress
 		return  
 negative2:	cpfseq  clear, 0 
 		goto    beginningTest2
-		call    Check_No_KeyPress
 		call    LCD_clear
 		call    Read_Prompt1
 		movf    count, 0, 0
@@ -260,7 +259,6 @@ negative2:	cpfseq  clear, 0
 		goto    writeNumPlayers
 beginningTest2:	cpfseq  beginning, 0
 		goto    digit2P
-		call    Check_No_KeyPress
 		call    LCD_clear
 		call    Read_Prompt1
 		movf    count, 0, 0
