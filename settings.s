@@ -11,11 +11,11 @@ numCards:	ds  1
  
 psect		settings_code, class = CODE
 
-Stored_Message1: db     'Enter no players'	; Stores the various messages to output on the LCD in program memory.
+Stored_Message1: db     'Enter no Players'	; Stores the various messages to output on the LCD in program memory.
 		messageLocation1  EQU 0x240	; These variables are the desired location in data memory.
-Stored_Message2: db     'Enter no cards'
+Stored_Message2: db     'Enter no Cards'
 		messageLocation2  EQU 0x250
-Stored_Message3: db     '1 to restart'
+Stored_Message3: db     '1 to Restart'
 		messageLocation3  EQU 0x260
 Stored_Message4: db     'Dealing...'
 		messageLocation4  EQU 0x270

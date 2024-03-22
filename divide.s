@@ -1,8 +1,8 @@
 #include <xc.inc>
 
-global  divide, output
+global  divide, output, divide16bit
 
-extrn numPlayers
+extrn numPlayers, timerL, timerH
     
 psect	udata_acs
 arg1:	 ds 1 
@@ -60,10 +60,15 @@ end2:		movwf   remainder2, 0
 divide16bit:    ; divides the number (arg1+arg2)*arg3 by divisor, result is in PRODH and PRODL.
 		movlw   100
 		movwf   arg1, 0
-		movlw   100
+		movlw   157
 		movwf   arg2, 0
-		movlw   6
-		movwf   divisor, A
+		movlw   255
+		movwf   arg3, 0
+		movff   numPlayers, divisor, A
+		movlw	0x01
+		cpfseq	numPlayers, 0
+		subwf	numPlayers, W, A
+		movwf	divisor, A
 		movlw   0
 		movwf   output, 0
     	        movf    arg1, 0, 0
@@ -97,5 +102,15 @@ end4:		movwf   remainder2, 0
 		
 		movf    output, 0, 0
 		mulwf   arg3, A
+		
+		movlw	0xff
+		movwf	timerL, A
+		movwf	timerH, A
+		movf	PRODL, W, A
+		subwf	timerL, F, A
+		movf	PRODH, W, A
+		subwfb	timerH, F, A
+		clrf	PRODL, A
+		clrf	PRODH, A
 		
 		return
