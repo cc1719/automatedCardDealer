@@ -5,9 +5,6 @@ extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, nu
 global	cardno, timerL, timerH, currentPlayer, numCards
     
 psect	udata_acs   ; reserve data space in access ram
-    delL:	ds 1	
-    delH:	ds 1	
-    delI:	ds 1
     timerL:	ds 1
     timerH: 	ds 1
     cardno:	ds 1
