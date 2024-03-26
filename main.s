@@ -1,13 +1,12 @@
 #include <xc.inc>
 
-extrn   Settings_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, Dealing_Message, divide16bit
+extrn   KeyPad_Setup, LCD_Setup, Settings_Input, Servo_Setup, Interrupt_Check, divide, numCards, numPlayers, output, Reset_Settings, Dealing_Message, divide16bit
 
-global	cardno, timerL, timerH, currentPlayer, numCards
+global	timerL, timerH, currentPlayer, numCards
     
 psect	udata_acs   ; reserve data space in access ram
     timerL:	ds 1
     timerH: 	ds 1
-    cardno:	ds 1
     currentPlayer: ds 1
     posdelta: 	ds 1
 
@@ -21,9 +20,12 @@ int_hi:
 	goto	Interrupt_Check
 	
 setup:	
-	call    Settings_Setup
+	call    KeyPad_Setup		; Set-up routines for LCD and keypad.
+	call    LCD_Setup
 	call	Servo_Setup			; Servo.s setup
  	bsf	TMR3ON				; Start PWM on Servo
+
+User_Input:
 	call    Settings_Input			; Run Keypad & LCD Scripts, output numCards & numPlayers
 	movlw	0x01
 	movwf	timerH, A
@@ -83,4 +85,4 @@ Play_Again:
 	movwf   numPlayers, A
 	movlw   0
 	movwf   numCards, A
-	goto    setup
+	goto    User_Input
