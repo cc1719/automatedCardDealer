@@ -21,7 +21,7 @@ divide:    ; divides (arg1+arg2) by numPlayers, result in output.
 		movlw   100
 		movwf   arg2, 0
 		movlw	0x01
-		cpfseq	numPlayers, 0          ; Checks if divisor will be 1, if not subtract one from it.
+		cpfseq	numPlayers, 0          ; Checks if divisor will be 1, if not subtract one from it
 		subwf	numPlayers, W, A
 		movwf	divisor, A
 		movlw   0
@@ -30,7 +30,7 @@ divide:    ; divides (arg1+arg2) by numPlayers, result in output.
 		cpfsgt  divisor, 0
 		goto    next1
 		goto    end1
-next1:		movf    divisor, 0, 0		; Subtracts divisor from arg1 until arg1 is less than divisor, while counting how many times this is done in output.
+next1:		movf    divisor, 0, 0		; Subtracts divisor from arg1 until arg1 is less than divisor, while counting how many times this is done in output
 		subwf   arg1, 1, 0
 		incf    output, 1, 0
 		movf    arg1, 0, 0
@@ -38,7 +38,7 @@ next1:		movf    divisor, 0, 0		; Subtracts divisor from arg1 until arg1 is less 
 		goto    next1
 end1:		movwf   remainder1, 0	
     
-		movf    arg2, 0, 0		; Same for arg2.
+		movf    arg2, 0, 0		; Same for arg2
 		cpfsgt  divisor, 0
 		goto    next2
 		goto    end2
@@ -52,7 +52,7 @@ end2:		movwf   remainder2, 0
 		
 		movf    remainder1, 0, 0
 		addwf   remainder2, 0, 0
-		cpfsgt  divisor, 0		; Check if total remainder is greater than divisor, and if so add one to output.
+		cpfsgt  divisor, 0		; Check if total remainder is greater than divisor, and if so add one to output
 		incf    output, 1, 0
 		
 		return
