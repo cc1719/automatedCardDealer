@@ -27,27 +27,27 @@ testVar:	ds  1
     
 psect		KeyPad_code, class = CODE
 
-KeyPad_Setup:	clrf	LATJ, A	    ; Clears the required ports. We use pins from multiple ports for the keypad.
+KeyPad_Setup:	clrf	LATJ, A	    ; Clears the required ports 
 		clrf    LATE, A
-                movlb	0x0f	    ; Sets the pull-up resistors.
+                movlb	0x0f	    ; Sets the pull-up resistors
                 bsf     REPU
 		bsf     RJPU
                 return
 
-Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B   ; Defines the ascii characters for the keypad.
+Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B   ; Defines the ascii characters for the keypad
 		db      00110010B, 00110101B, 00111000B, 00110000B
 		db	00110011B, 00110110B, 00111001B, 01000010B
 		db      01000110B, 01000101B, 01000100B, 01000011B
 		Lookup_Table  EQU 0x300
 
-KeyPad_Columns:	movlw   0x0f		; Sets up to read the column number.
+KeyPad_Columns:	movlw   0x0f		; Sets up to read the column number
                 movwf   TRISJ, A
 		bcf     TRISE, 0, 0
 		bcf     TRISE, 1, 0
 		bsf     TRISE, 3, 0
                 return
     
-KeyPad_Rows:				; Sets up to read the row number.
+KeyPad_Rows:				; Sets up to read the row number
                 movlw   0xf0
                 movwf   TRISJ, A
 		bsf     TRISE, 0, 0
@@ -56,10 +56,10 @@ KeyPad_Rows:				; Sets up to read the row number.
                 return
 		
 	
-Convert:	movlw   00000001B		; Collates data from each port connected to the keypad.
-J5toE0:		andwf   PORTE, 0, 0		; We use port J for most of the keypad connections, except for J5, 6 and 2. 
-		tstfsz  WREG, 0			; This tests the relevant bit in the other ports connected to the keypad.   
-		goto    notZero1		; and sets the corresponding bit accordingly.
+Convert:	movlw   00000001B		; Collates data from each port connected to the keypad
+J5toE0:		andwf   PORTE, 0, 0		; We use port J for most of the keypad connections, except for J5, 6 and 2
+		tstfsz  WREG, 0			; Tests the relevant bit in the other ports connected to the keypad
+		goto    notZero1		; and sets the corresponding bit accordingly
 		goto    zero1
 notZero1:	bsf     conversion, 5, 0
 		goto    J6toE1
@@ -83,7 +83,7 @@ zero3:		bcf     conversion, 2, 0
 		return
     
 Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a variable with a 1 in the place
-		movwf   KeyPad_Value, A		    ; of the column in the low nibble and row for the high nibble.
+		movwf   KeyPad_Value, A		    ; of the column in the low nibble and row for the high nibble
                 call    KeyPad_Columns
                 call    delay
 		movff   PORTJ, conversion, A
@@ -98,7 +98,7 @@ Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a 
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 		
-KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii. Loops if keypad output is invalid.
+KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii and loops if input is invalid
 		movwf   row, A
 		movwf   column, A 
 		
@@ -158,7 +158,7 @@ next7:          movlw   10000000B
 		movlw   4
 		movwf   column, A
 		
-Read_Lookup_Table:					; Reads the look-up table into data memory.
+Read_Lookup_Table:					; Reads the look-up table into data memory
 		lfsr    0, Lookup_Table
 		movlw   low highword(Table_Set_Up)
 		movwf   TBLPTRU, A
@@ -178,7 +178,7 @@ loop:		tblrd*+
 		decfsz  counter, A
 		bra     loop
 		
-		movlw   01000001B                       ; Rejects invalid letter input, for instance pressing 'D' key on keypad.
+		movlw   01000001B                       ; Rejects invalid letter input, for instance pressing 'D' key on keypad
 		cpfseq  KeyPad_Value, 0
 		goto    next8
 		goto    Check_KeyPress
@@ -198,7 +198,7 @@ countdown:      decfsz  KeyPad_counter, A
                 bra     countdown
                 return
 
-Check_No_KeyPress:					; This loops until no keys are pressed.
+Check_No_KeyPress:					; Loops until no keys are pressed
 		movff   PORTJ, conversion, A	
 		call    Convert
 		movf    conversion, 0, 0
@@ -207,19 +207,19 @@ Check_No_KeyPress:					; This loops until no keys are pressed.
 		return
 		
 writeNumPlayers:		
-		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+		movlw   11110000B               ; Condition to check if keypad button is pressed or not
 		movwf   checkIfPressed, A
 		movlw   01000101B
-		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
+		movwf   enter, A                ; Condition to see if enter key has been pressed (F on the keypad)
 		movlw   00110000B
-		movwf   checkIfZero, A		; Condition to see if '0' key is pressed.
+		movwf   checkIfZero, A		; Condition to see if '0' key is pressed
 		movlw   01000011B
-		movwf   clear, A		; Condition to see if clear key is pressed (C on keypad).
+		movwf   clear, A		; Condition to see if clear key is pressed (C on keypad)
 		movlw   01000010B
-		movwf   beginning, A		; Condition to see if beginning key is pressed (B on keypad).
+		movwf   beginning, A		; Condition to see if beginning key is pressed (B on keypad)
 		movlw   0
 		movwf   test, A
-digit1Or2P:    	tstfsz  test, 0			; Checks if input is first or second digit.
+digit1Or2P:    	tstfsz  test, 0			; Checks if input is first or second digit (second digit here is assumed to be logic button e.g. enter as numPlayers should be 1 digit only)
 		goto    digit2P
 		goto    digit1P
 digit1P:	call    Check_KeyPress		; Receives first digit input
@@ -228,27 +228,27 @@ digit1P:	call    Check_KeyPress		; Receives first digit input
 		cpfseq  enter, 0
 		goto    zeroTest1
 		goto    digit1P 
-zeroTest1:	cpfseq  checkIfZero, 0
+zeroTest1:	cpfseq  checkIfZero, 0		; Rejects if first digit is 0
 		goto    clearTest1
 		goto    digit1P
-clearTest1:     cpfseq  clear, 0
+clearTest1:     cpfseq  clear, 0		; Rejects if first digit is clear button
 		goto    beginningTest1
 		goto    digit1P
-beginningTest1:	cpfseq  beginning, 0
+beginningTest1:	cpfseq  beginning, 0		; Rejects if first digit is beginning button
 		goto    negative1
 		goto    digit1P
-negative1:	call    LCD_Send_Byte_D
-		movff   KeyPad_Value, numPlayers
+negative1:	call    LCD_Send_Byte_D		; Input is valid by this point, therefore display
+		movff   KeyPad_Value, numPlayers	; Saves input
 		movlw   1
 		movwf   test, A
 		goto    digit1Or2P	
-digit2P:        call    Check_KeyPress
+digit2P:        call    Check_KeyPress		; Receives input and checks key is released
 		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
-		cpfseq  enter, 0
+		cpfseq  enter, 0		; If equal to enter, return
 		goto    negative2
 		return  
-negative2:	cpfseq  clear, 0 
+negative2:	cpfseq  clear, 0 		; If equal to clear button, clear and start again
 		goto    beginningTest2
 		call    LCD_clear
 		call    Read_Prompt1
@@ -257,7 +257,7 @@ negative2:	cpfseq  clear, 0
 		call    LCD_Write_Message
 		call    LCD_line2
 		goto    writeNumPlayers
-beginningTest2:	cpfseq  beginning, 0
+beginningTest2:	cpfseq  beginning, 0		; If equal to beginning button, clear and start again (same as clear at this point)
 		goto    digit2P
 		call    LCD_clear
 		call    Read_Prompt1
@@ -267,10 +267,10 @@ beginningTest2:	cpfseq  beginning, 0
 		call    LCD_line2
 		goto    writeNumPlayers
 	
-writeNumCards: 
-		movlw   0
+writeNumCards: 					; 2 digit input
+		movlw   0			; Condition to check which di
 		movwf   testVar, A
-		movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+		movlw   11110000B             	; Condition to check if keypad button is pressed or not.
 		movwf   checkIfPressed, A
 		movlw   01000101B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
