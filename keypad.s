@@ -98,11 +98,11 @@ Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a 
                 xorlw   0xff
                 movwf   KeyPad_Value, A
 		
-KeyPad_Output:	movlw   0			    ; Maps the keypad output to ascii and loops if input is invalid
+KeyPad_Output:	movlw   0			        ; Maps the keypad output to ascii and loops if input is invalid
 		movwf   row, A
 		movwf   column, A 
 		
-initialise1:	movlw   00001111B
+initialise1:	movlw   00001111B			; Checks row input against each possible value, loops if not valid
 		andwf   KeyPad_Value, 0, 0
 		movwf   value, A
 		
@@ -110,7 +110,7 @@ next0:		movlw   00000001B
 		cpfseq  value, 0
 		bra     next1
 		movlw   1
-		movwf   row, A
+		movwf   row, A				; If equals this value, sets row variable accordinly
 		goto    initialise2
 next1:          movlw   00000010B
 		cpfseq  value, 0
@@ -130,7 +130,7 @@ next3:          movlw   00001000B
 		movlw   4
 		movwf   row, A
 		
-initialise2:	movlw   11110000B
+initialise2:	movlw   11110000B		; Same for column input
 		andwf   KeyPad_Value, 0, 0
 		movwf   value, A
 		
