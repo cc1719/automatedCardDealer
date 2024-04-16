@@ -206,7 +206,7 @@ Check_No_KeyPress:					; Loops until no keys are pressed
 		goto    Check_No_KeyPress
 		return
 		
-writeNumPlayers:		
+writeNumPlayers:				; 1 digit input
 		movlw   11110000B               ; Condition to check if keypad button is pressed or not
 		movwf   checkIfPressed, A
 		movlw   01000101B
@@ -219,7 +219,7 @@ writeNumPlayers:
 		movwf   beginning, A		; Condition to see if beginning key is pressed (B on keypad)
 		movlw   0
 		movwf   test, A
-digit1Or2P:    	tstfsz  test, 0			; Checks if input is first or second digit (second digit here is assumed to be logic button e.g. enter as numPlayers should be 1 digit only)
+digit1Or2P:    	tstfsz  test, 0			; Checks if input is first or second digit (second digit here is assumed to be logic button e.g. enter)
 		goto    digit2P
 		goto    digit1P
 digit1P:	call    Check_KeyPress		; Receives first digit input
@@ -268,53 +268,53 @@ beginningTest2:	cpfseq  beginning, 0		; If equal to beginning button, clear and 
 		goto    writeNumPlayers
 	
 writeNumCards: 					; 2 digit input
-		movlw   0			; Condition to check which di
+		movlw   0			; Set if beginning key is pressed, used in settings file to restart settings input
 		movwf   testVar, A
-		movlw   11110000B             	; Condition to check if keypad button is pressed or not.
+		movlw   11110000B             	; Condition to check if keypad button is pressed
 		movwf   checkIfPressed, A
-		movlw   01000101B
-		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
-		movlw   00110000B
+		movlw   01000101B		; Condition to see if enter key has been pressed (F on the keypad).
+		movwf   enter, A                 
+		movlw   00110000B		; Condition to see if '0' key is pressed
 		movwf   checkIfZero, A
-		movlw   01000011B
+		movlw   01000011B		; Condition to see if clear key is pressed (C on keypad)
 		movwf   clear, A
-		movlw   0
+		movlw   0			; Checks which digit input process is on
 		movwf   test, A
 		movlw   0xff
 		movwf   numCardsDigit1, A
 		movwf   numCardsDigit2, A
-digit1Or2C:    	tstfsz  test, 0
+digit1Or2C:    	tstfsz  test, 0			; Checks which digit 
 		goto    digit2C
 		goto    digit1C
-digit1C:	call    Check_KeyPress
+digit1C:	call    Check_KeyPress		; Receives first digit and checks key is released
 		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
-		cpfseq  enter, 0
+		cpfseq  enter, 0		; Rejects enter as first digit
 		goto    zeroTest2
 		goto    digit1C 
-zeroTest2:	cpfseq  checkIfZero, 0
+zeroTest2:	cpfseq  checkIfZero, 0		; Rejects 0 as first digit
 		goto    clearTest2
 		goto    digit1C
-clearTest2:	cpfseq  clear, 0
+clearTest2:	cpfseq  clear, 0		; Rejects clear as first digit
 		goto    beginningTest3
 		goto    digit1C
-beginningTest3:	cpfseq  beginning, 0
+beginningTest3:	cpfseq  beginning, 0		; If beginning key pressed, sets testVar and returns to settings file to reset
 		goto    negative3
 		movlw   1
 		movwf   testVar, A
 		return
-negative3:	call    LCD_Send_Byte_D
+negative3:	call    LCD_Send_Byte_D		; Valid input by this point, so display
 		movff   KeyPad_Value, numCardsDigit1
 		movlw   1
 		movwf   test, A
 		goto    digit1Or2C	
-digit2C:        call    Check_KeyPress
+digit2C:        call    Check_KeyPress		; Receives second digit and checks key is released
 		call    Check_No_KeyPress
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    clearTest3
 		return  
-clearTest3:     cpfseq  clear, 0
+clearTest3:     cpfseq  clear, 0		; If clear key is pressed, clear screen and return to start of numCards input
 		goto    beginningTest4
 		call    LCD_clear
 		call    Read_Prompt2
@@ -323,19 +323,19 @@ clearTest3:     cpfseq  clear, 0
 		call    LCD_Write_Message
 		call    LCD_line2
 		goto    writeNumCards
-beginningTest4:	cpfseq  beginning, 0
+beginningTest4:	cpfseq  beginning, 0		; If beginning key pressed, set testVar and return to settings file to reset
 		goto    negative4
 		movlw   1
 		movwf   testVar, A
 		return
-negative4:	call    LCD_Send_Byte_D
-		movff   KeyPad_Value, numCardsDigit2
-loop2:		call    Check_KeyPress
+negative4:	call    LCD_Send_Byte_D		; Valid input by this point so display
+		movff   KeyPad_Value, numCardsDigit2	
+loop2:		call    Check_KeyPress		; Loop until logic key is pressed e.g. enter, clear, beginning
 		movf    KeyPad_Value, 0, 0
-		cpfseq  enter, 0
+		cpfseq  enter, 0		; If enter, return
 		goto    clearTest4
 		return
-clearTest4:	cpfseq  clear, 0
+clearTest4:	cpfseq  clear, 0		; If clear, clear screen and go to numCards input
 		goto    beginningTest5
 		call    LCD_clear
 		call    Read_Prompt2
@@ -344,17 +344,17 @@ clearTest4:	cpfseq  clear, 0
 		call    LCD_Write_Message
 		call    LCD_line2
 		goto    writeNumCards  
-beginningTest5:	cpfseq  beginning, 0
+beginningTest5:	cpfseq  beginning, 0		; If beginning, set testVar and return to settings file to reset
 		goto    loop2
 		movlw   1
 		movwf   testVar, A
 		return
 
-Write_Reset:	movlw   11110000B             ; Condition to check if keypad button is pressed or not.
+Write_Reset:	movlw   11110000B               ; Condition to check if keypad button is pressed or not
 		movwf   checkIfPressed, A
-		movlw   00110001B
+		movlw   00110001B		; Condition to check if '1' key is pressed	
 		movwf   one, A
-again:		call    Check_KeyPress
+again:		call    Check_KeyPress		; Loops until 1 is pressed
 		movf    KeyPad_Value, 0, 0
 		cpfseq  one, 0
 		goto    again
