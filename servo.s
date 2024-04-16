@@ -1,9 +1,9 @@
 #include <xc.inc>
     
-extrn	timerH, timerL, cardno, currentPlayer, numCards
+extrn	timerH, timerL, currentPlayer, numCards
 	
 global	Servo_Setup, Interrupt_Check
-    
+
 psect	servo_code, class=CODE
 
 Servo_Setup:
