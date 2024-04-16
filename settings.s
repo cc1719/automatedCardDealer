@@ -11,8 +11,8 @@ numCards:	ds  1
  
 psect		settings_code, class = CODE
 
-Stored_Message1: db     'Enter no Players'	; Stores the various messages to output on the LCD in program memory.
-		messageLocation1  EQU 0x240	; These variables are the desired location in data memory.
+Stored_Message1: db     'Enter no Players'	; Stores the various messages to output on the LCD in program memory
+		messageLocation1  EQU 0x240	; These variables are the desired location in data memory
 Stored_Message2: db     'Enter no Cards'
 		messageLocation2  EQU 0x250
 Stored_Message3: db     '1 to Restart'
@@ -20,7 +20,7 @@ Stored_Message3: db     '1 to Restart'
 Stored_Message4: db     'Dealing...'
 		messageLocation4  EQU 0x270
 		
-Read_Prompt1:	lfsr    2, messageLocation1		    ; These routines read the corresponding message from program memory, and copies them into data memory.
+Read_Prompt1:	lfsr    2, messageLocation1		    ; These read the corresponding message from program memory, and copy them into data memory
 		movlw   low highword(Stored_Message1)
 		movwf   TBLPTRU, A
 		movlw   high(Stored_Message1)
@@ -84,40 +84,40 @@ loop4:		tblrd*+
 		goto    loop4
 		return
 
-Settings_Input:	call    LCD_clear		    ; This routine prompts the user to input the settings, and reads the response and saves them to numPlayers and numCards.
-		call    Read_Prompt1
+Settings_Input:	call    LCD_clear		; Prompts the user to input the settings, and reads the response and saves them to numPlayers and numCards
+		call    Read_Prompt1		; Prompts number of players input
 		movf    count, 0, 0
 		lfsr    2, messageLocation1
 		call    LCD_Write_Message
 		call    LCD_line2
-		call    writeNumPlayers	
+		call    writeNumPlayers		; Receives input and sets in numPlayers	
 		movlw   100
 		call    LCD_delay_ms
 		call    LCD_clear
-		call    Read_Prompt2
+		call    Read_Prompt2		; Prompts number of cards input
 		movf    count, 0, 0
 		lfsr    2, messageLocation2
 		call    LCD_Write_Message
 		call    LCD_line2
-		call    writeNumCards	
-		tstfsz  testVar, 0
+		call    writeNumCards		; Receives input and sets in numCardsDigit1 and numCardsDigit2
+		tstfsz  testVar, 0		; Checks if testVar is set. If so restart all settings input (set in keypad file)
 		goto    Settings_Input
 		movlw   100
 		call    LCD_delay_ms
 		call    LCD_clear
 		
 		movlw   48
-		subwf   numPlayers, 1, 0
-		
-		movlw   0xff
+		subwf   numPlayers, 1, 0	; Convert numPlayers to ascii
+			
+		movlw   0xff			; Checks if numCardsDigit2 is FF (initialised value). If so, converts digit1 to ascii and sets numCards to this
 		cpfseq  numCardsDigit2, 0
-		goto    Two_Digit_Cards	
+		goto    Two_Digit_Cards		; If two digits have been entered, go here
 		movlw   48
 		subwf   numCardsDigit1, 0, 0
 		movwf   numCards, A
 		return
 		
-Two_Digit_Cards:	movlw   48
+Two_Digit_Cards:	movlw   48		; Converts two digits for numCards into one number in ascii
 		subwf   numCardsDigit1, 1, 0
 		movlw   10
 		mulwf   numCardsDigit1, 0
@@ -127,16 +127,16 @@ Two_Digit_Cards:	movlw   48
 		addwf   numCards, 1, 0
 		return
 
-Reset_Settings:	call    LCD_clear
+Reset_Settings:	call    LCD_clear		; Called at end of deal, clears screen and prompts reset
 		call    Read_Prompt3
 		movf    count, 0, 0
 		lfsr    2, messageLocation3
 		call    LCD_Write_Message
 		call    LCD_line2
-		call    Write_Reset
+		call    Write_Reset		; Sits in loop until rest key (1 on keypad) is pressed
 		return
 		
-Dealing_Message:
+Dealing_Message:				; Outputs dealing message while dealing
 		call    LCD_clear
 		call    Read_Prompt4
 		movf    count, 0, 0
