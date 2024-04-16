@@ -178,7 +178,7 @@ loop:		tblrd*+
 		decfsz  counter, A
 		bra     loop
 		
-		movlw   01000001B                       ; Rejects invalid letter input, for instance pressing 'D' key on keypad
+		movlw   01000001B                       ; Rejects invalid letter inputs A, D, F
 		cpfseq  KeyPad_Value, 0
 		goto    next8
 		goto    Check_KeyPress
@@ -210,7 +210,7 @@ writeNumPlayers:				; 1 digit input
 		movlw   11110000B               ; Condition to check if keypad button is pressed or not
 		movwf   checkIfPressed, A
 		movlw   01000101B
-		movwf   enter, A                ; Condition to see if enter key has been pressed (F on the keypad)
+		movwf   enter, A                ; Condition to see if enter key has been pressed (E on the keypad)
 		movlw   00110000B
 		movwf   checkIfZero, A		; Condition to see if '0' key is pressed
 		movlw   01000011B
@@ -272,7 +272,7 @@ writeNumCards: 					; 2 digit input
 		movwf   testVar, A
 		movlw   11110000B             	; Condition to check if keypad button is pressed
 		movwf   checkIfPressed, A
-		movlw   01000101B		; Condition to see if enter key has been pressed (F on the keypad).
+		movlw   01000101B		; Condition to see if enter key has been pressed (E on the keypad).
 		movwf   enter, A                 
 		movlw   00110000B		; Condition to see if '0' key is pressed
 		movwf   checkIfZero, A
