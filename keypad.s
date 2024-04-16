@@ -27,7 +27,7 @@ testVar:	ds  1
     
 psect		KeyPad_code, class = CODE
 
-KeyPad_Setup:	clrf	LATJ, A	    ; Clears the requred ports. We use pins from multiple ports for the keypad.
+KeyPad_Setup:	clrf	LATJ, A	    ; Clears the required ports. We use pins from multiple ports for the keypad.
 		clrf    LATE, A
                 movlb	0x0f	    ; Sets the pull-up resistors.
                 bsf     REPU
@@ -178,7 +178,7 @@ loop:		tblrd*+
 		decfsz  counter, A
 		bra     loop
 		
-		movlw   01000001B
+		movlw   01000001B                       ; Rejects invalid letter input, for instance pressing 'D' key on keypad.
 		cpfseq  KeyPad_Value, 0
 		goto    next8
 		goto    Check_KeyPress
@@ -212,18 +212,18 @@ writeNumPlayers:
 		movlw   01000101B
 		movwf   enter, A                 ; Condition to see if enter key has been pressed (F on the keypad).
 		movlw   00110000B
-		movwf   checkIfZero, A
+		movwf   checkIfZero, A		; Condition to see if '0' key is pressed.
 		movlw   01000011B
-		movwf   clear, A
+		movwf   clear, A		; Condition to see if clear key is pressed (C on keypad).
 		movlw   01000010B
-		movwf   beginning, A
+		movwf   beginning, A		; Condition to see if beginning key is pressed (B on keypad).
 		movlw   0
 		movwf   test, A
-digit1Or2P:    	tstfsz  test, 0
+digit1Or2P:    	tstfsz  test, 0			; Checks if input is first or second digit.
 		goto    digit2P
 		goto    digit1P
-digit1P:	call    Check_KeyPress
-		call    Check_No_KeyPress
+digit1P:	call    Check_KeyPress		; Receives first digit input
+		call    Check_No_KeyPress	; Checks key is released
 		movf    KeyPad_Value, 0, 0
 		cpfseq  enter, 0
 		goto    zeroTest1
