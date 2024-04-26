@@ -110,7 +110,7 @@ next0:		movlw   00000001B
 		cpfseq  value, 0
 		bra     next1
 		movlw   1
-		movwf   row, A				; If equals this value, sets row variable accordinly
+		movwf   row, A				; If equals this value, sets row variable accordinly. As lookup table is transposed, the low nibble (reads column) defines the row variable.
 		goto    initialise2
 next1:          movlw   00000010B
 		cpfseq  value, 0
