@@ -34,7 +34,7 @@ KeyPad_Setup:	clrf	LATJ, A	    ; Clears the required ports
 		bsf     RJPU
                 return
 
-Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B   ; Defines the ascii characters for the keypad
+Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B   ; Defines the ascii characters for the keypad. This table is transposed relative to actual keypad.
 		db      00110010B, 00110101B, 00111000B, 00110000B
 		db	00110011B, 00110110B, 00111001B, 01000010B
 		db      01000110B, 01000101B, 01000100B, 01000011B
