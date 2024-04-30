@@ -19,24 +19,24 @@ Stored_Message3: db     '1 to Restart'
 		messageLocation3  EQU 0x260
 Stored_Message4: db     'Dealing...'
 		messageLocation4  EQU 0x270
-		
-Read_Prompt1:	lfsr    2, messageLocation1		    ; These read the corresponding message from program memory, and copy them into data memory
-		movlw   low highword(Stored_Message1)
+							; These read the corresponding message from program memory, and copy them into data memory
+Read_Prompt1:	lfsr    2, messageLocation1		; Loads file select register 2 with desired location in data memory for this prompt    
+		movlw   low highword(Stored_Message1)	; Sets three bytes which point to table in program memory
 		movwf   TBLPTRU, A
 		movlw   high(Stored_Message1)
 		movwf   TBLPTRH, A
 		movlw   low(Stored_Message1)
 		movwf   TBLPTRL, A
 		movlw   17
-		movwf   count, 0
-		movwf   counter, 0
-loop1:		tblrd*+
-		movff   TABLAT, POSTINC2
-		decfsz  counter, A
+		movwf   count, 0			; Remembers how long message was in count variable for use later
+		movwf   counter, 0			; Also sets a counter which will stop the tblrd*+ function from continuing
+loop1:		tblrd*+					; to read from program memory once the full message has been read
+		movff   TABLAT, POSTINC2		; POSTINC2 increments the location in data memory, to avoid overwriting what was previously read
+		decfsz  counter, A			; Counter decreases until 0
 		goto    loop1
 		return
 
-Read_Prompt2:	lfsr    2, messageLocation2
+Read_Prompt2:	lfsr    2, messageLocation2             ; Same for the rest of the Read_Prompt functions
 		movlw   low highword(Stored_Message2)
 		movwf   TBLPTRU, A
 		movlw   high(Stored_Message2)
@@ -86,16 +86,16 @@ loop4:		tblrd*+
 
 Settings_Input:	call    LCD_clear		; Prompts the user to input the settings, and reads the response and saves them to numPlayers and numCards
 		call    Read_Prompt1		; Prompts number of players input
-		movf    count, 0, 0
-		lfsr    2, messageLocation1
+		movf    count, 0, 0		; Count variable from earlier contains length of message - must be in WR for LCD write to work
+		lfsr    2, messageLocation1	; Load file select register 2 with the message's location in data memory - required for LCD write function
 		call    LCD_Write_Message
-		call    LCD_line2
+		call    LCD_line2		; Move to line 2
 		call    writeNumPlayers		; Receives input and sets in numPlayers	
 		movlw   100
-		call    LCD_delay_ms
-		call    LCD_clear
+		call    LCD_delay_ms		; Small delay to ease user experience
+		call    LCD_clear		
 		call    Read_Prompt2		; Prompts number of cards input
-		movf    count, 0, 0
+		movf    count, 0, 0		; Same again here
 		lfsr    2, messageLocation2
 		call    LCD_Write_Message
 		call    LCD_line2
@@ -117,13 +117,13 @@ Settings_Input:	call    LCD_clear		; Prompts the user to input the settings, and
 		movwf   numCards, A
 		return
 		
-Two_Digit_Cards:	movlw   48		; Converts two digits for numCards into one number in ascii
+Two_Digit_Cards:	movlw   48		; Converts two digits for numCards into one total number in ascii
 		subwf   numCardsDigit1, 1, 0
 		movlw   10
 		mulwf   numCardsDigit1, 0
 		movff   PRODL, numCards
 		movlw   48
-		subwf   numCardsDigit2, 0, 0
+		subwf   numCardsDigit2, 0, 0	; Conversion to ascii
 		addwf   numCards, 1, 0
 		return
 
