@@ -16,7 +16,7 @@ divisor: ds 1
 psect		divide_code, class = CODE
     
 divide:						; divides (arg1+arg2) by numPlayers, result in output.
-		movlw   100			; Sets arg1 and arg2 to be 100 - value to be divided by number of players
+		movlw   100			; Sets arg1 and arg2 to be 100 : this is the value to be divided by number of players
 		movwf   arg1, 0
 		movlw   100
 		movwf   arg2, 0
