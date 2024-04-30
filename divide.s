@@ -63,7 +63,7 @@ divide16bit:					; divides the 16 bit number (arg1+arg2)*arg3 by divisor, result
 		movwf   arg1, 0			; We divide by (numPlayers - 1) to allow us to set a delay between each card deal
 		movlw   157			; that changes with the number of players - more players, the shorter the delay
 		movwf   arg2, 0			; We divide by (numPlayers - 1) instead of numPlayers so that if numPlayers = 2, the delay is longest (players sat opposite each other)
-		movlw   255
+		movlw   255			
 		movwf   arg3, 0
 		movff   numPlayers, divisor, A
 		movlw	0x01
