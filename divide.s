@@ -24,7 +24,7 @@ divide:						; divides (arg1+arg2) by (numPlayers - 1), result in output.
 		cpfseq	numPlayers, 0          ; Checks if divisor will be 1, if not subtract one from it
 		subwf	numPlayers, W, A       ; We are finding the angular distance to move to get to next player, therefore	
 		movwf	divisor, A	       ; if 3 players, we want to divide angular range by 2 and so on 	
-		movlw   0
+		movlw   0		       	
 		movwf   output, 0	       ; Initialises output variable	
     	        movf    arg1, 0, 0
 		cpfsgt  divisor, 0	       ; If arg1 is greater than divisor, subtract divisor from arg1, if not process is over 	
@@ -62,7 +62,7 @@ divide16bit:					; divides the 16 bit number (arg1+arg2)*arg3 by divisor, result
 		movlw   100			; The 16 bit number we divide is the period of timer 0
 		movwf   arg1, 0			; We divide by (numPlayers - 1) to allow us to set a delay between each card deal
 		movlw   157			; that changes with the number of players - more players, the shorter the delay
-		movwf   arg2, 0
+		movwf   arg2, 0			; We divide by (numPlayers - 1) instead of numPlayers so that if numPlayers = 2, the delay is longest (players sat opposite each other)
 		movlw   255
 		movwf   arg3, 0
 		movff   numPlayers, divisor, A
