@@ -15,7 +15,7 @@ divisor: ds 1
 
 psect		divide_code, class = CODE
     
-divide:    ; divides (arg1+arg2) by numPlayers, result in output.
+divide:						; divides (arg1+arg2) by numPlayers, result in output.
 		movlw   100			; Sets arg1 and arg2 to be 100 - value to be divided by number of players
 		movwf   arg1, 0
 		movlw   100
@@ -57,11 +57,11 @@ end2:		movwf   remainder2, 0
 		
 		return
 		
-divide16bit:    ; divides the 16 bit number (arg1+arg2)*arg3 by divisor, result is in PRODH and PRODL. Works similar to above, so dividing arg1 and arg2 by divisor, then multiplies result by arg3
-		; to get result of the division of the 16 bit number.
-		movlw   100				; The 16 bit number we divide is the period of timer 0
-		movwf   arg1, 0				; We divide by (numPlayers - 1) to allow us to set a delay between each card deal
-		movlw   157				; that changes with the number of players - more players, the shorter the delay
+divide16bit:					; divides the 16 bit number (arg1+arg2)*arg3 by divisor, result is in PRODH and PRODL. Works similar to above, so dividing arg1 and arg2 by divisor, then multiplies result by arg3
+						; to get result of the division of the 16 bit number.
+		movlw   100			; The 16 bit number we divide is the period of timer 0
+		movwf   arg1, 0			; We divide by (numPlayers - 1) to allow us to set a delay between each card deal
+		movlw   157			; that changes with the number of players - more players, the shorter the delay
 		movwf   arg2, 0
 		movlw   255
 		movwf   arg3, 0
