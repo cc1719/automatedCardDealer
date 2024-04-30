@@ -35,10 +35,10 @@ KeyPad_Setup:	clrf	LATJ, A	    ; Clears the required ports
                 return
 
 Table_Set_Up:   db      00110001B, 00110100B, 00110111B, 01000001B   ; Defines the ascii characters for the keypad. This table is transposed relative to actual keypad.
-		db      00110010B, 00110101B, 00111000B, 00110000B
-		db	00110011B, 00110110B, 00111001B, 01000010B
-		db      01000110B, 01000101B, 01000100B, 01000011B
-		Lookup_Table  EQU 0x300
+		db      00110010B, 00110101B, 00111000B, 00110000B   ; As explained later, we read the column and row number of the actual keypad	
+		db	00110011B, 00110110B, 00111001B, 01000010B   ; And then set a row and column variable to read from the lookup table
+		db      01000110B, 01000101B, 01000100B, 01000011B   ; However as the table is transposed the read column number sets the row variable and  
+		Lookup_Table  EQU 0x300				     ; vice versa	
 
 KeyPad_Columns:	movlw   0x0f		; Sets up to read the column number
                 movwf   TRISJ, A
@@ -50,7 +50,7 @@ KeyPad_Columns:	movlw   0x0f		; Sets up to read the column number
 KeyPad_Rows:				; Sets up to read the row number
                 movlw   0xf0
                 movwf   TRISJ, A
-		bsf     TRISE, 0, 0
+		bsf     TRISE, 0, 0	; Uses these pins instead of J5,6,2
 		bsf     TRISE, 1, 0
 		bcf     TRISE, 3, 0
                 return
@@ -85,34 +85,35 @@ zero3:		bcf     conversion, 2, 0
 Check_KeyPress: movlw   0			    ; Reads the column and row number and outputs a variable with a 1 in the place
 		movwf   KeyPad_Value, A		    ; of the column in the low nibble and row for the high nibble
                 call    KeyPad_Columns
-                call    delay
-		movff   PORTJ, conversion, A
-                call    Convert
-		movff   conversion, KeyPad_Value
-	    	call    KeyPad_Rows
-		call    delay
+                call    delay			    ; Small delay to allow time to set up to read columns 	
+		movff   PORTJ, conversion, A	    ; Receive PORTJ value	
+                call    Convert			    ; Converts J2,5,6 to the corresponding E pins
+		movff   conversion, KeyPad_Value    ; Stores result in KeyPad_Value
+	    	call    KeyPad_Rows		    ; Sets up to read rows
+		call    delay			    ; Small delay to allow set up	
                 movff   PORTJ, conversion, A
 		call    Convert
 		movf    conversion, 0, 0
-		iorwf   KeyPad_Value, 0, 0
-                xorlw   0xff
+		iorwf   KeyPad_Value, 0, 0	    ; Collates result of column and row read	
+                xorlw   0xff                        ; Changes the byte so there are two ones and the rest zeros instead of two zeros and the rest ones
                 movwf   KeyPad_Value, A
 		
 KeyPad_Output:	movlw   0			        ; Maps the keypad output to ascii and loops if input is invalid
-		movwf   row, A
+		movwf   row, A				; Initialises row and column variables to be set momentarily	
 		movwf   column, A 
 		
 initialise1:	movlw   00001111B			; Checks row input against each possible value, loops if not valid
-		andwf   KeyPad_Value, 0, 0
-		movwf   value, A
+		andwf   KeyPad_Value, 0, 0		; Takes lower nibble to test for column number
+		movwf   value, A			; Puts result in value variable
 		
-next0:		movlw   00000001B
+next0:		movlw   00000001B			; Checks if the one is in the first bit
 		cpfseq  value, 0
-		bra     next1
+		bra     next1				; If not, skips
 		movlw   1
-		movwf   row, A				; If equals this value, sets row variable accordinly. As lookup table is transposed, the low nibble (reads column) defines the row variable.
-		goto    initialise2
-next1:          movlw   00000010B
+		movwf   row, A				; If equals this value, sets row variable accordinly.
+  							; As lookup table is transposed, ***the low nibble (which reads the columns) defines the row variable***.
+		goto    initialise2			; Then skips the rest of the column checks
+next1:          movlw   00000010B			; Same for rest of column checks
 		cpfseq  value, 0
 		bra     next2
 		movlw   2
@@ -126,15 +127,15 @@ next2:          movlw   00000100B
 		goto    initialise2
 next3:          movlw   00001000B
 		cpfseq  value, 0
-		goto    Check_KeyPress
+		goto    Check_KeyPress		; If not equal to any of them, the input is invalid and a new input is received
 		movlw   4
 		movwf   row, A
 		
-initialise2:	movlw   11110000B		; Same for column input
-		andwf   KeyPad_Value, 0, 0
+initialise2:	movlw   11110000B		; Now does the same for reading the rows
+		andwf   KeyPad_Value, 0, 0	; Takes high nibble and puts it in the value variable
 		movwf   value, A
 		
-next4:		movlw   00010000B
+next4:		movlw   00010000B		; Same checks to see which row, and if the check is positive, it sets the column variable accordingly (as lookup table is transposed)
 		cpfseq  value, 0
 		bra     next5
 		movlw   1
@@ -159,30 +160,30 @@ next7:          movlw   10000000B
 		movwf   column, A
 		
 Read_Lookup_Table:					; Reads the look-up table into data memory
-		lfsr    0, Lookup_Table
-		movlw   low highword(Table_Set_Up)
+		lfsr    0, Lookup_Table			; Loads file select register 0 with the location in data memory we want the table to be read into
+		movlw   low highword(Table_Set_Up)	; Loads address in program memory of table into TBLPTRU, TBLPTRH, TBLPTRL
 		movwf   TBLPTRU, A
 		movlw   high(Table_Set_Up)
 		movwf   TBLPTRH, A
 		movlw   low(Table_Set_Up)
 		movwf   TBLPTRL, A
 		movlw   1
-		subwf   row, 1, 0
-		movlw   4
+		subwf   row, 1, 0			; Logic to convert the row and column number of the lookup table into a counter
+		movlw   4				; that will count through the table until the desired value
 		mulwf   row, 0
 		movf    PRODL, 0, 0
 		addwf   column, 0, 0
 		movwf   counter, A
 loop:		tblrd*+
-		movff   TABLAT, KeyPad_Value
+		movff   TABLAT, KeyPad_Value		; Loops through lookup table until counter is 0
 		decfsz  counter, A
 		bra     loop
 		
 		movlw   01000001B                       ; Rejects invalid letter inputs A, D, F
 		cpfseq  KeyPad_Value, 0
-		goto    next8
-		goto    Check_KeyPress
-next8:		movlw   01000100B
+		goto    next8				; If not equal to, continue
+		goto    Check_KeyPress			; If equal to, receive a new input
+next8:		movlw   01000100B			; Same for the other letter checks
 		cpfseq  KeyPad_Value, 0
 		goto    next9
 		goto    Check_KeyPress
@@ -191,7 +192,7 @@ next9:		movlw   01000110B
 		return
 		goto    Check_KeyPress
 		
-delay:		movlw   0x40
+delay:		movlw   0x40				; Delay routine
                 movwf   KeyPad_counter, A
 		
 countdown:      decfsz  KeyPad_counter, A           
@@ -199,12 +200,12 @@ countdown:      decfsz  KeyPad_counter, A
                 return
 
 Check_No_KeyPress:					; Loops until no keys are pressed
-		movff   PORTJ, conversion, A	
-		call    Convert
+		movff   PORTJ, conversion, A		; Receives state of keypad input ports
+		call    Convert				; Performs conversion as before
 		movf    conversion, 0, 0
-		cpfseq  checkIfPressed, 0
-		goto    Check_No_KeyPress
-		return
+		cpfseq  checkIfPressed, 0		; checkIfPressed is the state when no keys are pressed
+		goto    Check_No_KeyPress		; Therefore, if equal to, no keys are pressed and return
+		return					; It not equal to, loop until no key is pressed
 		
 writeNumPlayers:				; 1 digit input
 		movlw   11110000B               ; Condition to check if keypad button is pressed or not
