@@ -24,7 +24,7 @@ divide:						; divides (arg1+arg2) by (numPlayers - 1), result in output.
 		cpfseq	numPlayers, 0          ; Checks if divisor will be 1, if not subtract one from it
 		subwf	numPlayers, W, A       ; We are finding the angular distance to move to get to next player, therefore	
 		movwf	divisor, A	       ; if 3 players, we want to divide angular range by 2 and so on 	
-		movlw   0		       	
+		movlw   0		       ; If 1 player, no turn is required, so the output of this division is irrelevant	
 		movwf   output, 0	       ; Initialises output variable	
     	        movf    arg1, 0, 0
 		cpfsgt  divisor, 0	       ; If arg1 is greater than divisor, subtract divisor from arg1, if not process is over 	
